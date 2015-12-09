@@ -4,10 +4,10 @@
     <title>一根札记</title>
     <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
 </description>
-    <link>http://haydenwei.composts/</link>
-    <atom:link href="http://haydenwei.composts/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2015-12-09 08:57:53 +0800</pubDate>
-    <lastBuildDate>2015-12-09 08:57:53 +0800</lastBuildDate>
+    <link>http://haydenwei.com/</link>
+    <atom:link href="http://haydenwei.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>2015-12-09 08:36:47 +0800</pubDate>
+    <lastBuildDate>2015-12-09 08:36:47 +0800</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -30,8 +30,8 @@ print_hi(&amp;#39;Tom&amp;#39;)
 &lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>2015-12-08 10:20:49 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/12/welcome-to-jekyll</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/12/welcome-to-jekyll</guid>
+        <link>http://haydenwei.com/posts/2015/12/welcome-to-jekyll</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/12/welcome-to-jekyll</guid>
         
         
         <category>jekyll</category>
@@ -142,8 +142,8 @@ print_hi(&amp;#39;Tom&amp;#39;)
 &lt;p&gt;I haven&amp;#8217;t used this myself, other than in silly experiments. I can picture it being handy for some DSLs, though. If you apply this to anything interesting, please do let me know in a comment!&lt;/p&gt;
 </description>
         <pubDate>2015-12-03 22:25:00 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/12/elixir-block-keywords</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/12/elixir-block-keywords</guid>
+        <link>http://haydenwei.com/posts/2015/12/elixir-block-keywords</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/12/elixir-block-keywords</guid>
         
         
         <category>Elixir</category>
@@ -275,8 +275,8 @@ print_hi(&amp;#39;Tom&amp;#39;)
 &lt;p&gt;Most recently, we used it for reversing financial vouchers in an accounting system: basically, you create a copy but invert some of the numbers. For the copy part, we employed this pattern.&lt;/p&gt;
 </description>
         <pubDate>2015-11-14 08:55:00 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/11/unforgettable-attributes</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/11/unforgettable-attributes</guid>
+        <link>http://haydenwei.com/posts/2015/11/unforgettable-attributes</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/11/unforgettable-attributes</guid>
         
         
         <category>Design patterns</category>
@@ -447,8 +447,8 @@ print_hi(&amp;#39;Tom&amp;#39;)
 &lt;p&gt;For some related reading, also see &lt;a href=&quot;http://blog.drewolson.org/the-value-of-explicitness/&quot;&gt;&amp;#8220;The Value of Explicitness&amp;#8221; by Drew Olson&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>2015-11-07 00:50:00 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/11/elixir-scoping</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/11/elixir-scoping</guid>
+        <link>http://haydenwei.com/posts/2015/11/elixir-scoping</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/11/elixir-scoping</guid>
         
         
         <category>Elixir</category>
@@ -590,8 +590,8 @@ print_hi(&amp;#39;Tom&amp;#39;)
 &lt;p&gt;If anyone else sets this up, I&amp;#8217;d love to hear what you use it for!&lt;/p&gt;
 </description>
         <pubDate>2015-10-15 20:15:00 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/10/controlling-your-mac-with-a-flic</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/10/controlling-your-mac-with-a-flic</guid>
+        <link>http://haydenwei.com/posts/2015/10/controlling-your-mac-with-a-flic</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/10/controlling-your-mac-with-a-flic</guid>
         
         
         <category>Automation</category>
@@ -719,8 +719,8 @@ Nay! Expected &#39;Dog&#39; but got &#39;Cat&#39; :(
 &lt;p&gt;They are &lt;a href=&quot;http://stackoverflow.com/questions/31954796/why-erlang-tuple-module-is-controversial&quot;&gt;controversial&lt;/a&gt; in Erlang and Elixir both, and José Valim &lt;a href=&quot;https://github.com/elixir-lang/elixir/issues/3254&quot;&gt;wants them gone in Elixir 2.0&lt;/a&gt;. Problems include hard-to-read stacktraces, slower dispatch, and that they can encourage writing code in an object-oriented style, with &amp;#8220;methods&amp;#8221; on &amp;#8220;instances&amp;#8221;.&lt;/p&gt;
 </description>
         <pubDate>2015-10-10 02:40:00 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/10/how-to-expect-to-in-elixir</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/10/how-to-expect-to-in-elixir</guid>
+        <link>http://haydenwei.com/posts/2015/10/how-to-expect-to-in-elixir</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/10/how-to-expect-to-in-elixir</guid>
         
         
         <category>Elixir</category>
@@ -849,8 +849,8 @@ Nay! Expected &#39;Dog&#39; but got &#39;Cat&#39; :(
 &lt;p&gt;&lt;a href=&quot;http://elixir-lang.org/docs/v1.0/ex_unit/ExUnit.Assertions.html#assert_received/2&quot;&gt;&lt;code&gt;assert_received&lt;/code&gt;&lt;/a&gt; expects the message to have arrived already. If your code is asynchronous and the message may take a while to arrive, its companion function &lt;a href=&quot;http://elixir-lang.org/docs/v1.0/ex_unit/ExUnit.Assertions.html#assert_receive/3&quot;&gt;&lt;code&gt;assert_receive&lt;/code&gt;&lt;/a&gt; lets you specify a timeout.&lt;/p&gt;
 </description>
         <pubDate>2015-09-20 11:15:00 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/09/testing-callbacks-in-elixir</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/09/testing-callbacks-in-elixir</guid>
+        <link>http://haydenwei.com/posts/2015/09/testing-callbacks-in-elixir</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/09/testing-callbacks-in-elixir</guid>
         
         
         <category>Elixir</category>
@@ -1026,8 +1026,8 @@ rhs:  RuntimeError
 &lt;p&gt;If you want to see this in action, have a look at my &lt;a href=&quot;https://github.com/henrik/fixme-elixir&quot;&gt;FIXME for Elixir&lt;/a&gt; library.&lt;/p&gt;
 </description>
         <pubDate>2015-09-05 12:12:00 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/09/testing-compile-time-exceptions-in-elixir</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/09/testing-compile-time-exceptions-in-elixir</guid>
+        <link>http://haydenwei.com/posts/2015/09/testing-compile-time-exceptions-in-elixir</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/09/testing-compile-time-exceptions-in-elixir</guid>
         
         
         <category>Elixir</category>
@@ -1162,8 +1162,8 @@ rhs:  RuntimeError
 &lt;p&gt;I&amp;#8217;m really looking forward to future iterations, with better performance.&lt;/p&gt;
 </description>
         <pubDate>2015-07-19 19:55:00 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/07/apple-watch-day-58</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/07/apple-watch-day-58</guid>
+        <link>http://haydenwei.com/posts/2015/07/apple-watch-day-58</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/07/apple-watch-day-58</guid>
         
         
         <category>Apple Watch</category>
@@ -1209,8 +1209,8 @@ rhs:  RuntimeError
 &lt;p&gt;If a mobile browser has a viewport at 1000px or wider (e.g. a landscape iPad), the toggle won&amp;#8217;t be meaningful. I didn&amp;#8217;t bother with that case (the user is likely to ignore the toggle), but you can if you like.&lt;/p&gt;
 </description>
         <pubDate>2015-07-08 23:35:00 +0800</pubDate>
-        <link>http://haydenwei.composts/2015/07/turning-off-responsive</link>
-        <guid isPermaLink="true">http://haydenwei.composts/2015/07/turning-off-responsive</guid>
+        <link>http://haydenwei.com/posts/2015/07/turning-off-responsive</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/07/turning-off-responsive</guid>
         
         
         <category>Responsive design</category>

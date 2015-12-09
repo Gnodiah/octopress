@@ -27,6 +27,7 @@ blog_index_sidebar: the_pug_automatic.html
 page_sidebar: the_pug_automatic.html
 post_sidebar: the_pug_automatic.html
 category_dir: posts/tag
+subscribe_rss: atom.xml
 highlighter: rouge
 pygments: false
 paginate: 10

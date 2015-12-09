@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Testing callbacks in Elixir - 一根札记</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.haydenwei.com//2015/09/testing-callbacks-in-elixir">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="" rel="alternate" title="一根札记" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/2015/09/testing-callbacks-in-elixir">Testing callbacks in Elixir</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-09-20T11:15:00+08:00" pubdate data-updated="true">September 20, 2015 at 11:15 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/tag/elixir/'>Elixir</a>, <a class='category' href='/tag/exunit/'>ExUnit</a>, <a class='category' href='/tag/testing/'>Testing</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Say you have this code:</p>
+
+<figure class='code'><figcaption><span>example.ex</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">Example</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  def</span> <span class="n">run</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="n">callback</span><span class="o">.</span><span class="p">(</span><span class="ss">:hello</span><span class="p">,</span> <span class="ss">:world</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">do_more_stuff</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You want to assert that it calls back with <code>:hello</code> and <code>:world</code>.</p>
+
+<p>It might not be immediately clear how to do that in ExUnit.</p>
+
+<figure class='code'><figcaption><span>example_test.exs</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="n">test</span> <span class="s2">&quot;callback runs&quot;</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="n">callback</span> <span class="o">=</span> <span class="k">fn</span> <span class="p">(</span><span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">)</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="c1"># ?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">Example</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">#?</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We could assert inside the callback… but if the callback never runs, the assertion won&#8217;t run either.</p>
+
+<p>In a language like Ruby, you could do it by changing a variable outside the anonymous function:</p>
+
+<figure class='code'><figcaption><span>example_test.rb</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">did_it_run</span> <span class="o">=</span> <span class="kp">false</span>
+</span><span class='line'><span class="n">fun</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">did_it_run</span> <span class="o">=</span> <span class="kp">true</span> <span class="p">}</span>
+</span><span class='line'><span class="n">fun</span><span class="o">.</span><span class="p">()</span>
+</span><span class='line'><span class="n">assert</span> <span class="n">did_it_run</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In Elixir, an anonymous function can read variables from outside but not change them. We could start a separate server process and make it hang on to this state, but that would be a bit of a bother.</p>
+
+<p>There are other ways to communicate, though. Message passing to the rescue!</p>
+
+<figure class='code'><figcaption><span>example_test.exs</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="n">test</span> <span class="s2">&quot;callback runs&quot;</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="n">callback</span> <span class="o">=</span> <span class="k">fn</span> <span class="p">(</span><span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">)</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="n">send</span> <span class="n">self</span><span class="p">,</span> <span class="p">{</span><span class="ss">:called_back</span><span class="p">,</span> <span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">Example</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">assert_received</span> <span class="p">{</span><span class="ss">:called_back</span><span class="p">,</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:world</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We simply <a href="http://elixir-lang.org/docs/v1.0/elixir/Kernel.html#send/2"><code>send</code></a> a message to our own process from the callback. Now it&#8217;s in our process mailbox.</p>
+
+<p>Then we <a href="http://elixir-lang.org/docs/v1.0/ex_unit/ExUnit.Assertions.html#assert_received/2">assert</a> that we received it.</p>
+
+<p>For multi-process use cases, you can name the test process:</p>
+
+<figure class='code'><figcaption><span>example_test.exs</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">TestCallerBacker</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  def</span> <span class="n">run</span><span class="p">(</span><span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="n">send</span> <span class="ss">:test</span><span class="p">,</span> <span class="p">{</span><span class="ss">:called_back</span><span class="p">,</span> <span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">test</span> <span class="s2">&quot;callback runs&quot;</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="no">Process</span><span class="o">.</span><span class="n">register</span> <span class="n">self</span><span class="p">,</span> <span class="ss">:test</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">Example</span><span class="o">.</span><span class="n">run_in_another_process</span><span class="p">(</span><span class="no">TestCallerBacker</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">assert_received</span> <span class="p">{</span><span class="ss">:called_back</span><span class="p">,</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:world</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://elixir-lang.org/docs/v1.0/ex_unit/ExUnit.Assertions.html#assert_received/2"><code>assert_received</code></a> expects the message to have arrived already. If your code is asynchronous and the message may take a while to arrive, its companion function <a href="http://elixir-lang.org/docs/v1.0/ex_unit/ExUnit.Assertions.html#assert_receive/3"><code>assert_receive</code></a> lets you specify a timeout.</p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/2015/10/how-to-expect-to-in-elixir">How to "expect(…).to" in Elixir</a>
+        </p>
+      
+      
+        <p>
+          <strong>Older:</strong>
+          <a href="/2015/09/testing-compile-time-exceptions-in-elixir">Testing compile-time exceptions in Elixir</a>
+        </p>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/">
+      <img src="/images/custom/pug_1x.png" srcset="/images/custom/pug_2x.png 2x, /images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/">一根札记</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  <a href="http://johannaost.com/813-the-pug-automatic">Pug art</a>
+  by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

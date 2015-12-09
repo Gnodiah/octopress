@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Testing compile-time exceptions in Elixir - 一根札记</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.haydenwei.com//2015/09/testing-compile-time-exceptions-in-elixir">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="" rel="alternate" title="一根札记" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/2015/09/testing-compile-time-exceptions-in-elixir">Testing compile-time exceptions in Elixir</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-09-05T12:12:00+08:00" pubdate data-updated="true">September  5, 2015 at 12:12 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/tag/elixir/'>Elixir</a>, <a class='category' href='/tag/exunit/'>ExUnit</a>, <a class='category' href='/tag/testing/'>Testing</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>You can usually test exceptions this way in Elixir:</p>
+
+<figure class='code'><figcaption><span>test/my_test.exs</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">MyTest</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="kn">use</span> <span class="no">ExUnit</span><span class="o">.</span><span class="no">Case</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">test</span> <span class="s2">&quot;my test&quot;</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="n">assert_raise</span> <span class="no">RuntimeError</span><span class="p">,</span> <span class="s2">&quot;boom&quot;</span><span class="p">,</span> <span class="k">fn</span> <span class="o">-&gt;</span>
+</span><span class='line'>      <span class="k">raise</span> <span class="s2">&quot;boom&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But if you&#8217;re writing a macro, you can raise exceptions at compile time. This won&#8217;t work:</p>
+
+<figure class='code'><figcaption><span>test/my_test.exs</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">MyMacro</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  defmacro</span> <span class="n">boom</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    raise</span> <span class="s2">&quot;boom at compile time&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">defmodule</span> <span class="no">MyTest</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="kn">use</span> <span class="no">ExUnit</span><span class="o">.</span><span class="no">Case</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">test</span> <span class="s2">&quot;my test&quot;</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="n">assert_raise</span> <span class="no">RuntimeError</span><span class="p">,</span> <span class="s2">&quot;boom at compile time&quot;</span><span class="p">,</span> <span class="k">fn</span> <span class="o">-&gt;</span>
+</span><span class='line'>      <span class="kn">import</span> <span class="no">MyMacro</span>
+</span><span class='line'>      <span class="n">boom</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>assert_raise</code> makes an assertion about runtime behavior, and won&#8217;t catch that raise. Incidentally, <code>RuntimeError</code> is the unfortunate default type of exceptions – they can be raised at compile time, like we do here.</p>
+
+<p>Having run into this limitation twice now, I thought I&#8217;d figure out a way around it. This is what I&#8217;ve come up with.</p>
+
+<p>First, add these <code>CompileTimeAssertions</code> to your test helper:</p>
+
+<figure class='code'><figcaption><span>test/test_helper.exs</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="no">ExUnit</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">defmodule</span> <span class="no">CompileTimeAssertions</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  defmodule</span> <span class="no">DidNotRaise</span><span class="p">,</span> <span class="k">do</span><span class="p">:</span> <span class="n">defstruct</span><span class="p">(</span><span class="ss">message:</span> <span class="no">nil</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">defmacro</span> <span class="n">assert_compile_time_raise</span><span class="p">(</span><span class="n">expected_exception</span><span class="p">,</span> <span class="n">expected_message</span><span class="p">,</span> <span class="n">fun</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="n">actual_exception</span> <span class="o">=</span>
+</span><span class='line'>      <span class="k">try</span> <span class="k">do</span>
+</span><span class='line'><span class="k">        </span><span class="no">Code</span><span class="o">.</span><span class="n">eval_quoted</span><span class="p">(</span><span class="n">fun</span><span class="p">)</span>
+</span><span class='line'>        <span class="err">%</span><span class="no">DidNotRaise</span><span class="p">{}</span>
+</span><span class='line'>      <span class="k">rescue</span>
+</span><span class='line'>        <span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kn">quote</span> <span class="k">do</span>
+</span><span class='line'><span class="k">      </span><span class="n">assert</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">actual_exception</span><span class="o">.</span><span class="n">__struct__</span><span class="p">)</span> <span class="o">==</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">expected_exception</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">assert</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">actual_exception</span><span class="o">.</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">expected_message</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then this will work:</p>
+
+<figure class='code'><figcaption><span>test/my_test.exs</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">MyMacro</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  defmacro</span> <span class="n">boom</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    raise</span> <span class="s2">&quot;boom at compile time&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">defmodule</span> <span class="no">MyTest</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="kn">use</span> <span class="no">ExUnit</span><span class="o">.</span><span class="no">Case</span>
+</span><span class='line'>  <span class="kn">import</span> <span class="no">CompileTimeAssertions</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">test</span> <span class="s2">&quot;my test&quot;</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="n">assert_compile_time_raise</span> <span class="no">RuntimeError</span><span class="p">,</span> <span class="s2">&quot;boom at compile time&quot;</span><span class="p">,</span> <span class="k">fn</span> <span class="o">-&gt;</span>
+</span><span class='line'>      <span class="kn">import</span> <span class="no">MyMacro</span>
+</span><span class='line'>      <span class="n">boom</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We use a macro so that our code, too, runs at compile time. We wrap around the code that raises. When it does, we rescue it. Then we generate test assertions to execute later, at runtime.</p>
+
+<p>If the code does not in fact raise, the error will be something like:</p>
+
+<pre><code>Assertion with == failed
+code: CompileTimeAssertions.DidNotRaise == RuntimeError
+lhs:  CompileTimeAssertions.DidNotRaise
+rhs:  RuntimeError
+</code></pre>
+
+<p>This is a fairly minimal and unpolished implementation that suited my needs. Please feel free to improve upon it, and write a comment if you do.</p>
+
+<p>If you want to see this in action, have a look at my <a href="https://github.com/henrik/fixme-elixir">FIXME for Elixir</a> library.</p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/2015/09/testing-callbacks-in-elixir">Testing callbacks in Elixir</a>
+        </p>
+      
+      
+        <p>
+          <strong>Older:</strong>
+          <a href="/2015/07/apple-watch-day-58">Apple Watch: day 58</a>
+        </p>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/">
+      <img src="/images/custom/pug_1x.png" srcset="/images/custom/pug_2x.png 2x, /images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/">一根札记</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  <a href="http://johannaost.com/813-the-pug-automatic">Pug art</a>
+  by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

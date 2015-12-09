@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>How to "expect(…).to" in Elixir - 一根札记</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.haydenwei.com//2015/10/how-to-expect-to-in-elixir">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="" rel="alternate" title="一根札记" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/2015/10/how-to-expect-to-in-elixir">How to "expect(…).to" in Elixir</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-10-10T02:40:00+08:00" pubdate data-updated="true">October 10, 2015 at 02:40 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/tag/elixir/'>Elixir</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>When I first came across <a href="https://github.com/antonmi/espec">ESpec</a>, I was perplexed by syntax like</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">pet</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That doesn&#8217;t look like Elixir!</p>
+
+<p>It is in fact a controversial feature of Erlang, that may be removed in future versions of Elixir. So you probably shouldn&#8217;t use it, but it can still be interesting to know how it works.</p>
+
+<p>ESpec&#8217;s <code>expect</code> function returns a tuple like <code>{Expect, pet}</code>, containing a module name and the argument. So we effectively have</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">pet</span><span class="p">}</span><span class="o">.</span><span class="n">to</span> <span class="n">be</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This, in turn, is interpreted as an <code>Expect.to</code> function call, with the tuple itself as the last argument:</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="no">Expect</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">be</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">),</span> <span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">pet</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This applies to any number of arguments. If we had done</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">}</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>then it would be interpreted as</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="no">Expect</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and so on.</p>
+
+<h2>How it all fits together</h2>
+
+<p>This is how you might implement a minimal version of <code>expect(…).to</code>:</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">Expect</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  def</span> <span class="n">to</span><span class="p">({</span><span class="ss">:be</span><span class="p">,</span> <span class="n">value</span><span class="p">},</span> <span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">value</span><span class="p">})</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="no">IO</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="s2">&quot;Hooray, they&#39;re both &#39;</span><span class="si">#{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;!&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">to</span><span class="p">({</span><span class="ss">:be</span><span class="p">,</span> <span class="n">expected</span><span class="p">},</span> <span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">actual</span><span class="p">})</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="no">IO</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="s2">&quot;Nay! Expected &#39;</span><span class="si">#{</span><span class="n">expected</span><span class="si">}</span><span class="s2">&#39; but got &#39;</span><span class="si">#{</span><span class="n">actual</span><span class="si">}</span><span class="s2">&#39; :(&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">defmodule</span> <span class="no">Example</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  def</span> <span class="n">run</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="n">expect</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be</span><span class="p">(</span><span class="s2">&quot;Dog&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">defp</span> <span class="n">expect</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">actual</span><span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">defp</span> <span class="n">be</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="p">{</span><span class="ss">:be</span><span class="p">,</span> <span class="n">expected</span><span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Example</span><span class="o">.</span><span class="n">run</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Output:</p>
+
+<pre><code>Hooray, they're both 'Cat'!
+Nay! Expected 'Dog' but got 'Cat' :(
+</code></pre>
+
+<p>If you want another example of how this might be used, see <a href="https://gist.github.com/henrik/bff879a97f7df44a8830">my <code>ExMachina.with</code> sketch</a>.</p>
+
+<h2>What is this syntax?</h2>
+
+<p>This is Erlang <a href="http://stackoverflow.com/questions/16960745/what-is-a-tuple-module-in-erlang">tuple modules</a>.</p>
+
+<p>They are <a href="http://stackoverflow.com/questions/31954796/why-erlang-tuple-module-is-controversial">controversial</a> in Erlang and Elixir both, and José Valim <a href="https://github.com/elixir-lang/elixir/issues/3254">wants them gone in Elixir 2.0</a>. Problems include hard-to-read stacktraces, slower dispatch, and that they can encourage writing code in an object-oriented style, with &#8220;methods&#8221; on &#8220;instances&#8221;.</p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/2015/10/controlling-your-mac-with-a-flic">Controlling your Mac with a Flic</a>
+        </p>
+      
+      
+        <p>
+          <strong>Older:</strong>
+          <a href="/2015/09/testing-callbacks-in-elixir">Testing callbacks in Elixir</a>
+        </p>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/">
+      <img src="/images/custom/pug_1x.png" srcset="/images/custom/pug_2x.png 2x, /images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/">一根札记</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  <a href="http://johannaost.com/813-the-pug-automatic">Pug art</a>
+  by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title><![CDATA[一根札记]]></title>
-  <link href="http://www.haydenwei.com/atom.xml" rel="self"/>
-  <link href="http://www.haydenwei.com/"/>
-  <updated>2015-12-09T08:14:44+08:00</updated>
-  <id>http://www.haydenwei.com/</id>
+  <link href="http://haydenwei.com/atom.xml" rel="self"/>
+  <link href="http://haydenwei.com/"/>
+  <updated>2015-12-09T08:36:47+08:00</updated>
+  <id>http://haydenwei.com/</id>
   <author>
     <name><![CDATA[Hayden Wei]]></name>
     <email><![CDATA[your-email@domain.com]]></email>
@@ -19,9 +19,9 @@
 
 
 <title type="html"><![CDATA[Welcome to Jekyll!]]></title>
-<link href="http://www.haydenwei.com/2015/12/welcome-to-jekyll"/>
+<link href="http://haydenwei.com/posts/2015/12/welcome-to-jekyll"/>
 <updated>2015-12-08T10:20:49+08:00</updated>
-<id>http://www.haydenwei.com/2015/12/welcome-to-jekyll</id>
+<id>http://haydenwei.com/posts/2015/12/welcome-to-jekyll</id>
 
       <content type="html"><![CDATA[<p>You’ll find this post in your <code>_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code>jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
 
@@ -49,9 +49,9 @@ print_hi(&#39;Tom&#39;)
 
 
 <title type="html"><![CDATA[Elixir block keywords]]></title>
-<link href="http://www.haydenwei.com/2015/12/elixir-block-keywords"/>
+<link href="http://haydenwei.com/posts/2015/12/elixir-block-keywords"/>
 <updated>2015-12-03T22:25:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/12/elixir-block-keywords</id>
+<id>http://haydenwei.com/posts/2015/12/elixir-block-keywords</id>
 
       <content type="html"><![CDATA[<p>Exploring Elixir, I tried this:</p>
 
@@ -161,9 +161,9 @@ print_hi(&#39;Tom&#39;)
 
 
 <title type="html"><![CDATA[Unforgettable attributes]]></title>
-<link href="http://www.haydenwei.com/2015/11/unforgettable-attributes"/>
+<link href="http://haydenwei.com/posts/2015/11/unforgettable-attributes"/>
 <updated>2015-11-14T08:55:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/11/unforgettable-attributes</id>
+<id>http://haydenwei.com/posts/2015/11/unforgettable-attributes</id>
 
       <content type="html"><![CDATA[<p><em>This blog post describes a design pattern for ensuring you consider every attribute in certain situations. I&#8217;ll use Ruby on Rails in the examples, but the general pattern should apply to any language or framework.</em></p>
 
@@ -294,9 +294,9 @@ print_hi(&#39;Tom&#39;)
 
 
 <title type="html"><![CDATA[The emergent elegance of Elixir scoping]]></title>
-<link href="http://www.haydenwei.com/2015/11/elixir-scoping"/>
+<link href="http://haydenwei.com/posts/2015/11/elixir-scoping"/>
 <updated>2015-11-07T00:50:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/11/elixir-scoping</id>
+<id>http://haydenwei.com/posts/2015/11/elixir-scoping</id>
 
       <content type="html"><![CDATA[<p>I&#8217;ve been struck by the emergent elegance of <a href="http://elixir-lang.readthedocs.org/en/latest/technical/scoping.html">Elixir&#8217;s scoping rules</a>.</p>
 
@@ -464,9 +464,9 @@ print_hi(&#39;Tom&#39;)
 
 
 <title type="html"><![CDATA[Controlling your Mac with a Flic]]></title>
-<link href="http://www.haydenwei.com/2015/10/controlling-your-mac-with-a-flic"/>
+<link href="http://haydenwei.com/posts/2015/10/controlling-your-mac-with-a-flic"/>
 <updated>2015-10-15T20:15:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/10/controlling-your-mac-with-a-flic</id>
+<id>http://haydenwei.com/posts/2015/10/controlling-your-mac-with-a-flic</id>
 
       <content type="html"><![CDATA[<p>I just got the <a href="https://flic.io?r=98459f">Flic</a> (referral link) from <a href="https://www.indiegogo.com/projects/flic-the-wireless-smart-button#/">an Indiegogo campaign</a> I helped fund almost a year ago.</p>
 
@@ -579,9 +579,9 @@ print_hi(&#39;Tom&#39;)
 
 
 <title type="html"><![CDATA[How to "expect(…).to" in Elixir]]></title>
-<link href="http://www.haydenwei.com/2015/10/how-to-expect-to-in-elixir"/>
+<link href="http://haydenwei.com/posts/2015/10/how-to-expect-to-in-elixir"/>
 <updated>2015-10-10T02:40:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/10/how-to-expect-to-in-elixir</id>
+<id>http://haydenwei.com/posts/2015/10/how-to-expect-to-in-elixir</id>
 
       <content type="html"><![CDATA[<p>When I first came across <a href="https://github.com/antonmi/espec">ESpec</a>, I was perplexed by syntax like</p>
 
@@ -675,9 +675,9 @@ Nay! Expected 'Dog' but got 'Cat' :(
 
 
 <title type="html"><![CDATA[Testing callbacks in Elixir]]></title>
-<link href="http://www.haydenwei.com/2015/09/testing-callbacks-in-elixir"/>
+<link href="http://haydenwei.com/posts/2015/09/testing-callbacks-in-elixir"/>
 <updated>2015-09-20T11:15:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/09/testing-callbacks-in-elixir</id>
+<id>http://haydenwei.com/posts/2015/09/testing-callbacks-in-elixir</id>
 
       <content type="html"><![CDATA[<p>Say you have this code:</p>
 
@@ -766,9 +766,9 @@ Nay! Expected 'Dog' but got 'Cat' :(
 
 
 <title type="html"><![CDATA[Testing compile-time exceptions in Elixir]]></title>
-<link href="http://www.haydenwei.com/2015/09/testing-compile-time-exceptions-in-elixir"/>
+<link href="http://haydenwei.com/posts/2015/09/testing-compile-time-exceptions-in-elixir"/>
 <updated>2015-09-05T12:12:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/09/testing-compile-time-exceptions-in-elixir</id>
+<id>http://haydenwei.com/posts/2015/09/testing-compile-time-exceptions-in-elixir</id>
 
       <content type="html"><![CDATA[<p>You can usually test exceptions this way in Elixir:</p>
 
@@ -879,17 +879,17 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[Apple Watch: day 58]]></title>
-<link href="http://www.haydenwei.com/2015/07/apple-watch-day-58"/>
+<link href="http://haydenwei.com/posts/2015/07/apple-watch-day-58"/>
 <updated>2015-07-19T19:55:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/07/apple-watch-day-58</id>
+<id>http://haydenwei.com/posts/2015/07/apple-watch-day-58</id>
 
-      <content type="html"><![CDATA[<p>I <a href="http://www.haydenwei.com/2015/05/apple-watch-day-2/">blogged on day 2</a> of owning the watch. Now I&#8217;ve had my black 38 mm Apple Watch Sport for about two months. Here are some random reflections:</p>
+      <content type="html"><![CDATA[<p>I <a href="http://haydenwei.com/2015/05/apple-watch-day-2/">blogged on day 2</a> of owning the watch. Now I&#8217;ve had my black 38 mm Apple Watch Sport for about two months. Here are some random reflections:</p>
 
 <h2>Leaving the phone behind</h2>
 
 <p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch2/ping.png" alt="Screenshot: Pinging iPhone" /></p>
 
-<p>Since I&#8217;ve really enjoyed <a href="http://www.haydenwei.com/2015/03/the-ten-thousand-steps/">counting steps with the Fitbit app</a>, and <a href="http://www.haydenwei.com/2015/05/the-apple-watch-is-not-a-fitbit-wristband/">it doesn&#8217;t work with the watch</a>, I used to keep the phone in my pocket at all times. But for the last few weeks, I&#8217;ve given up on that and tried instead leaving it on my desk, or the bedside table, or the treadmill.</p>
+<p>Since I&#8217;ve really enjoyed <a href="http://haydenwei.com/2015/03/the-ten-thousand-steps/">counting steps with the Fitbit app</a>, and <a href="http://haydenwei.com/2015/05/the-apple-watch-is-not-a-fitbit-wristband/">it doesn&#8217;t work with the watch</a>, I used to keep the phone in my pocket at all times. But for the last few weeks, I&#8217;ve given up on that and tried instead leaving it on my desk, or the bedside table, or the treadmill.</p>
 
 <p>It&#8217;s quite liberating. It&#8217;s a small thing (as are all the benefits of the watch), but I love being able to walk around the office without my phone, and still being confident the watch will let me know if I get a call or a message.</p>
 
@@ -927,7 +927,7 @@ rhs:  RuntimeError
 
 <p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch2/zone.png" alt="Screenshot: time zones" /></p>
 
-<p>I got the watch right before heading to <a href="http://www.haydenwei.com/2015/06/socrates-uk-2015/">the SoCraTes conference</a> in England. (I live in Sweden.)</p>
+<p>I got the watch right before heading to <a href="http://haydenwei.com/2015/06/socrates-uk-2015/">the SoCraTes conference</a> in England. (I live in Sweden.)</p>
 
 <p>Time-zone wise, the watch is good and bad. It&#8217;s great that the time zone changes automatically when you arrive. And you can use &#8220;complications&#8221; to show another time zone next to the current one.</p>
 
@@ -949,7 +949,7 @@ rhs:  RuntimeError
 
 <h2>Battery life is not a problem</h2>
 
-<p>In <a href="http://www.haydenwei.com/2015/05/apple-watch-day-2/">my previous post</a>, I was worried about battery life.</p>
+<p>In <a href="http://haydenwei.com/2015/05/apple-watch-day-2/">my previous post</a>, I was worried about battery life.</p>
 
 <p>That hasn&#8217;t been an issue. I think maybe battery usage was higher in the first few days for some reason.</p>
 
@@ -1013,9 +1013,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[Turning off responsive]]></title>
-<link href="http://www.haydenwei.com/2015/07/turning-off-responsive"/>
+<link href="http://haydenwei.com/posts/2015/07/turning-off-responsive"/>
 <updated>2015-07-08T23:35:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/07/turning-off-responsive</id>
+<id>http://haydenwei.com/posts/2015/07/turning-off-responsive</id>
 
       <content type="html"><![CDATA[<p>We made <a href="https://auctionet.com">Auctionet.com</a> responsive, and then some customers wanted the old site back. Turns out they liked the overview you get with a scaled-down desktop site.</p>
 
@@ -1060,9 +1060,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[Pair programming is not a substitute for code review]]></title>
-<link href="http://www.haydenwei.com/2015/06/pair-programming-is-not-a-substitute-for-code-review"/>
+<link href="http://haydenwei.com/posts/2015/06/pair-programming-is-not-a-substitute-for-code-review"/>
 <updated>2015-06-20T09:20:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/06/pair-programming-is-not-a-substitute-for-code-review</id>
+<id>http://haydenwei.com/posts/2015/06/pair-programming-is-not-a-substitute-for-code-review</id>
 
       <content type="html"><![CDATA[<p>I think code review adds significant value, even when the code was produced by pair programming.</p>
 
@@ -1072,7 +1072,7 @@ rhs:  RuntimeError
 
 <p>A reviewer outside the pair is a proxy for the future coders who will have to make sense of the code. The reviewer, like the future coders, doesn&#8217;t have the benefit of having just written it. If something is unclear or implicit, the person who just wrote the code is likely to fill in the blanks from their internalized understanding of the problem and solution. The reviewer is much more likely to see these gaps.</p>
 
-<p>If the code review happens <a href="http://www.haydenwei.com/2014/02/code-review/">soon after the code was written</a>, the authors can be consulted, to make their understanding explicit before it inevitably fades from memory.</p>
+<p>If the code review happens <a href="http://haydenwei.com/2014/02/code-review/">soon after the code was written</a>, the authors can be consulted, to make their understanding explicit before it inevitably fades from memory.</p>
 
 <p>Once it fades, the original authors of the code may find that the reviewer was their proxy, too.</p>
 ]]></content>
@@ -1085,9 +1085,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[SoCraTes UK 2015]]></title>
-<link href="http://www.haydenwei.com/2015/06/socrates-uk-2015"/>
+<link href="http://haydenwei.com/posts/2015/06/socrates-uk-2015"/>
 <updated>2015-06-09T22:50:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/06/socrates-uk-2015</id>
+<id>http://haydenwei.com/posts/2015/06/socrates-uk-2015</id>
 
       <content type="html"><![CDATA[<p>I&#8217;m just back from four days at the <a href="http://socratesuk.org/">SoCraTes UK</a> <a href="http://en.wikipedia.org/wiki/Unconference">unconference</a> with friends-slash-coworkers <a href="https://twitter.com/tskogberg">Tomas</a> and <a href="https://twitter.com/ariassp">Victor</a>, and I loved it.</p>
 
@@ -1102,7 +1102,7 @@ rhs:  RuntimeError
 <blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/SoCraTesUK?src=hash">#SoCraTesUK</a> evening run with <a href="https://twitter.com/rosshuggett">@rosshuggett</a> and <a href="https://twitter.com/tskogberg">@tskogberg</a>. Sunset, deer, beautiful old country church. <a href="http://t.co/J2b71Mljxc">pic.twitter.com/J2b71Mljxc</a></p>&mdash; Henrik Nyh (@henrik) <a href="https://twitter.com/henrik/status/606927660602818561">June 5, 2015</a></blockquote>
 
 
-<script async src="http://www.haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
 <br>
@@ -1137,7 +1137,7 @@ rhs:  RuntimeError
 <blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr">Best session name <a href="https://twitter.com/hashtag/socratesuk?src=hash">#socratesuk</a> <a href="http://t.co/aO13Kwy7Zg">pic.twitter.com/aO13Kwy7Zg</a></p>&mdash; andy mell (@afmell) <a href="https://twitter.com/afmell/status/607168120801923072">June 6, 2015</a></blockquote>
 
 
-<script async src="http://www.haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
 <br>
@@ -1150,7 +1150,7 @@ rhs:  RuntimeError
 <blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/SoCraTesUK?src=hash">#SoCraTesUK</a> Still hiking with both facilitators but on our way :) Whatever happens is the only thing that could have… <a href="http://t.co/P5HhA3UTgq">pic.twitter.com/P5HhA3UTgq</a></p>&mdash; Henrik Nyh (@henrik) <a href="https://twitter.com/henrik/status/607215112546603008">June 6, 2015</a></blockquote>
 
 
-<script async src="http://www.haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
 <br>
@@ -1161,7 +1161,7 @@ rhs:  RuntimeError
 <blockquote class="twitter-tweet" data-conversation="none" lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/henrik">@henrik</a> <a href="https://twitter.com/rachelcdavies">@rachelcdavies</a> <a href="https://twitter.com/tooky">@tooky</a> no need to rush - we are entertaining ourselves with lightning talks :) <a href="https://twitter.com/hashtag/socratesuk?src=hash">#socratesuk</a></p>&mdash; Chris Hug (@c089) <a href="https://twitter.com/c089/status/607222329572270080">June 6, 2015</a></blockquote>
 
 
-<script async src="http://www.haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
 
@@ -1169,7 +1169,7 @@ rhs:  RuntimeError
 <blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr">Lmao if your facilitators lost track of time on their afternoon hike and your audience can&#39;t self organize new programme. <a href="https://twitter.com/hashtag/unconferences?src=hash">#unconferences</a> ftw</p>&mdash; Chris Hug (@c089) <a href="https://twitter.com/c089/status/607229137254772736">June 6, 2015</a></blockquote>
 
 
-<script async src="http://www.haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
 <br>
@@ -1194,9 +1194,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[Apple Watch: day 2]]></title>
-<link href="http://www.haydenwei.com/2015/05/apple-watch-day-2"/>
+<link href="http://haydenwei.com/posts/2015/05/apple-watch-day-2"/>
 <updated>2015-05-22T22:30:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/05/apple-watch-day-2</id>
+<id>http://haydenwei.com/posts/2015/05/apple-watch-day-2</id>
 
       <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/apple_watch.jpg" alt="" /></p>
 
@@ -1324,7 +1324,7 @@ rhs:  RuntimeError
 
 <h3>Can&#8217;t send step counts to Fitbit</h3>
 
-<p>I <a href="http://www.haydenwei.com/2015/05/the-apple-watch-is-not-a-fitbit-wristband/">blogged about this</a> yesterday.</p>
+<p>I <a href="http://haydenwei.com/2015/05/the-apple-watch-is-not-a-fitbit-wristband/">blogged about this</a> yesterday.</p>
 
 <h3>Taptic feedback could be stronger</h3>
 
@@ -1355,9 +1355,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[The Apple Watch is not a Fitbit wristband]]></title>
-<link href="http://www.haydenwei.com/2015/05/the-apple-watch-is-not-a-fitbit-wristband"/>
+<link href="http://haydenwei.com/posts/2015/05/the-apple-watch-is-not-a-fitbit-wristband"/>
 <updated>2015-05-21T07:05:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/05/the-apple-watch-is-not-a-fitbit-wristband</id>
+<id>http://haydenwei.com/posts/2015/05/the-apple-watch-is-not-a-fitbit-wristband</id>
 
       <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch-pedometer.jpg" alt="" /></p>
 
@@ -1392,9 +1392,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[Make sharing explicit]]></title>
-<link href="http://www.haydenwei.com/2015/05/make-sharing-explicit"/>
+<link href="http://haydenwei.com/posts/2015/05/make-sharing-explicit"/>
 <updated>2015-05-12T20:50:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/05/make-sharing-explicit</id>
+<id>http://haydenwei.com/posts/2015/05/make-sharing-explicit</id>
 
       <content type="html"><![CDATA[<p>When you reuse something, like a Ruby on Rails partial or i18n translation string, it&#8217;s tempting to just reference it by its current name.</p>
 
@@ -1425,9 +1425,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[Wrap instance variables passed to layouts]]></title>
-<link href="http://www.haydenwei.com/2015/04/wrap-ivars"/>
+<link href="http://haydenwei.com/posts/2015/04/wrap-ivars"/>
 <updated>2015-04-29T22:50:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/04/wrap-ivars</id>
+<id>http://haydenwei.com/posts/2015/04/wrap-ivars</id>
 
       <content type="html"><![CDATA[<p>If your layout template shows a breadcrumb but you want to hide it on some pages, this is a reasonable way to do it:</p>
 
@@ -1476,9 +1476,9 @@ rhs:  RuntimeError
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>(If you want to learn more about <code>helper_method \</code>, see <a href="http://www.haydenwei.com/2015/01/backslashy-ruby/">&#8220;Backslashy Ruby&#8221;</a>.)</p>
+<p>(If you want to learn more about <code>helper_method \</code>, see <a href="http://haydenwei.com/2015/01/backslashy-ruby/">&#8220;Backslashy Ruby&#8221;</a>.)</p>
 
-<p>I like this pattern because I&#8217;ve found instance variables in views to be bug prone and a bit difficult to maintain. I <a href="http://www.haydenwei.com/2013/05/locals/">don&#8217;t</a> use them when rendering action views, either.</p>
+<p>I like this pattern because I&#8217;ve found instance variables in views to be bug prone and a bit difficult to maintain. I <a href="http://haydenwei.com/2013/05/locals/">don&#8217;t</a> use them when rendering action views, either.</p>
 
 <p>If an instance variable is not set, it defaults to <code>nil</code>. So if I set one in a controller over here, and read it in a view over there, that&#8217;s two places that need to write the variable in exactly the same way, and if they don&#8217;t, you might get silent bugs.</p>
 
@@ -1497,9 +1497,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[rails_config的正确使用姿势]]></title>
-<link href="http://www.haydenwei.com/2015/04/rails-config-usage"/>
+<link href="http://haydenwei.com/posts/2015/04/rails-config-usage"/>
 <updated>2015-04-26T00:00:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/04/rails-config-usage</id>
+<id>http://haydenwei.com/posts/2015/04/rails-config-usage</id>
 
       <content type="html"><![CDATA[<h3>前言</h3>
 
@@ -1703,9 +1703,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[理解ActiveRecord::Relation.where等方法的查找链]]></title>
-<link href="http://www.haydenwei.com/2015/03/activerecord-relation-methods-lookup-chain"/>
+<link href="http://haydenwei.com/posts/2015/03/activerecord-relation-methods-lookup-chain"/>
 <updated>2015-03-20T00:00:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/03/activerecord-relation-methods-lookup-chain</id>
+<id>http://haydenwei.com/posts/2015/03/activerecord-relation-methods-lookup-chain</id>
 
       <content type="html"><![CDATA[<p>阅读完本篇文章，你将了解到：</p>
 
@@ -1875,9 +1875,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[Ruby's String#[/regexp/]]]></title>
-<link href="http://www.haydenwei.com/2015/03/rubys-string-brackets-regexp"/>
+<link href="http://haydenwei.com/posts/2015/03/rubys-string-brackets-regexp"/>
 <updated>2015-03-07T17:15:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/03/rubys-string-brackets-regexp</id>
+<id>http://haydenwei.com/posts/2015/03/rubys-string-brackets-regexp</id>
 
       <content type="html"><![CDATA[<p>One of my favorite Ruby methods is <a href="http://ruby-doc.org/core-2.2.0/String.html#method-i-5B-5D"><code>String#[]</code></a> when given a regular expression:</p>
 
@@ -1903,9 +1903,9 @@ rhs:  RuntimeError
 
 
 <title type="html"><![CDATA[The 10,000 steps]]></title>
-<link href="http://www.haydenwei.com/2015/03/the-ten-thousand-steps"/>
+<link href="http://haydenwei.com/posts/2015/03/the-ten-thousand-steps"/>
 <updated>2015-03-06T23:30:00+08:00</updated>
-<id>http://www.haydenwei.com/2015/03/the-ten-thousand-steps</id>
+<id>http://haydenwei.com/posts/2015/03/the-ten-thousand-steps</id>
 
       <content type="html"><![CDATA[<p>For a month now, I&#8217;ve counted my steps using <a href="http://en.wikipedia.org/wiki/Apple_M7">the pedometer</a> built into my iPhone 6, with a daily goal of 10,000.</p>
 

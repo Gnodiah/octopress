@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: http://www.haydenwei.com/sitemap.xml
+Sitemap: http://haydenwei.com/sitemap.xml

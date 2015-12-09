@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Elixir block keywords - 一根札记</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.haydenwei.com//posts/2015/12/elixir-block-keywords">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="" rel="alternate" title="一根札记" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/posts/2015/12/elixir-block-keywords">Elixir block keywords</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-12-03T22:25:00+08:00" pubdate data-updated="true">December  3, 2015 at 22:25 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/tag/elixir/'>Elixir</a>, <a class='category' href='/tag/macros/'>Macros</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Exploring Elixir, I tried this:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">Example</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  def</span> <span class="n">foobar</span><span class="p">(</span><span class="k">do</span><span class="p">:</span> <span class="n">_</span><span class="p">,</span> <span class="k">else</span><span class="p">:</span> <span class="n">_</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Example</span><span class="o">.</span><span class="n">foobar</span> <span class="k">do</span>
+</span><span class='line'><span class="k"> </span><span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;true&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'> <span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;false&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And it worked. Well, in a sense. The code runs, but it outputs <em>both</em> &#8220;true&#8221; and &#8220;false&#8221;.</p>
+
+<p>What&#8217;s going on here? Let&#8217;s try another experiment:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">IO</span><span class="o">.</span><span class="n">inspect</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="s2">&quot;true&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="s2">&quot;false&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># =&gt; [do: &quot;true&quot;, else: &quot;false&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://groups.google.com/forum/#!topic/elixir-lang-talk/jVqCeLcaUV0/discussion">Turns out</a> this is language-level syntactic sugar (e.g. <a href="https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/src/elixir_tokenizer.erl#L1050-L1053">1</a>, <a href="https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/src/elixir_exp_clauses.erl">2</a>, <a href="https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/lib/macro.ex#L652">3</a>) that desugars to a plain keyword list. And that explains why the code above would output both &#8220;true&#8221; and &#8220;false&#8221; – it&#8217;s equivalent to</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">Example</span><span class="o">.</span><span class="n">foobar</span><span class="p">([</span><span class="k">do</span><span class="p">:</span> <span class="no">IO</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">),</span> <span class="k">else</span><span class="p">:</span> <span class="no">IO</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="s2">&quot;false&quot;</span><span class="p">)])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The keyword list is evaluated before it&#8217;s even passed to the function, like any keyword list would be. That includes evaluating the <code>IO.puts</code> function calls.</p>
+
+<p>Now that we have the full list of block keywords (from the Elixir source) we can go completely crazy:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">IO</span><span class="o">.</span><span class="n">inspect</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="s2">&quot;a&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="s2">&quot;b&quot;</span>
+</span><span class='line'><span class="k">catch</span>
+</span><span class='line'>  <span class="s2">&quot;c&quot;</span>
+</span><span class='line'><span class="k">rescue</span>
+</span><span class='line'>  <span class="s2">&quot;d&quot;</span>
+</span><span class='line'><span class="k">after</span>
+</span><span class='line'>  <span class="s2">&quot;e&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># =&gt; [do: &quot;a&quot;, else: &quot;b&quot;, catch: &quot;c&quot;, rescue: &quot;d&quot;, after: &quot;e&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So these are all available to your own functions, like in our <code>Example.foobar</code> example. But what use are they if every branch is evaluated all the time?</p>
+
+<p>Macros to the rescue.</p>
+
+<p><a href="https://xkcd.com/208/"><img src="https://s3.amazonaws.com/f.cl.ly/items/1a201F0e150Y3E1s2X2f/everybody_stand_back.png" alt="" class="center no-box"></a></p>
+
+<p><a href="http://elixir-lang.org/getting-started/meta/macros.html">Elixir macros</a> get access to the syntax tree of a piece of code, without the code being evaluated first. They can then slice and dice the code and return another syntax tree, that <em>will</em> be evaluated.</p>
+
+<p>Elixir&#8217;s own <code>if/do/else</code> is <a href="https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/lib/kernel.ex#L2321-L2341">just a macro</a> using these keyword lists.</p>
+
+<p>Just for fun, we could make a macro that randomly executes one of two branches, and then always runs the <code>after</code> branch:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">MyMacro</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  defmacro</span> <span class="n">pick</span><span class="p">([</span><span class="k">do</span><span class="p">:</span> <span class="n">option1</span><span class="p">,</span> <span class="k">else</span><span class="p">:</span> <span class="n">option2</span><span class="p">,</span> <span class="k">after</span><span class="p">:</span> <span class="n">after_block</span><span class="p">])</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="ss">:random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="ss">:os</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">option</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">random</span><span class="p">([</span><span class="n">option1</span><span class="p">,</span> <span class="n">option2</span><span class="p">])</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">option</span><span class="p">,</span> <span class="n">after_block</span><span class="p">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">defmodule</span> <span class="no">Example</span> <span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="kn">require</span> <span class="no">MyMacro</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">run</span> <span class="k">do</span>
+</span><span class='line'><span class="k">    </span><span class="no">MyMacro</span><span class="o">.</span><span class="n">pick</span> <span class="k">do</span>
+</span><span class='line'><span class="k">      </span><span class="no">IO</span><span class="o">.</span><span class="n">write</span> <span class="s2">&quot;dog&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="no">IO</span><span class="o">.</span><span class="n">write</span> <span class="s2">&quot;cat&quot;</span>
+</span><span class='line'>    <span class="k">after</span>
+</span><span class='line'>      <span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Example</span><span class="o">.</span><span class="n">run</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Outputs either of these:</span>
+</span><span class='line'><span class="c1"># dog!</span>
+</span><span class='line'><span class="c1"># cat!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I haven&#8217;t used this myself, other than in silly experiments. I can picture it being handy for some DSLs, though. If you apply this to anything interesting, please do let me know in a comment!</p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/posts/2015/12/welcome-to-jekyll">Welcome to Jekyll!</a>
+        </p>
+      
+      
+        <p>
+          <strong>Older:</strong>
+          <a href="/posts/2015/11/unforgettable-attributes">Unforgettable attributes</a>
+        </p>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/">
+      <img src="/images/custom/pug_1x.png" srcset="/images/custom/pug_2x.png 2x, /images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/">一根札记</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  <a href="http://johannaost.com/813-the-pug-automatic">Pug art</a>
+  by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

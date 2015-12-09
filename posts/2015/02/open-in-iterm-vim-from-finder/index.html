@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Open in iTerm Vim from Finder - 一根札记</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.haydenwei.com//posts/2015/02/open-in-iterm-vim-from-finder">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="" rel="alternate" title="一根札记" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/posts/2015/02/open-in-iterm-vim-from-finder">Open in iTerm Vim from Finder</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-02-01T11:25:00+08:00" pubdate data-updated="true">February  1, 2015 at 11:25 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/tag/applescript/'>AppleScript</a>, <a class='category' href='/tag/os-x/'>OS X</a>, <a class='category' href='/tag/vim/'>Vim</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>When I double-click a code file in Finder, I want it to open in Vim in a terminal. Not in MacVim. Not in some lesser editor.</p>
+
+<p>There&#8217;s <a href="http://dustractor.github.io/vimini/">plenty</a> of <a href="http://superuser.com/questions/139352/mac-os-x-how-to-open-vim-in-terminal-when-double-click-on-a-file">prior work</a>, but nothing worked well for me on OS X 10.10 Yosemite, so I rolled my own.</p>
+
+<p>The end result: double-clicking a file opens a new <a href="http://iterm2.com/">iTerm</a> window with the file opened in Vim.</p>
+
+<p>Since it <code>exec</code>s Vim (replaces the shell process), the window closes when you quit Vim. This also means you can&#8217;t <code>⌃Z</code> out of the Vim session. Think of it as an editor window, not a full-fledged terminal.</p>
+
+<h2>1. Get an <code>.app</code></h2>
+
+<p><a href="http://cl.ly/0H3X3L1G2t05">Download TerminalVim.app</a>, unzip it and stick the app in <code>/Applications</code>.</p>
+
+<p>Or make your own:</p>
+
+<ul>
+<li>Open Apple&#8217;s &#8220;Automator&#8221; app.</li>
+<li>If you get a file dialog, opt to create a &#8220;New Document&#8221;.</li>
+<li>Select the &#8220;Application&#8221; type.</li>
+<li>Search the action list for &#8220;Run AppleScript&#8221;, double-click that option.</li>
+<li>Change the script to this (hat tip to <a href="http://www.robpeck.com/2010/05/scripting-iterm-with-applescript/">Rob Peck</a>):</li>
+</ul>
+
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='applescript'><span class='line'><span class="k">on</span> <span class="nb">run</span> <span class="p">{</span><span class="nv">input</span><span class="p">,</span> <span class="nv">parameters</span><span class="p">}</span>
+</span><span class='line'>  <span class="k">set</span> <span class="nv">myPath</span> <span class="k">to</span> <span class="nv">POSIX</span> <span class="na">path</span> <span class="k">of</span> <span class="nv">input</span>
+</span><span class='line'>  <span class="k">set</span> <span class="nv">cmd</span> <span class="k">to</span> <span class="s2">&quot;vim &quot;</span> <span class="o">&amp;</span> <span class="no">quote</span> <span class="o">&amp;</span> <span class="nv">myPath</span> <span class="o">&amp;</span> <span class="no">quote</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">tell</span> <span class="nb">application</span> <span class="s2">&quot;iTerm&quot;</span>
+</span><span class='line'>      <span class="nb">activate</span>
+</span><span class='line'>      <span class="k">set</span> <span class="nv">myTerm</span> <span class="k">to</span> <span class="p">(</span><span class="nb">make</span> <span class="nb">new</span> <span class="nv">terminal</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">tell</span> <span class="nv">myTerm</span>
+</span><span class='line'>          <span class="k">set</span> <span class="nv">mySession</span> <span class="k">to</span> <span class="p">(</span><span class="nb">make</span> <span class="nb">new</span> <span class="nv">session</span> <span class="nb">at</span> <span class="nb">the</span> <span class="k">end</span> <span class="k">of</span> <span class="nv">sessions</span><span class="p">)</span>
+</span><span class='line'>          <span class="k">tell</span> <span class="nv">mySession</span> <span class="k">to</span> <span class="nv">exec</span> <span class="nv">command</span> <span class="nv">cmd</span>
+</span><span class='line'>      <span class="k">end</span> <span class="k">tell</span>
+</span><span class='line'>  <span class="k">end</span> <span class="k">tell</span>
+</span><span class='line'><span class="k">end</span> <span class="nb">run</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Save as <code>/Applications/TerminalVim.app</code>.</li>
+</ul>
+
+
+<h2>2. Tell Finder to use your app</h2>
+
+<ul>
+<li>In Finder, select some file you want to open in Vim, e.g. a <code>.rb</code> file.</li>
+<li>Hit <code>⌘I</code> to open the &#8220;Get Info&#8221; window.</li>
+<li>Under &#8220;Open with:&#8221;, choose &#8220;TerminalVim.app&#8221;. You may need to select &#8220;Other…&#8221; and then browse.</li>
+<li>Hit the &#8220;Change All…&#8221; button and confirm.</li>
+</ul>
+
+
+<p>Now all <code>.rb</code> files in Finder will open in Vim.</p>
+
+<h2>3. Profit</h2>
+
+<p>That&#8217;s it!</p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/posts/2015/02/clean-ios-8-screenshots">Take iOS 8 screenshots with a clean status bar</a>
+        </p>
+      
+      
+        <p>
+          <strong>Older:</strong>
+          <a href="/posts/2015/01/exception-class">When to define an exception class and when not to</a>
+        </p>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/">
+      <img src="/images/custom/pug_1x.png" srcset="/images/custom/pug_2x.png 2x, /images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/">一根札记</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  <a href="http://johannaost.com/813-the-pug-automatic">Pug art</a>
+  by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

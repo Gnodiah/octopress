@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The !!! operator - 一根札记</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.haydenwei.com//posts/2015/01/bangbangbang">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="" rel="alternate" title="一根札记" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/posts/2015/01/bangbangbang">The !!! operator</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-01-10T00:13:00+08:00" pubdate data-updated="true">January 10, 2015 at 00:13 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/tag/ruby/'>Ruby</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>A quick tip, based on a comment I wrote in <a href="http://parley.rubyrogues.com/t/operator-nicknames/704">the Ruby Rogues Parley &#8220;Operator nicknames&#8221; thread</a> (paid membership) a while back and just stumbled across again.</p>
+
+<p>I&#8217;m sure you&#8217;ve used <code>!</code> in Ruby – it means &#8220;not&#8221;: <code>!true  # =&gt; false</code></p>
+
+<p>You might have used <code>!!</code> to coerce a truthy or falsy value into a bona fide boolean: <code>!!nil  # =&gt; false</code></p>
+
+<p>I sometimes use <code>!!!</code>.</p>
+
+<p>It&#8217;s just three of the <code>!</code> operator in a row. It flips, flops and then flips back again, so it&#8217;s really the same as a single one: <code>!!!true  # =&gt; false</code></p>
+
+<p>In that forum thread, I called it the &#8220;temporarily reverse the value of this bool to try something out, but it should stand out enough that I don&#8217;t accidentally leave it in&#8221; operator. And that&#8217;s what I use it for.</p>
+
+<p>Even if you do accidentally leave it in, someone&#8217;s bound to spot it in review. You could even prevent committing it altogether by technical means (<a href="https://github.com/henrik/dotfiles/blob/master/git_template/hooks/pre-commit">1</a>, <a href="https://github.com/henrik/dotfiles/blob/master/git_template/hooks/pre-commit-keywords.rb">2</a>).</p>
+
+<p>Other name suggestions were &#8220;the mad hype operator&#8221; from <a href="http://crazymykl.herokuapp.com/">Mike McDonald</a> or &#8220;tri-not&#8221; (&#8220;the Yoda operator&#8221;) from <a href="http://cswebartisan.com/">Christian Schlensker</a>.</p>
+
+<p>By any name, it&#8217;s pretty sweet.</p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/posts/2015/01/multiple-return-conditionals">Express complex conditionals with multiple returns</a>
+        </p>
+      
+      
+        <p>
+          <strong>Older:</strong>
+          <a href="/posts/2015/01/backslashy-ruby">Backslashy Ruby</a>
+        </p>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/">
+      <img src="/images/custom/pug_1x.png" srcset="/images/custom/pug_2x.png 2x, /images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/">一根札记</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  <a href="http://johannaost.com/813-the-pug-automatic">Pug art</a>
+  by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

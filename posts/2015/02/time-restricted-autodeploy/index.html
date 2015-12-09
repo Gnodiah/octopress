@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Time-restricted autodeploy - 一根札记</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.haydenwei.com//posts/2015/02/time-restricted-autodeploy">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="" rel="alternate" title="一根札记" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/posts/2015/02/time-restricted-autodeploy">Time-restricted autodeploy</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-02-19T22:47:00+08:00" pubdate data-updated="true">February 19, 2015 at 22:47 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/tag/continuous-delivery/'>Continuous Delivery</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="http://dev.auctionet.com/">At work</a>, we had CI automatically deploy our projects when all tests pass.</p>
+
+<p>Except, that is, for our main site. It&#8217;s our biggest project, with the most complex deploy process, and the most uptime-sensitive.</p>
+
+<p>We worried that a quick commit in the evening or weekend might cause issues at a time when no one wanted to deal with them.</p>
+
+<p>But manually triggering deploys got old. People forgot, or didn&#8217;t want to be the one pulling the trigger in case something went wrong. We tried <a href="https://twitter.com/henrik/status/428157996913688578">rageguys</a> (one per 5 commits). We tried <a href="https://twitter.com/henrik/status/476982655393996800">suggesting a deployer based on commit counts</a>.</p>
+
+<h2>The benefits of autodeploy</h2>
+
+<p>We&#8217;re strong believers in <a href="http://en.wikipedia.org/wiki/Continuous_delivery">continuous delivery</a>, and continuous deployment is part and parcel of that. Changes should go into production quickly so we get feedback (including bugs and exceptions) as soon as we can. Without automation, deployment won&#8217;t be as continuous as it can be.</p>
+
+<p>Automatic deploys <em>are</em> scary. When you juggle servers, things can go wrong. But <a href="http://martinfowler.com/bliki/FrequencyReducesDifficulty.html">if it hurts, do it more often</a>. You&#8217;ll see the patterns, and you&#8217;ll fix it.</p>
+
+<h2>Office hours</h2>
+
+<p>As much as we like continuous delivery, we prefer it to keep office hours.</p>
+
+<p>We realized that we could turn on autodeploy <em>and</em> reduce the risk of after-hours issues by simply making it keep a schedule.</p>
+
+<p>When tests pass, we trigger another CI job to deploy staging. That job runs this bash script:</p>
+
+<figure class='code'><figcaption><span>script/ci/build/deploy_staging.sh</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='bash'><span class='line'><span class="c"># …deploy staging…</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">allow_autodeploy</span><span class="o">=</span><span class="sb">`</span><span class="nv">TZ</span><span class="o">=</span>CET ruby script/ci/support/is_autodeploy_allowed.rb<span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># …conditionally trigger a production deploy…</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that it specifies the time zone for the Ruby script (we&#8217;re on CET) in case the host machine is in another time zone.</p>
+
+<p>See <a href="https://gist.github.com/henrik/7f817afcc3c53f665d5d">the code of our <code>is_autodeploy_allowed.rb</code> and its test</a>.</p>
+
+<p>The <code>is_autodeploy_allowed.rb</code> script outputs <code>"true"</code> or <code>"false"</code> for the bash variable. That value is then used to determine whether it should trigger a production deploy. We also make provisions for manual deploys, allowing them at any time.</p>
+
+<p>The details of the deploy scripts and of setting up a CI chain are outside the scope of this post: I just want to give some idea of how you might integrate a time restriction into whatever you use now, or end up using. We happen to use <a href="http://jenkins-ci.org/">Jenkins</a> for this project. <a href="http://www.imdb.com/title/tt0073629/quotes?item=qt0437239">He&#8217;s okay!</a></p>
+
+<p>Our <code>is_autodeploy_allowed.rb</code> script allows autodeploys during weekdays from 8:30 (the earliest time someone is at the office) until lunch. Then from 13:00 until 18:00 (when most people leave).</p>
+
+<p>On Fridays, autodeploys stop at 16:30 per <a href="https://twitter.com/iamdevloper/status/450905958139834368">this diagram</a>.</p>
+
+<p>If CI doesn&#8217;t autodeploy, it will instead output the correct manual deployment command in our chat room, for copy-and-pasting.</p>
+
+<p>If you&#8217;ve been scared of autodeploys, maybe a time restriction can ease your fears.</p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/posts/2015/02/tests-lie-and-thats-ok">Tests lie and that's OK</a>
+        </p>
+      
+      
+        <p>
+          <strong>Older:</strong>
+          <a href="/posts/2015/02/clean-ios-8-screenshots">Take iOS 8 screenshots with a clean status bar</a>
+        </p>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/">
+      <img src="/images/custom/pug_1x.png" srcset="/images/custom/pug_2x.png 2x, /images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/">一根札记</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  <a href="http://johannaost.com/813-the-pug-automatic">Pug art</a>
+  by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

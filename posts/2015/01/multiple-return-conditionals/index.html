@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Express complex conditionals with multiple returns - 一根札记</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.haydenwei.com//posts/2015/01/multiple-return-conditionals">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="" rel="alternate" title="一根札记" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/posts/2015/01/multiple-return-conditionals">Express complex conditionals with multiple returns</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-01-12T21:55:00+08:00" pubdate data-updated="true">January 12, 2015 at 21:55 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/tag/ruby/'>Ruby</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&#8217;ve found multiple returns to be a good way of expressing long or complex conditionals.</p>
+
+<p>This typically applies to <a href="http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/#policy-objects">policy objects</a> or policy methods, e.g. code concerned with whether an action is possible.</p>
+
+<p>Today, for example, <a href="http://twitter.com/tskogberg">Tomas</a> and I came across a method like</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">changeable?</span>
+</span><span class='line'>  <span class="n">auction</span><span class="o">.</span><span class="n">buyer</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">auction</span><span class="o">.</span><span class="n">withdrawn?</span> <span class="o">&amp;&amp;</span> <span class="n">the_only_auction_on_its_invoices?</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our task called for adding a fourth condition.</p>
+
+<p>Instead of piling onto this long expression, we first refactored it to use multiple returns:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">changeable?</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="n">auction</span><span class="o">.</span><span class="n">buyer</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">auction</span><span class="o">.</span><span class="n">withdrawn?</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="n">the_only_auction_on_its_invoices?</span>
+</span><span class='line'>  <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I feel this reads better. It also makes for nicer diffs: adding, removing or changing a single condition affects a single line. It&#8217;s clearer where any raised exceptions come from. Debugging is easier.</p>
+
+<p>You might argue that multiple exit points are bad and should be avoided. But when the conditions are all bunched together like this, it&#8217;s just a compact conditional.</p>
+
+<p><a href="http://www.amazon.com/Refactoring-Improving-Design-Existing-Code/dp/0201485672?tag=delishlist-20"><em>Refactoring</em></a> by Martin Fowler and friends has this to say:</p>
+
+<blockquote><p>[…] one exit point is really not a useful rule. Clarity is the key principle: If the method is clearer with one exit point, use one exit point; otherwise don&#8217;t.</p></blockquote>
+
+<p>That book (as well as <a href="http://www.amazon.com/Refactoring-Edition-Addison-Wesley-Professional-Series/dp/0321984137?tag=delishlist-20"><em>Refactoring: Ruby Edition</em></a>) includes a <a href="http://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html">&#8220;Replace Nested Conditional with Guard Clauses&#8221;</a> refactoring, which is closely related to what I describe above.</p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/posts/2015/01/exception-class">When to define an exception class and when not to</a>
+        </p>
+      
+      
+        <p>
+          <strong>Older:</strong>
+          <a href="/posts/2015/01/bangbangbang">The !!! operator</a>
+        </p>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/">
+      <img src="/images/custom/pug_1x.png" srcset="/images/custom/pug_2x.png 2x, /images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/">一根札记</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  <a href="http://johannaost.com/813-the-pug-automatic">Pug art</a>
+  by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+%x(jekyll)
 %x(git checkout gh-pages)
 %x(cp -rf ./_site/posts/* .)
 %x(rm -rf ./_site/posts)

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title><![CDATA[一根札记]]></title>
+  <title><![CDATA[The Stick Talk]]></title>
   <link href="http://haydenwei.com/atom.xml" rel="self"/>
   <link href="http://haydenwei.com/"/>
-  <updated>2015-12-10T22:50:04+08:00</updated>
+  <updated>2015-12-10T23:19:16+08:00</updated>
   <id>http://haydenwei.com/</id>
   <author>
     <name><![CDATA[Hayden Wei]]></name>

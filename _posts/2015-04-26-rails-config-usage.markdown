@@ -78,7 +78,7 @@ solr:
 
 3、不同settings文件的key之间的关系是**合并关系**。且优先级关系为:
 
-``` ruby linenos:false
+``` sh linenos:false
 environments/#{Rails.env}.local.yml > settings/#{Rails.env}.local.yml > settings.local.yml
 > environments/#{Rails.env}.yml > settings/#{Rails.env}.yml > settings.yml
 ```

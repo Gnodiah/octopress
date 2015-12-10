@@ -12,21 +12,21 @@ duoshuo_thhead_key: 4
 
 阅读完本篇文章，你将了解到：
 
-* 类似Book.where(id: 1)这样的方法是如何执行的
-* ActiveRecord::Relation对象是什么
+* 类似 Book.where(id: 1) 这样的方法是如何执行的
+* ActiveRecord::Relation 对象是什么
 
 ### 理解where方法的查找链
 
-假设我们有一个名为Book的model:
+假设我们有一个名为 Book 的 model:
 
 ``` ruby
 class Book < ActiveRecord::Base
 end
 ```
 
-再假设我们要查询id为1的那本书，以 `where` 方法为例，那么我们的查询语句一般会这样写: `Book.where(id: 1)`；但在Book类中你并没有定义`where`方法，那么这句代码是怎样被执行的呢？让我们一起来探究一下。
+再假设我们要查询id为1的那本书，以 `where` 方法为例，那么我们的查询语句一般会这样写: `Book.where(id: 1)`；但在Book类中你并没有定义 `where` 方法，那么这句代码是怎样被执行的呢？让我们一起来探究一下。
 
-1、首先，Book类中没有定义where方法；但由于Book类继承自ActiveRecord::Base类，因此方法调用链会去尝试调用ActiveRecord::Base.where方法。
+1、首先，Book 类中没有定义 where 方法；但由于 Book 类继承自 ActiveRecord::Base 类，因此方法调用链会去尝试调用 ActiveRecord::Base.where 方法。
 
 2、通过查看ActiveRecord::Base类的源码可知，ActiveRecord::Base类也没有显式定义where方法；但ActiveRecord::Base类extend了ActiveRecord::Querying模块：
 
@@ -135,7 +135,7 @@ Book.where(id: 1)      #=> 返回包含id=1查询条件的Arel::Nodes::Equality�
 
 1、想象一下我们通常对ActiveRecord::Relation对象做些什么操作？比如上面得到的books对象，我们通常会有这样的操作：
 
-```
+``` ruby
 books.each do |book|
   p book.id
 end

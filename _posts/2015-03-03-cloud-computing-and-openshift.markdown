@@ -73,19 +73,19 @@ OpenShift提供了3种方式来创建和管理应用程序：Web Console、客�
 
 * 安装rhc
 
-~~~
+``` sh
 gem install rhc
-~~~
+```
 
-* 运行`rhc setup`按提示一步一步[配置rhc](https://developers.openshift.com/en/getting-started-overview.html)
+* 运行 `rhc setup` 按提示一步一步[配置rhc](https://developers.openshift.com/en/getting-started-overview.html)
 
 * 配置完成后，即可创建一个应用程序：
 
-~~~
+``` sh
 # 可运行rhc cartridge list查看OpenShift支持的所有开发平台
 # 创建一个名称为funny的应用程序，开发平台为ruby-2.0
 rhc create-app funny ruby-2.0
-~~~
+```
 
 OK，就这4步，一个名为funny的Ruby应用程序已经创建并部署到OpenShift上了，现在你就可以访问OpenShift返回给你的应用程序URL来查看它了，厉害吧！
 

@@ -3,7 +3,7 @@
   <title><![CDATA[一根札记]]></title>
   <link href="http://haydenwei.com/atom.xml" rel="self"/>
   <link href="http://haydenwei.com/"/>
-  <updated>2015-12-09T18:47:58+08:00</updated>
+  <updated>2015-12-10T17:42:48+08:00</updated>
   <id>http://haydenwei.com/</id>
   <author>
     <name><![CDATA[Hayden Wei]]></name>
@@ -11,36 +11,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Welcome to Jekyll!]]></title>
-<link href="http://haydenwei.com/posts/2015/12/welcome-to-jekyll"/>
-<updated>2015-12-08T10:20:49+08:00</updated>
-<id>http://haydenwei.com/posts/2015/12/welcome-to-jekyll</id>
-
-      <content type="html"><![CDATA[<p>You’ll find this post in your <code>_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code>jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
-
-<p>To add new posts, simply add a file in the <code>_posts</code> directory that follows the convention <code>YYYY-MM-DD-name-of-post.ext</code> and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
-
-<p>Jekyll also offers powerful support for code snippets:</p>
-
-<div>
-  <pre><code class='ruby'>def print_hi(name)
-  puts &quot;Hi, #{name}&quot;
-end
-print_hi('Tom')
-#=&gt; prints 'Hi, Tom' to STDOUT.</code></pre>
-</div>
-
-
-<p>Check out the <a href="http://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>
-]]></content>
-    </entry>
   
     <entry>
       
@@ -293,1209 +263,6 @@ print_hi('Tom')
 
 
 
-<title type="html"><![CDATA[The emergent elegance of Elixir scoping]]></title>
-<link href="http://haydenwei.com/posts/2015/11/elixir-scoping"/>
-<updated>2015-11-07T00:50:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/11/elixir-scoping</id>
-
-      <content type="html"><![CDATA[<p>I&#8217;ve been struck by the emergent elegance of <a href="http://elixir-lang.readthedocs.org/en/latest/technical/scoping.html">Elixir&#8217;s scoping rules</a>.</p>
-
-<p>In my native Ruby, <code>import</code>/<code>extend</code> is a scattershot affair. You can do it within an individual method, but it applies to the entire module:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">MyModule</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">say_hello</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Hello from </span><span class="si">#{</span><span class="n">sender</span><span class="si">}</span><span class="s2">.&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">module</span> <span class="nn">MyOtherModule</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="nb">self</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">method_that_did_extend</span>
-</span><span class='line'>    <span class="kp">extend</span> <span class="no">MyModule</span>
-</span><span class='line'>    <span class="n">say_hello</span><span class="p">(</span><span class="s2">&quot;method_that_did_extend&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">method_that_did_not_extend</span>
-</span><span class='line'>    <span class="n">say_hello</span><span class="p">(</span><span class="s2">&quot;method_that_did_not_extend&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">MyOtherModule</span><span class="o">.</span><span class="n">method_that_did_extend</span>      <span class="c1"># =&gt; &quot;Hello from method_that_did_extend.&quot;</span>
-</span><span class='line'><span class="no">MyOtherModule</span><span class="o">.</span><span class="n">method_that_did_not_extend</span>  <span class="c1"># =&gt; &quot;Hello from method_that_did_not_extend.&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In Elixir, on the other hand, an <code>import</code> (or <code>require</code>, or <code>alias</code>) inside a function only applies <em>within that function</em>. It actually goes further than that: if it happens inside a logic branch (in e.g. an <code>if</code>, <code>cond</code> or <code>case</code>) it only applies <em>within that branch</em>.</p>
-
-<p>And it&#8217;s from this simple fact that the elegance emerges.</p>
-
-<h2><code>with</code> with <code>import</code></h2>
-
-<p>A few days ago, I saw <a href="https://github.com/SenecaSystems/gutenex#usage">this code example</a>:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">Gutenex</span><span class="o">.</span><span class="n">begin_text</span>
-</span><span class='line'><span class="o">|&gt;</span> <span class="no">Gutenex</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">,</span> <span class="m">48</span><span class="p">)</span>
-</span><span class='line'><span class="o">|&gt;</span> <span class="no">Gutenex</span><span class="o">.</span><span class="n">text_position</span><span class="p">(</span><span class="m">40</span><span class="p">,</span> <span class="m">180</span><span class="p">)</span>
-</span><span class='line'><span class="o">|&gt;</span> <span class="no">Gutenex</span><span class="o">.</span><span class="n">text_render_mode</span><span class="p">(</span><span class="ss">:fill</span><span class="p">)</span>
-</span><span class='line'><span class="o">|&gt;</span> <span class="no">Gutenex</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;ABC&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="o">|&gt;</span> <span class="no">Gutenex</span><span class="o">.</span><span class="n">end_text</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It would be nice to get rid of the noise of that repetition. <code>import</code> will do it, within our current scope only, without spilling into other code:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">def</span> <span class="n">render_gutenex</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="kn">import</span> <span class="no">Gutenex</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">begin_text</span>
-</span><span class='line'>  <span class="o">|&gt;</span> <span class="n">set_font</span><span class="p">(</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">,</span> <span class="m">48</span><span class="p">)</span>
-</span><span class='line'>  <span class="o">|&gt;</span> <span class="n">text_position</span><span class="p">(</span><span class="m">40</span><span class="p">,</span> <span class="m">180</span><span class="p">)</span>
-</span><span class='line'>  <span class="o">|&gt;</span> <span class="n">text_render_mode</span><span class="p">(</span><span class="ss">:fill</span><span class="p">)</span>
-</span><span class='line'>  <span class="o">|&gt;</span> <span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;ABC&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="o">|&gt;</span> <span class="n">end_text</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="n">do_all_the_things</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="n">render_gutenex</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Wouldn&#39;t compile: end_text/1 is not available here.</span>
-</span><span class='line'>  <span class="c1"># end_text</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This reminds me of <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/with">the notorious JavaScript <code>with</code> statement</a>. We could very easily implement a <code>with</code>-alike in Elixir:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">With</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  defmacro</span> <span class="n">with</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="k">do</span><span class="p">:</span> <span class="n">block</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="kn">quote</span> <span class="k">do</span>
-</span><span class='line'><span class="k">      fn</span> <span class="o">-&gt;</span>
-</span><span class='line'>        <span class="kn">import</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-</span><span class='line'>        <span class="kn">unquote</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">end</span><span class="o">.</span><span class="p">()</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">defmodule</span> <span class="no">Run</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="kn">import</span> <span class="no">With</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="n">run</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="n">with</span> <span class="no">String</span> <span class="k">do</span>
-</span><span class='line'><span class="k">      </span><span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;hi&quot;</span> <span class="o">|&gt;</span> <span class="n">reverse</span>  <span class="c1"># =&gt; Output: &quot;ih&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># Wouldn&#39;t compile: reverse/1 is not available here.</span>
-</span><span class='line'>    <span class="c1"># IO.puts &quot;hi&quot; |&gt; reverse</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Run</span><span class="o">.</span><span class="n">run</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In the macro, we create and then immediately call an anonymous function, to limit the scope of the <code>import</code>.</p>
-
-<p>We could also limit the scope with a dummy conditional, but this comes with a higher WTF factor:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">if</span> <span class="no">true</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="kn">import</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-</span><span class='line'>  <span class="kn">unquote</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note that the macro function definition and the <code>quote do … end</code> block on their own would <em>not</em> limit the scope of the <code>import</code>, because they are part of the macro infrastructure. They generate some code and then effectively disappear from the scoping hierarchy.</p>
-
-<p>Also note that Elixir may be gaining <a href="https://github.com/elixir-lang/elixir/issues/3902">something else called <code>with</code></a> in the future, so if you start using the above, don&#8217;t get attached to the name…</p>
-
-<h2>An <code>instance_eval</code> for a more civilized age</h2>
-
-<p>When I started out learning Elixir, I found myself wanting to understand how things like <a href="https://hexdocs.pm/ecto/Ecto.Migration.html">Ecto migrations</a> work. So I painstakingly reimplemented the interesting parts of the syntax.</p>
-
-<p>Let&#8217;s say we want to support this:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="n">create</span> <span class="n">table</span><span class="p">(</span><span class="ss">:users</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="n">add</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:string</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In my first implementation, I had an <code>add</code> function that you could call inside that block… and anywhere else as well. I wanted to do better.</p>
-
-<p>In Ruby, I would have used <a href="http://ruby-doc.org/core-2.2.0/BasicObject.html#method-i-instance_eval"><code>instance_eval</code></a> to evaluate a block of code in a context that has an <code>add</code> method available.</p>
-
-<p>By <a href="https://groups.google.com/d/msg/elixir-lang-talk/J5j0t_UYEnI/OmzIOD49ReYJ">consulting the mailing list</a>, the elegance of Elixir scoping was finally revealed to me.</p>
-
-<p>Of course, the solution was simply to <code>import</code> a module in a limited scope, just like <code>with</code> above.</p>
-
-<p>If you&#8217;re interested, you can <a href="https://gist.github.com/henrik/25516815e6680e1c7a82">see the implementation as a Gist</a>.</p>
-
-<h2>Overriding operators locally</h2>
-
-<p>Another elegant effect is that you can override operators within a single function, or a single logic branch.</p>
-
-<p>The <a href="https://github.com/alco/pipespect">Pipespect</a> library replaces the regular <code>|&gt;</code> with one that inspects every intermediate value.</p>
-
-<p><a href="https://github.com/alco/pipespect/blob/25b38113e254e0a13485d239f4575257aa830a97/lib/pipespect.ex">Its implementation</a> is all about <code>import</code>s, so the scoping rules are the same ones that we discussed above:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">if</span> <span class="n">some_condition</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="kn">use</span> <span class="no">Pipespect</span>
-</span><span class='line'>  <span class="s2">&quot;This will be inspected.&quot;</span> <span class="o">|&gt;</span> <span class="no">String</span><span class="o">.</span><span class="n">reverse</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'>  <span class="s2">&quot;This will not.&quot;</span> <span class="o">|&gt;</span> <span class="no">String</span><span class="o">.</span><span class="n">reverse</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Out of scope</h2>
-
-<p>That&#8217;s it. Any other interesting implications of the Elixir scoping rules? Let me know in the comments or <a href="https://twitter.com/henrik">on Twitter</a>!</p>
-
-<p>For some related reading, also see <a href="http://blog.drewolson.org/the-value-of-explicitness/">&#8220;The Value of Explicitness&#8221; by Drew Olson</a>.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Controlling your Mac with a Flic]]></title>
-<link href="http://haydenwei.com/posts/2015/10/controlling-your-mac-with-a-flic"/>
-<updated>2015-10-15T20:15:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/10/controlling-your-mac-with-a-flic</id>
-
-      <content type="html"><![CDATA[<p>I just got the <a href="https://flic.io?r=98459f">Flic</a> (referral link) from <a href="https://www.indiegogo.com/projects/flic-the-wireless-smart-button#/">an Indiegogo campaign</a> I helped fund almost a year ago.</p>
-
-<p>It&#8217;s a pretty little push button that connects to your phone over Bluetooth. Click, double-click or hold it to trigger actions.</p>
-
-<p>I don&#8217;t quite remember what I wanted it for originally. My Apple Watch can do many of the things it does: find my phone, control audio playback on the phone.</p>
-
-<p>There might be some fun use cases if it could control a computer, though. I&#8217;ve wanted a &#8220;pause music playing on any of our computers&#8221; button for some time. A computer could do that via some AppleScript and shell commands.</p>
-
-<p>Flic can currently only pair with an iOS or Android device, so I set out to figure out a way to make it control my computer anyway. Mostly for the fun of it.</p>
-
-<p>Note that these instructions are aimed at other developers. If it&#8217;s gibberish to you, please let Flic know you want this feature built in and wait for that to happen.</p>
-
-<p>With that out of the way:</p>
-
-<p>The basic idea is for Flic to talk to your phone, for the phone to then make a HTTP request to your computer over the local network, and for a tiny web app on the computer to then do your bidding.</p>
-
-<p>This means there are a couple of gotchas. It won&#8217;t work if your phone is not in Bluetooth range of the button. Your phone and your computer must be on the same network.</p>
-
-<h2>Sinatra app</h2>
-
-<p>On my computer, I made a tiny <a href="http://www.sinatrarb.com/">Sinatra</a> app:</p>
-
-<figure class='code'><figcaption><span>~/apps/flic/config.ru</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;sinatra&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">get</span> <span class="s2">&quot;/click&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">system</span><span class="p">(</span><span class="s2">&quot;say&quot;</span><span class="p">,</span> <span class="s2">&quot;hello world&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="s2">&quot;OK!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">run</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Application</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You may need to <code>(sudo) gem install sinatra</code> to get this library.</p>
-
-<p>This example app runs the shell command <code>say "hello world"</code>, which on OS X will speak those words. But you could do <em>anything</em> here.</p>
-
-<p>Then it just returns &#8220;OK!&#8221; as the response text.</p>
-
-<h2>Pow</h2>
-
-<p>To keep the web app running, I use <a href="http://pow.cx/">Pow</a>. Once it&#8217;s installed, enabling this project is just</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>cd ~/.pow
-</span><span class='line'>ln -s ~/apps/flic</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you change the app code, you need to</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>mkdir tmp  # Once, so it exists.
-</span><span class='line'>touch tmp/restart.txt</span></code></pre></td></tr></table></div></figure>
-
-
-<p>to reload it.</p>
-
-<p>Now you should see (and hear!) the app on <a href="http://flic.dev/click">http://flic.dev/click</a> on your machine.</p>
-
-<h2>xip.io</h2>
-
-<p>To conveniently access the app from your phone, you can use the <a href="http://xip.io/">xip.io</a> service.</p>
-
-<p>There&#8217;s nothing to install: just visit <a href="http://flic.192.168.1.2.xip.io/click">http://flic.192.168.1.2.xip.io/click</a>, replacing <code>192.168.1.2</code> with the IP address of that machine.</p>
-
-<p>You can confirm the address works on your computer first, for convenience. Then make sure it works from your phone. (They need to be on the same network.)</p>
-
-<h2>Configure the Flic app</h2>
-
-<p>Now just configure the Flic app to use the &#8220;HTTP Request&#8221; action.</p>
-
-<p>The URL should be the <code>xip.io</code> URL above.</p>
-
-<p>The HTTP method should be &#8220;GET&#8221; in this case.</p>
-
-<p>You can specify &#8220;Show response: No&#8221; if you don&#8217;t want that feedback.</p>
-
-<p>If you want to handle double-clicks and holds as well, just add them to your Sinatra app (and restart it):</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get</span> <span class="s2">&quot;/click&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">system</span><span class="p">(</span><span class="s2">&quot;say&quot;</span><span class="p">,</span> <span class="s2">&quot;click&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="s2">&quot;OK!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">get</span> <span class="s2">&quot;/double_click&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">system</span><span class="p">(</span><span class="s2">&quot;say&quot;</span><span class="p">,</span> <span class="s2">&quot;double click&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="s2">&quot;OK!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">get</span> <span class="s2">&quot;/hold&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">system</span><span class="p">(</span><span class="s2">&quot;say&quot;</span><span class="p">,</span> <span class="s2">&quot;hold&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="s2">&quot;OK!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then change the URL path accordingly.</p>
-
-<h2>Press the Flic</h2>
-
-<p>Press the Flic. Your computer should run the command.</p>
-
-<p>If anyone else sets this up, I&#8217;d love to hear what you use it for!</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[How to "expect(…).to" in Elixir]]></title>
-<link href="http://haydenwei.com/posts/2015/10/how-to-expect-to-in-elixir"/>
-<updated>2015-10-10T02:40:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/10/how-to-expect-to-in-elixir</id>
-
-      <content type="html"><![CDATA[<p>When I first came across <a href="https://github.com/antonmi/espec">ESpec</a>, I was perplexed by syntax like</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">pet</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That doesn&#8217;t look like Elixir!</p>
-
-<p>It is in fact a controversial feature of Erlang, that may be removed in future versions of Elixir. So you probably shouldn&#8217;t use it, but it can still be interesting to know how it works.</p>
-
-<p>ESpec&#8217;s <code>expect</code> function returns a tuple like <code>{Expect, pet}</code>, containing a module name and the argument. So we effectively have</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">pet</span><span class="p">}</span><span class="o">.</span><span class="n">to</span> <span class="n">be</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This, in turn, is interpreted as an <code>Expect.to</code> function call, with the tuple itself as the last argument:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">Expect</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">be</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">),</span> <span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">pet</span><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This applies to any number of arguments. If we had done</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">}</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>then it would be interpreted as</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">Expect</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>and so on.</p>
-
-<h2>How it all fits together</h2>
-
-<p>This is how you might implement a minimal version of <code>expect(…).to</code>:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">Expect</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  def</span> <span class="n">to</span><span class="p">({</span><span class="ss">:be</span><span class="p">,</span> <span class="n">value</span><span class="p">},</span> <span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">value</span><span class="p">})</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="no">IO</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="s2">&quot;Hooray, they&#39;re both &#39;</span><span class="si">#{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;!&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="n">to</span><span class="p">({</span><span class="ss">:be</span><span class="p">,</span> <span class="n">expected</span><span class="p">},</span> <span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">actual</span><span class="p">})</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="no">IO</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="s2">&quot;Nay! Expected &#39;</span><span class="si">#{</span><span class="n">expected</span><span class="si">}</span><span class="s2">&#39; but got &#39;</span><span class="si">#{</span><span class="n">actual</span><span class="si">}</span><span class="s2">&#39; :(&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">defmodule</span> <span class="no">Example</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  def</span> <span class="n">run</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="n">expect</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be</span><span class="p">(</span><span class="s2">&quot;Dog&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">defp</span> <span class="n">expect</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="p">{</span><span class="no">Expect</span><span class="p">,</span> <span class="n">actual</span><span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">defp</span> <span class="n">be</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="p">{</span><span class="ss">:be</span><span class="p">,</span> <span class="n">expected</span><span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Example</span><span class="o">.</span><span class="n">run</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Output:</p>
-
-<pre><code>Hooray, they're both 'Cat'!
-Nay! Expected 'Dog' but got 'Cat' :(
-</code></pre>
-
-<p>If you want another example of how this might be used, see <a href="https://gist.github.com/henrik/bff879a97f7df44a8830">my <code>ExMachina.with</code> sketch</a>.</p>
-
-<h2>What is this syntax?</h2>
-
-<p>This is Erlang <a href="http://stackoverflow.com/questions/16960745/what-is-a-tuple-module-in-erlang">tuple modules</a>.</p>
-
-<p>They are <a href="http://stackoverflow.com/questions/31954796/why-erlang-tuple-module-is-controversial">controversial</a> in Erlang and Elixir both, and José Valim <a href="https://github.com/elixir-lang/elixir/issues/3254">wants them gone in Elixir 2.0</a>. Problems include hard-to-read stacktraces, slower dispatch, and that they can encourage writing code in an object-oriented style, with &#8220;methods&#8221; on &#8220;instances&#8221;.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Testing callbacks in Elixir]]></title>
-<link href="http://haydenwei.com/posts/2015/09/testing-callbacks-in-elixir"/>
-<updated>2015-09-20T11:15:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/09/testing-callbacks-in-elixir</id>
-
-      <content type="html"><![CDATA[<p>Say you have this code:</p>
-
-<figure class='code'><figcaption><span>example.ex</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">Example</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  def</span> <span class="n">run</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="n">callback</span><span class="o">.</span><span class="p">(</span><span class="ss">:hello</span><span class="p">,</span> <span class="ss">:world</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">do_more_stuff</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You want to assert that it calls back with <code>:hello</code> and <code>:world</code>.</p>
-
-<p>It might not be immediately clear how to do that in ExUnit.</p>
-
-<figure class='code'><figcaption><span>example_test.exs</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="n">test</span> <span class="s2">&quot;callback runs&quot;</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="n">callback</span> <span class="o">=</span> <span class="k">fn</span> <span class="p">(</span><span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">)</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="c1"># ?</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="no">Example</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">#?</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We could assert inside the callback… but if the callback never runs, the assertion won&#8217;t run either.</p>
-
-<p>In a language like Ruby, you could do it by changing a variable outside the anonymous function:</p>
-
-<figure class='code'><figcaption><span>example_test.rb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">did_it_run</span> <span class="o">=</span> <span class="kp">false</span>
-</span><span class='line'><span class="n">fun</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">did_it_run</span> <span class="o">=</span> <span class="kp">true</span> <span class="p">}</span>
-</span><span class='line'><span class="n">fun</span><span class="o">.</span><span class="p">()</span>
-</span><span class='line'><span class="n">assert</span> <span class="n">did_it_run</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In Elixir, an anonymous function can read variables from outside but not change them. We could start a separate server process and make it hang on to this state, but that would be a bit of a bother.</p>
-
-<p>There are other ways to communicate, though. Message passing to the rescue!</p>
-
-<figure class='code'><figcaption><span>example_test.exs</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="n">test</span> <span class="s2">&quot;callback runs&quot;</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="n">callback</span> <span class="o">=</span> <span class="k">fn</span> <span class="p">(</span><span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">)</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="n">send</span> <span class="n">self</span><span class="p">,</span> <span class="p">{</span><span class="ss">:called_back</span><span class="p">,</span> <span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="no">Example</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">assert_received</span> <span class="p">{</span><span class="ss">:called_back</span><span class="p">,</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:world</span><span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We simply <a href="http://elixir-lang.org/docs/v1.0/elixir/Kernel.html#send/2"><code>send</code></a> a message to our own process from the callback. Now it&#8217;s in our process mailbox.</p>
-
-<p>Then we <a href="http://elixir-lang.org/docs/v1.0/ex_unit/ExUnit.Assertions.html#assert_received/2">assert</a> that we received it.</p>
-
-<p>For multi-process use cases, you can name the test process:</p>
-
-<figure class='code'><figcaption><span>example_test.exs</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">TestCallerBacker</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  def</span> <span class="n">run</span><span class="p">(</span><span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="n">send</span> <span class="ss">:test</span><span class="p">,</span> <span class="p">{</span><span class="ss">:called_back</span><span class="p">,</span> <span class="n">greeting</span><span class="p">,</span> <span class="n">celestial_body</span><span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">test</span> <span class="s2">&quot;callback runs&quot;</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="no">Process</span><span class="o">.</span><span class="n">register</span> <span class="n">self</span><span class="p">,</span> <span class="ss">:test</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="no">Example</span><span class="o">.</span><span class="n">run_in_another_process</span><span class="p">(</span><span class="no">TestCallerBacker</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">assert_received</span> <span class="p">{</span><span class="ss">:called_back</span><span class="p">,</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:world</span><span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://elixir-lang.org/docs/v1.0/ex_unit/ExUnit.Assertions.html#assert_received/2"><code>assert_received</code></a> expects the message to have arrived already. If your code is asynchronous and the message may take a while to arrive, its companion function <a href="http://elixir-lang.org/docs/v1.0/ex_unit/ExUnit.Assertions.html#assert_receive/3"><code>assert_receive</code></a> lets you specify a timeout.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Testing compile-time exceptions in Elixir]]></title>
-<link href="http://haydenwei.com/posts/2015/09/testing-compile-time-exceptions-in-elixir"/>
-<updated>2015-09-05T12:12:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/09/testing-compile-time-exceptions-in-elixir</id>
-
-      <content type="html"><![CDATA[<p>You can usually test exceptions this way in Elixir:</p>
-
-<figure class='code'><figcaption><span>test/my_test.exs</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">MyTest</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="kn">use</span> <span class="no">ExUnit</span><span class="o">.</span><span class="no">Case</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">test</span> <span class="s2">&quot;my test&quot;</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="n">assert_raise</span> <span class="no">RuntimeError</span><span class="p">,</span> <span class="s2">&quot;boom&quot;</span><span class="p">,</span> <span class="k">fn</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="k">raise</span> <span class="s2">&quot;boom&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>But if you&#8217;re writing a macro, you can raise exceptions at compile time. This won&#8217;t work:</p>
-
-<figure class='code'><figcaption><span>test/my_test.exs</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">MyMacro</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  defmacro</span> <span class="n">boom</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    raise</span> <span class="s2">&quot;boom at compile time&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">defmodule</span> <span class="no">MyTest</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="kn">use</span> <span class="no">ExUnit</span><span class="o">.</span><span class="no">Case</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">test</span> <span class="s2">&quot;my test&quot;</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="n">assert_raise</span> <span class="no">RuntimeError</span><span class="p">,</span> <span class="s2">&quot;boom at compile time&quot;</span><span class="p">,</span> <span class="k">fn</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="kn">import</span> <span class="no">MyMacro</span>
-</span><span class='line'>      <span class="n">boom</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>assert_raise</code> makes an assertion about runtime behavior, and won&#8217;t catch that raise. Incidentally, <code>RuntimeError</code> is the unfortunate default type of exceptions – they can be raised at compile time, like we do here.</p>
-
-<p>Having run into this limitation twice now, I thought I&#8217;d figure out a way around it. This is what I&#8217;ve come up with.</p>
-
-<p>First, add these <code>CompileTimeAssertions</code> to your test helper:</p>
-
-<figure class='code'><figcaption><span>test/test_helper.exs</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">ExUnit</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">defmodule</span> <span class="no">CompileTimeAssertions</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  defmodule</span> <span class="no">DidNotRaise</span><span class="p">,</span> <span class="k">do</span><span class="p">:</span> <span class="n">defstruct</span><span class="p">(</span><span class="ss">message:</span> <span class="no">nil</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">defmacro</span> <span class="n">assert_compile_time_raise</span><span class="p">(</span><span class="n">expected_exception</span><span class="p">,</span> <span class="n">expected_message</span><span class="p">,</span> <span class="n">fun</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="n">actual_exception</span> <span class="o">=</span>
-</span><span class='line'>      <span class="k">try</span> <span class="k">do</span>
-</span><span class='line'><span class="k">        </span><span class="no">Code</span><span class="o">.</span><span class="n">eval_quoted</span><span class="p">(</span><span class="n">fun</span><span class="p">)</span>
-</span><span class='line'>        <span class="err">%</span><span class="no">DidNotRaise</span><span class="p">{}</span>
-</span><span class='line'>      <span class="k">rescue</span>
-</span><span class='line'>        <span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kn">quote</span> <span class="k">do</span>
-</span><span class='line'><span class="k">      </span><span class="n">assert</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">actual_exception</span><span class="o">.</span><span class="n">__struct__</span><span class="p">)</span> <span class="o">==</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">expected_exception</span><span class="p">)</span>
-</span><span class='line'>      <span class="n">assert</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">actual_exception</span><span class="o">.</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="kn">unquote</span><span class="p">(</span><span class="n">expected_message</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then this will work:</p>
-
-<figure class='code'><figcaption><span>test/my_test.exs</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">MyMacro</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  defmacro</span> <span class="n">boom</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    raise</span> <span class="s2">&quot;boom at compile time&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">defmodule</span> <span class="no">MyTest</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="kn">use</span> <span class="no">ExUnit</span><span class="o">.</span><span class="no">Case</span>
-</span><span class='line'>  <span class="kn">import</span> <span class="no">CompileTimeAssertions</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">test</span> <span class="s2">&quot;my test&quot;</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="n">assert_compile_time_raise</span> <span class="no">RuntimeError</span><span class="p">,</span> <span class="s2">&quot;boom at compile time&quot;</span><span class="p">,</span> <span class="k">fn</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="kn">import</span> <span class="no">MyMacro</span>
-</span><span class='line'>      <span class="n">boom</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We use a macro so that our code, too, runs at compile time. We wrap around the code that raises. When it does, we rescue it. Then we generate test assertions to execute later, at runtime.</p>
-
-<p>If the code does not in fact raise, the error will be something like:</p>
-
-<pre><code>Assertion with == failed
-code: CompileTimeAssertions.DidNotRaise == RuntimeError
-lhs:  CompileTimeAssertions.DidNotRaise
-rhs:  RuntimeError
-</code></pre>
-
-<p>This is a fairly minimal and unpolished implementation that suited my needs. Please feel free to improve upon it, and write a comment if you do.</p>
-
-<p>If you want to see this in action, have a look at my <a href="https://github.com/henrik/fixme-elixir">FIXME for Elixir</a> library.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Apple Watch: day 58]]></title>
-<link href="http://haydenwei.com/posts/2015/07/apple-watch-day-58"/>
-<updated>2015-07-19T19:55:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/07/apple-watch-day-58</id>
-
-      <content type="html"><![CDATA[<p>I <a href="http://haydenwei.com/2015/05/apple-watch-day-2/">blogged on day 2</a> of owning the watch. Now I&#8217;ve had my black 38 mm Apple Watch Sport for about two months. Here are some random reflections:</p>
-
-<h2>Leaving the phone behind</h2>
-
-<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch2/ping.png" alt="Screenshot: Pinging iPhone" /></p>
-
-<p>Since I&#8217;ve really enjoyed <a href="http://haydenwei.com/2015/03/the-ten-thousand-steps/">counting steps with the Fitbit app</a>, and <a href="http://haydenwei.com/2015/05/the-apple-watch-is-not-a-fitbit-wristband/">it doesn&#8217;t work with the watch</a>, I used to keep the phone in my pocket at all times. But for the last few weeks, I&#8217;ve given up on that and tried instead leaving it on my desk, or the bedside table, or the treadmill.</p>
-
-<p>It&#8217;s quite liberating. It&#8217;s a small thing (as are all the benefits of the watch), but I love being able to walk around the office without my phone, and still being confident the watch will let me know if I get a call or a message.</p>
-
-<p>And if you forget where you placed the phone, you can always ping it (make it play a sound, or even flash a light) from the watch.</p>
-
-<p>Another cool thing about the watch is that you always know if it&#8217;s your own phone ringing. There have been a few &#8220;is that your phone or mine?&#8221; where I could immediately say it&#8217;s theirs.</p>
-
-<p>The watch is not very useful when the phone is out of range, though. I spent an hour in a mall with the watch but without the phone while getting the phone display replaced. I couldn&#8217;t even access some notes in a third-party app. This will thankfully change with the upcoming watchOS 2. Pretty much all I could do was set a timer for an hour, so I would be reminded of when to pick up the phone again…</p>
-
-<p>I was a bit surprised to find myself missing the phone&#8217;s camera, to take pictures of interesting things in stores and such. I wouldn&#8217;t mind a camera in future generations of the watch for that kind of thing.</p>
-
-<h2>Activity tracking</h2>
-
-<p>Since I gave up on Fitbit step tracking, I instead count calories (and minutes of exercise, and hours of standing) with the built-in activity tracking on the watch.</p>
-
-<p>Any such measure will be imperfect, but I do like how the calories map better to real activity than steps do. We&#8217;ve had some discussions around our step challenges at work about bike rides or inline skating counting as steps. Is it fair? Do you get too few? Too many? One guy has an electric bike.</p>
-
-<p>With the calorie counting, your results are a product of accelerometer movement (like step counts), <em>and</em> your heart rate. And possibly more factors like GPS position. So it&#8217;s likely to be more accurate, and also to credit you for exercise that doesn&#8217;t move your feet rapidly.</p>
-
-<p>I run and walk, but I also go to the gym and do some bouldering. I played badminton the other week. I bike. It&#8217;s nice to have all that count towards your daily goal in relation to your heart rate.</p>
-
-<p>The stand reminders are great. They&#8217;re so well designed that after two months, they&#8217;re still not annoying. If you&#8217;ve stood enough during the day, you don&#8217;t get nagged if you sit down to watch a movie in the evening, for example.</p>
-
-<p>I do wish there was a social health app, like Fitbit, that was compatible with the Apple Watch.</p>
-
-<h2>In the car</h2>
-
-<p>I&#8217;ve answered phone calls in the car, on my watch. It feels a lot safer than finding the phone and keeping only one hand on the wheel. The audio isn&#8217;t great quality or loud, but it&#8217;s good enough.</p>
-
-<p>It&#8217;s also convenient to make outgoing calls the same way.</p>
-
-<p>I&#8217;ve even sent one or two text messages from the watch while driving: you just do &#8220;Hey Siri, send message to Joe, buy some milk&#8221;. Then &#8220;hey Siri, send&#8221; to confirm. If you dare, you can glance briefly at the screen first to see that it sends what you intend. Because Siri on the watch will not speak, for some reason.</p>
-
-<h2>Travelling: time zones</h2>
-
-<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch2/zone.png" alt="Screenshot: time zones" /></p>
-
-<p>I got the watch right before heading to <a href="http://haydenwei.com/2015/06/socrates-uk-2015/">the SoCraTes conference</a> in England. (I live in Sweden.)</p>
-
-<p>Time-zone wise, the watch is good and bad. It&#8217;s great that the time zone changes automatically when you arrive. And you can use &#8220;complications&#8221; to show another time zone next to the current one.</p>
-
-<p>But the first thing I tried didn&#8217;t work: On a regular watch, I would change its time soon after boarding the plane so I can get used to the new time zone. I couldn&#8217;t find a time zone setting on the watch. After a while I realized it picks up its time zone from the phone. But by then, I had already turned on airplane mode, and so it could no longer get anything from the phone.</p>
-
-<p>Even if I had changed it before turning on airplane mode, that would have meant turning off the automatic time setting on the phone.</p>
-
-<p>I think the best thing here is to lose your old habits, and use a complication to show the time of whatever place the watch is not currently showing.</p>
-
-<p>Oh, and having an aisle seat helps with meeting your stand goals. A pretend visit to the bathroom can be enough…</p>
-
-<h2>Travelling: calendar</h2>
-
-<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch2/calendar.png" alt="Screenshot: calendar on watch face" /></p>
-
-<p>It&#8217;s incredibly convenient to see the next event on your calendar right on your watch face.</p>
-
-<p>I used this for planes and trains, but I also tried it a bit during the conference, to keep track of the next session. It&#8217;s a bit of a bother keeping the calendar up to date, though, with a flexible &#8220;unconference&#8221; format.</p>
-
-<h2>Battery life is not a problem</h2>
-
-<p>In <a href="http://haydenwei.com/2015/05/apple-watch-day-2/">my previous post</a>, I was worried about battery life.</p>
-
-<p>That hasn&#8217;t been an issue. I think maybe battery usage was higher in the first few days for some reason.</p>
-
-<p>I removed the battery status from my watch face after just a few days. Since then I&#8217;ve only run out of battery once, arriving home at 2 a.m. after an unusually long day.</p>
-
-<h2>Siri</h2>
-
-<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch2/nazca.png" alt="Screenshot: Nazca Lines" /></p>
-
-<p>I&#8217;ve added <em>so</em> many reminders and calendar events from my wrist. I love it. You&#8217;re at the breakfast table, phone on your desk, and you say &#8220;remind me in 15 minutes to bring the cake to work&#8221;. Or you&#8217;re packing for a trip and you say &#8220;remind me tomorrow at 10 to pack the Apple Watch charger&#8221;.</p>
-
-<p>It&#8217;s so easy and works really well.</p>
-
-<p>I still would like to be able to make audio notes-to-self.</p>
-
-<p>Looking up topics on Wikipedia is wonderful when it works. I had a super cool moment (in the nerd sense of &#8220;super cool&#8221;) when I was on a trampoline with my baby brother, mentioned that something looked like those lines in South America, said I think they&#8217;re called the Nazca Lines, told my watch &#8220;tell me about the <a href="https://en.wikipedia.org/wiki/Nazca_Lines">Nazca Lines</a>&#8221;, and it did. <em>All this while bouncing on a trampoline.</em></p>
-
-<p>It can be worth experimenting a bit to find the shortest thing that Siri will understand. I found I can say &#8220;timer 5 minutes&#8221; instead of &#8220;set a timer for 5 minutes&#8221;, for example.</p>
-
-<h2>Most apps still suck</h2>
-
-<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch2/weather.png" alt="Screenshot: waiting for the weather report" /></p>
-
-<p>I barely use any third-party apps still. They&#8217;re too slow.</p>
-
-<p>When I saw some new Apple Watch commercials, I cringed whenever the actor opened up a third-party app, because I knew that in the real world, they would then spend several seconds watching a spinner.</p>
-
-<p>I have some hope that watchOS 2 will improve on this, letting third-party watch apps actually run on the watch instead of from the phone.</p>
-
-<p>Then again, Apple&#8217;s own weather app is often frustratingly slow, maps can be iffy, the camera remote app sometimes has trouble connecting, and the workout app can be a bit sluggish, so I&#8217;m not sure running on the watch itself will be enough.</p>
-
-<h2>Passcode lock</h2>
-
-<p>It&#8217;s happened more than once that I forget to unlock it with the passcode after putting on the watch in the morning. Once, my phone&#8217;s alarm went off in the other room and I couldn&#8217;t turn it off from the watch, because it was still locked. After unlocking, I still didn&#8217;t get the option to turn it off from the watch. Not a huge deal, of course, but an inconvenience.</p>
-
-<p>I wish Apple would make the watch tap you after a while of being locked, so you remember to unlock it.</p>
-
-<h2>Apple Music</h2>
-
-<p>The other day, I told Siri on my watch to &#8220;play Hakuna Matata&#8221;, and it did. Then I directed it to our media center speakers, all from my watch. It felt very much like the future.</p>
-
-<p>We use <a href="https://www.rogueamoeba.com/airfoil/">Airfoil</a> to make our Mac Mini media server appear as an AirPlay device.</p>
-
-<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch2/music1.png" alt="Screenshot: music 1" />
-<img src="https://dl.dropboxusercontent.com/u/546793/blog/watch2/music2.png" alt="Screenshot: music 2" /></p>
-
-<p>A slight convenience Apple could add: It would be nice if turning the crown would control volume whenever audio is playing and the watch screen is off. I would use this a lot when running.</p>
-
-<h2>In closing</h2>
-
-<p>I wouldn&#8217;t want to be without the watch. Imperfect as it is, it brings a bunch of small conveniences.</p>
-
-<p>I&#8217;m really looking forward to future iterations, with better performance.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Turning off responsive]]></title>
-<link href="http://haydenwei.com/posts/2015/07/turning-off-responsive"/>
-<updated>2015-07-08T23:35:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/07/turning-off-responsive</id>
-
-      <content type="html"><![CDATA[<p>We made <a href="https://auctionet.com">Auctionet.com</a> responsive, and then some customers wanted the old site back. Turns out they liked the overview you get with a scaled-down desktop site.</p>
-
-<p>My first reaction was &#8220;won&#8217;t fix&#8221; – we&#8217;d just thrown away the old non-responsive code, and good riddance.</p>
-
-<p>But then I realized we could add back a &#8220;desktop mode&#8221; with almost no code – so we did. It&#8217;s pretty obvious once you think of it – I&#8217;m <a href="http://stackoverflow.com/q/22423687/6962#comment34101665_22423687">not</a> the first. But here it is:</p>
-
-<p>On mobile browsers (as detected by user agent), we show a desktop/mobile toggle link.</p>
-
-<p>The link just causes a &#8220;desktop_mode&#8221; cookie to be set or unset.</p>
-
-<p>If the cookie is set, our pages say</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=1000&quot;</span><span class="nt">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>instead of</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=device-width, initial-scale=1&quot;</span><span class="nt">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>so the mobile browser renders the page at 1000px width. For us, that&#8217;s the minimum width that doesn&#8217;t trigger small-display breakpoints.</p>
-
-<p>And that&#8217;s it!</p>
-
-<p>If you want to see it in action, <a href="https://auctionet.com/">visit Auctionet.com</a> in a mobile browser or emulator (like <a href="https://developer.chrome.com/devtools/docs/device-mode">the one built into Chrome</a>). The toggle is at the very bottom.</p>
-
-<p>We only show the toggle links to mobile browsers, because desktop browsers don&#8217;t respect <code>viewport</code> declarations, so it would have no effect there.</p>
-
-<p>Ideally, browsers would be detected by feature (whether they respect <code>viewport</code>) and not by user agent, but <a href="http://stackoverflow.com/questions/5636774/best-method-to-determine-if-viewport-or-standard-browser">this seems difficult to achieve</a>.</p>
-
-<p>If a mobile browser has a viewport at 1000px or wider (e.g. a landscape iPad), the toggle won&#8217;t be meaningful. I didn&#8217;t bother with that case (the user is likely to ignore the toggle), but you can if you like.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Pair programming is not a substitute for code review]]></title>
-<link href="http://haydenwei.com/posts/2015/06/pair-programming-is-not-a-substitute-for-code-review"/>
-<updated>2015-06-20T09:20:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/06/pair-programming-is-not-a-substitute-for-code-review</id>
-
-      <content type="html"><![CDATA[<p>I think code review adds significant value, even when the code was produced by pair programming.</p>
-
-<p>Both pair programming and code review can serve to catch errors and improve design. But the biggest strength of code review to me is getting the outsider perspective while there still is an insider.</p>
-
-<p>A pair will build a shared understanding of the code they write. They start with something simple and change it, step by step. Each change may have been easy to understand, but the end result can be difficult to untangle. It&#8217;s hard to see the code with fresh eyes when you&#8217;ve been part of its evolution.</p>
-
-<p>A reviewer outside the pair is a proxy for the future coders who will have to make sense of the code. The reviewer, like the future coders, doesn&#8217;t have the benefit of having just written it. If something is unclear or implicit, the person who just wrote the code is likely to fill in the blanks from their internalized understanding of the problem and solution. The reviewer is much more likely to see these gaps.</p>
-
-<p>If the code review happens <a href="http://haydenwei.com/2014/02/code-review/">soon after the code was written</a>, the authors can be consulted, to make their understanding explicit before it inevitably fades from memory.</p>
-
-<p>Once it fades, the original authors of the code may find that the reviewer was their proxy, too.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[SoCraTes UK 2015]]></title>
-<link href="http://haydenwei.com/posts/2015/06/socrates-uk-2015"/>
-<updated>2015-06-09T22:50:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/06/socrates-uk-2015</id>
-
-      <content type="html"><![CDATA[<p>I&#8217;m just back from four days at the <a href="http://socratesuk.org/">SoCraTes UK</a> <a href="http://en.wikipedia.org/wiki/Unconference">unconference</a> with friends-slash-coworkers <a href="https://twitter.com/tskogberg">Tomas</a> and <a href="https://twitter.com/ariassp">Victor</a>, and I loved it.</p>
-
-<p>Several things made it great:</p>
-
-<h2>The place</h2>
-
-<p>The venue was in the Cotswolds – the absolute picture of romantic, rural England with rolling green hills, quaint villages of honey-colored stone cottages, and sheep everywhere.</p>
-
-<p>I ran every evening (with <a href="https://twitter.com/tskogberg">Tomas</a>, <a href="http://rosshuggett.com/">Ross</a> and <a href="http://bn2vs.com/">Jeroen</a>), up a steep hill and then down through the fields, with the sun setting behind the villages in the valley. One time we ran to <a href="http://www.britainexpress.com/counties/glouces/churches/saintbury.htm">St Nicholas&#8217; Church</a> in Saintbury village and explored the beautiful grounds.</p>
-
-<blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/SoCraTesUK?src=hash">#SoCraTesUK</a> evening run with <a href="https://twitter.com/rosshuggett">@rosshuggett</a> and <a href="https://twitter.com/tskogberg">@tskogberg</a>. Sunset, deer, beautiful old country church. <a href="http://t.co/J2b71Mljxc">pic.twitter.com/J2b71Mljxc</a></p>&mdash; Henrik Nyh (@henrik) <a href="https://twitter.com/henrik/status/606927660602818561">June 5, 2015</a></blockquote>
-
-
-<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<br>
-
-
-<p>Each of the two days that we had <a href="http://en.wikipedia.org/wiki/Open_Space_Technology">Open Space</a> sessions, I helped arrange an hour-long walk-and-talk session (with <a href="http://rachelcdavies.github.io/">Rachel</a> as our guide), and the last day included a hike up to <a href="http://en.wikipedia.org/wiki/Broadway_Tower,_Worcestershire">Broadway Tower</a>.</p>
-
-<p>Magically, the weather was perfect the whole time.</p>
-
-<p>The only bad things I can say about the venue was that the wifi was iffy (and non-existent in my room), and my shower was low-pressure and slow to warm up. The wifi will hopefully be fixed for next year&#8217;s conference, and I reported the shower.</p>
-
-<h2>The food</h2>
-
-<p>The food was amazing. As a Swede, I consistently picked the most British-seeming options. Except for the desserts where I just had some of each. The crème brûlée was incredible.</p>
-
-<p>The time slots for breakfast, lunch and dinner were quite generous, and you could just walk in, eat and then walk out, since it was all included in the stay.</p>
-
-<p>An organizer described the food arrangement as taking care of the body so the conference-goers could focus on other things. I think that was very much achieved: you never had to think about where to go for food, or what it cost, or fret about the time.</p>
-
-<p>There were self-serve coffee bars here and there to use any time of day. After an evening run, I dropped by one for some juice. My late nights talking or hacking in the bar were fueled by tea and cocoa.</p>
-
-<h2>The people and the conversation</h2>
-
-<p>I was surprised at how welcoming everyone was. This was the third year of the conference, and many attendees knew each other from before, but I never felt like an outsider.</p>
-
-<p>I&#8217;ve attended another unconference where there was a kind of core clique of regulars. No one was rude or even unfriendly, but it still felt a bit like looking through the window of someone else&#8217;s party.</p>
-
-<p>I&#8217;m also coming to realize that I prefer the (un)conferences where everyone stays at the venue. <a href="http://www.nordicruby.org/">Nordic Ruby</a> did that as well with great results – it was the best conference I had attended until this one.</p>
-
-<p>There were some great sessions. I learnt about <a href="http://www2.iath.virginia.edu/elab/hfl0250.html">readerly and writerly text</a> (and code) from <a href="https://twitter.com/roberttaylor426">Rob</a>, <a href="https://github.com/lscc/socrates-uk/wiki/Links-and-Resources#nonviolent-communication">Nonviolent Communication</a> from <a href="http://davidheath.org/">David</a> (hope you had a great birthday party!), <a href="http://williamdurand.fr/2013/06/03/object-calisthenics/">Object Calisthenics</a> from <a href="https://twitter.com/alastairs">Alastair</a>, music theory and <a href="http://en.wikipedia.org/wiki/Occupy_movement_hand_signals">Occupy hand signals</a> from <a href="https://twitter.com/rnalexander">Ryan</a>. I was inspired by the session about retrospectives and the one on the 5-day work month. I got some excellent advice from <a href="https://twitter.com/ijrussell">Ian</a> on influencing coworkers. I didn&#8217;t attend the &#8220;baconsnake&#8221; session but I still fantasize about eating one.</p>
-
-<blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr">Best session name <a href="https://twitter.com/hashtag/socratesuk?src=hash">#socratesuk</a> <a href="http://t.co/aO13Kwy7Zg">pic.twitter.com/aO13Kwy7Zg</a></p>&mdash; andy mell (@afmell) <a href="https://twitter.com/afmell/status/607168120801923072">June 6, 2015</a></blockquote>
-
-
-<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<br>
-
-
-<h2>The (dis)organization</h2>
-
-<p>Those hour-long walk-and-talks? One ended up being more like two hours. And started an hour before everyone was meant to reflect on the day&#8217;s sessions. And both the facilitators were on that hike.</p>
-
-<blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/SoCraTesUK?src=hash">#SoCraTesUK</a> Still hiking with both facilitators but on our way :) Whatever happens is the only thing that could have… <a href="http://t.co/P5HhA3UTgq">pic.twitter.com/P5HhA3UTgq</a></p>&mdash; Henrik Nyh (@henrik) <a href="https://twitter.com/henrik/status/607215112546603008">June 6, 2015</a></blockquote>
-
-
-<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<br>
-
-
-<p>Being an unconference, shaped by the participants themselves, it simply adapted.</p>
-
-<blockquote class="twitter-tweet" data-conversation="none" lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/henrik">@henrik</a> <a href="https://twitter.com/rachelcdavies">@rachelcdavies</a> <a href="https://twitter.com/tooky">@tooky</a> no need to rush - we are entertaining ourselves with lightning talks :) <a href="https://twitter.com/hashtag/socratesuk?src=hash">#socratesuk</a></p>&mdash; Chris Hug (@c089) <a href="https://twitter.com/c089/status/607222329572270080">June 6, 2015</a></blockquote>
-
-
-<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-
-
-<blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr">Lmao if your facilitators lost track of time on their afternoon hike and your audience can&#39;t self organize new programme. <a href="https://twitter.com/hashtag/unconferences?src=hash">#unconferences</a> ftw</p>&mdash; Chris Hug (@c089) <a href="https://twitter.com/c089/status/607229137254772736">June 6, 2015</a></blockquote>
-
-
-<script async src="http://haydenwei.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<br>
-
-
-<p>This well-functioning self-organization couldn&#8217;t have happened without the hard work of the organizers and facilitators.</p>
-
-<p>I would love to learn more about all the unnoticed things they did to make everything just flow.</p>
-
-<p><a href="http://rachelcdavies.github.io/">Rachel&#8217;s</a> introduction to the rules of Open Space was the best I&#8217;ve heard, with none of the cultish repetition of undigested rules I&#8217;ve always seen before. And just inviting everyone to spend a few minutes discussing what they were looking for in the conference seemed to really help inspire topics.</p>
-
-<p>The great (dis)organization and the friendliness of this conference went on until the very end. I loved how <a href="https://about.me/carlosfernandezgarcia">Carlos</a> (not an organizer, I think) walked around and made sure everyone got a taxi in time for their train, and how <a href="https://twitter.com/sandromancuso">Sandro</a> (an organizer and a mensch) made sure we had everything we needed.</p>
-
-<p>Hope to see you all again next year!</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Apple Watch: day 2]]></title>
-<link href="http://haydenwei.com/posts/2015/05/apple-watch-day-2"/>
-<updated>2015-05-22T22:30:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/05/apple-watch-day-2</id>
-
-      <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/apple_watch.jpg" alt="" /></p>
-
-<p>I&#8217;ve had my Apple Watch for 2 days now. These are some random observations so far.</p>
-
-<h2>The good</h2>
-
-<h3>Watch face</h3>
-
-<p>I hear you can get these cheaper than $349, but having the current time a wrist-raise away is very convenient. The wrist-raise detection (turning the display on only when needed, to save battery) has worked almost flawlessly for me – I have no complaints.</p>
-
-<p>The Apple Watch is in some ways less beautiful to me than <a href="https://dl.dropboxusercontent.com/u/546793/blog/raketa.jpg">the mechanical Raketa watch</a> I used to sometimes wear, but I like having a digital watch face. When I see an analog watch face, I convert it to digital in my head.</p>
-
-<p>Having the date on your wrist (this can also be had for less money) is convenient. When I bought milk, I checked the best-before date against today&#8217;s date in the wink of an eye.</p>
-
-<p>When I went out for an evening walk, I glanced ever so briefly at the temperature to see if I needed a jacket.</p>
-
-<p>Seeing the next calendar appointment is also pretty neat.</p>
-
-<p>I mostly use the &#8220;Modular&#8221; watch face.</p>
-
-<p>Before I got my watch, I thought the Mickey Mouse watch face just looked silly. But on the actual device, it might be my second favorite. The saturated red, yellow and white against black looks really good.</p>
-
-<h3>The screen</h3>
-
-<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/apple_watch_circle.jpg" alt="" /></p>
-
-<p>I had expected the screen to be a bit crappy, and that the pixels weren&#8217;t as &#8220;close to the glass&#8221; as on the iPhone, but the OLED screen looks unreal in the best way.</p>
-
-<p>When the circle-of-specifications appeared after pairing the watch, I was wowed at how it seemed to pop out of the screen.</p>
-
-<p>Perhaps due to the very black blacks, the picture on the screen looks to me almost like it&#8217;s hovering a hair <em>above</em> the screen. Photos don&#8217;t do it justice.</p>
-
-<h3>Siri</h3>
-
-<p>Moving Siri from your pocket to your wrist is surprisingly significant. You just lift your wrist, press the crown and speak. (Or say &#8220;Hey Siri&#8221;, but that&#8217;s iffy and then you feel stupid.)</p>
-
-<p>I do &#8220;remind me to X in 5 minutes&#8221;, &#8220;remind me to Y at 11:30&#8221; several times a day now. Today at work I promised to look at something after lunch, so I quickly added a reminder. On my way home I saw a poster for an interesting event, so I lifted my wrist and added it to my calendar.</p>
-
-<p>She&#8217;s also great for looking up random stuff. &#8220;When is Mother&#8217;s Day?&#8221;, &#8220;Where is Burundi?&#8221;</p>
-
-<h3>Turning off alarms</h3>
-
-<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/apple_watch_alarm.jpg" alt="" /></p>
-
-<p>When the alarm clock on your iPhone rings, you can turn it off from the watch. I&#8217;ve wanted this so much and didn&#8217;t even realize the watch could do it until it happened, despite having read a lot of reviews.</p>
-
-<p>I often rise before the alarm, especially in the weekends. If I leave my phone by the bedside, the alarm may ring when I&#8217;m in the bathroom or at the kitchen table. This is annoying to me and my sleepyhead girlfriend both.</p>
-
-<p>I&#8217;ve wanted this feature to the point that when I had a jailbroken iPhone for a while, I installed software so I could share the iPhone screen remotely from my computer or iPad to turn alarms off. Unsurprisingly, this wasn&#8217;t nearly convenient enough that I stuck with it.</p>
-
-<h3>Messaging on the go</h3>
-
-<p>I stopped by the grocery store after work today and sent a message from my iPhone to my girlfriend, asking if we needed milk.</p>
-
-<p>A minute later, phone back in my pocket, I felt a light tap and saw her reply on my wrist. She suggested some more purchases, and I replied with the standard &#8220;OK&#8221; right from the watch, in two taps.</p>
-
-<p>I was meeting up with a friend yesterday and on my way there I could see her messages on my wrist, without breaking my stride.</p>
-
-<p>This may seem like a tiny convenience, but there&#8217;s something about the unbroken flow of it that I really enjoy.</p>
-
-<h3>Phone calls</h3>
-
-<p>I got a phone call while I was doing things in the kitchen, so I answered it right on my wrist. The sound quality was fine (but might not be in a noisier environment).</p>
-
-<p>Then when the phone call went on for longer, I just handed it off to my phone seamlessly and kept talking there.</p>
-
-<h3>Directions</h3>
-
-<p>When I tried map directions two evenings ago, it worked well and was super cool.</p>
-
-<p>I set up the route on my phone, and the next time I raised my wrist, the directions were there. It&#8217;s beautiful how it counts down the distance to the next turn and then taps you (with different taps for &#8220;left&#8221; and &#8220;right&#8221;) a short while before it&#8217;s time to turn.</p>
-
-<p>But then when I played with it again today in the neighbourhood of the office, the directions were all confused, and it didn&#8217;t show the right instructions. I&#8217;m not sure if I did something wrong or what. I&#8217;ll experiment more with it and see if I can figure out what happened.</p>
-
-<h3>Cool apps</h3>
-
-<p>I must mention the <a href="http://watchaware.com/watch-apps/981734714">Prank Watch</a> app. The app description and screenshots do their best to hide this from Apple&#8217;s reviewers, but it&#8217;s essentially a fart app from the future. You launch the app on your phone and hide it somewhere (unlocked, so the app remains active). Then you can trigger a fart sound remotely from your watch. Or a monster sound, or several others. It&#8217;s silly but brilliant.</p>
-
-<p>You can receive a notification on your wrist <a href="http://watchaware.com/watch-apps/954912200">when your phone battery is fully charged, or running low</a>. You can be notified <a href="https://www.reddit.com/r/AppleWatch/comments/3637p1/what_is_your_single_most_essential_apple_watch_app/craf7by">when a heavenly spotlight is about to fall on you</a>.</p>
-
-<h2>The less good</h2>
-
-<h3>Siri&#8217;s knowledge gaps</h3>
-
-<p>Siri is pretty great, but she has some annoying knowledge gaps. You&#8217;re inexplicably referred to the phone when you ask about birthdays and ages. You can ask &#8220;What am I doing on May 25th?&#8221; but no more than 6 days ahead.</p>
-
-<h3>Multi-language support is iffy</h3>
-
-<p>I would love to look up English words in <a href="http://watchaware.com/watch-apps/289694924">WordBook</a>, but the dictation only accepts Swedish, which is my Siri language. I&#8217;m not sure if this is a shortcoming of the watch or of that app.</p>
-
-<p>Sometimes the quick-reply options in the Messages app are English, sometimes Swedish, and it doesn&#8217;t always get it right. Once, dictation for a message to a Swedish contact expected English, though I haven&#8217;t been able to reproduce it since.</p>
-
-<p>I wish you could force touch from the reply view to get a language picker.</p>
-
-<h3>Watch battery</h3>
-
-<p>Today, battery life has been fine. As I write this around 7:30 in the evening, having worn it some 12 hours, I&#8217;m at 40%. (As I edit this passage at 10:30, it&#8217;s at 17%.) I&#8217;ve interacted with it fairly frequently throughout the day, checking the time, interacting with notifications, adding reminders and such.</p>
-
-<p>Yesterday, the battery gave out around 10 in the evening, an hour before bedtime, after around 15 hours of use. I did track a 15 minute run (which measures your pulse more frequently, and thus uses more battery) but <a href="https://www.apple.com/watch/battery.html">Apple&#8217;s own battery testing</a> got more battery life with more exercise. Maybe I just used the watch a lot: it was my first full day with it (having received it the previous evening). Or maybe calibrating the watch on the first run burns more battery.</p>
-
-<p>The fact that I need to worry about the battery making it through the day is certainly a major downside, for a device meant to be worn all the time.</p>
-
-<h3>Phone battery</h3>
-
-<p>My phone battery has run out much faster since I got the watch. It used to get through the day fine, but yesterday I had to charge it on my way home from work.</p>
-
-<p>It&#8217;s possible that part of this is down to plugging the phone in less at work since I don&#8217;t need the phone on my desk for notifications anymore. I&#8217;m not sure.</p>
-
-<h3>Apps are fiddly</h3>
-
-<p>Short interactions on the watch are great. Notifications, a quick reply to a message, checking your step count, changing the song.</p>
-
-<p>Long interactions can be fiddly, and are more appropriate for the iPhone. I love getting a notification when my girlfriend posts <a href="https://instagram.com/johannaost">on Instagram</a>, but scrolling through my Instagram feed on the watch isn&#8217;t a good experience. It&#8217;s great if you treat it as a super-powered watch; it&#8217;s not a smaller iPhone.</p>
-
-<p>The app launcher screen itself is not very convenient to use, especially if you&#8217;re on the go. Icons are small and the lack of labels makes them harder to identify.</p>
-
-<p>If you launch the Workout app from the app launcher and then want to see or change the song in the Now Playing glance, you have to press the crown three times (back to launcher, then re-center launcher, then switch to watch face). Then swipe down and to the right glance. Then press the crown once (back to watch face) and then double-press it (back to last app). A bit fiddly.</p>
-
-<p>The app launcher is also unnecessarily crowded. There are apps I only want to access via complications (Activity, Weather, Calendar), glances (Pedometer++), or through notifications (Instagram). There are built-in apps (Stocks) I don&#8217;t use. So why are they in the app launcher where space is at a premium? The companion app on the iPhone lets you toggle glances on and off per app. I wish I could do the same for app launcher icons.</p>
-
-<h3>Slow-to-update glances</h3>
-
-<p>Well, just one that I&#8217;ve noticed: the <a href="http://pedometerplusplus.com/">Pedometer++</a> glance shows me my step count, but it will often freeze, showing an old state and a spinner, until I give up after 10 seconds or so and just tap it to launch the app instead.</p>
-
-<h3>Can&#8217;t send step counts to Fitbit</h3>
-
-<p>I <a href="http://haydenwei.com/2015/05/the-apple-watch-is-not-a-fitbit-wristband/">blogged about this</a> yesterday.</p>
-
-<h3>Taptic feedback could be stronger</h3>
-
-<p>I love the taptic feedback, but the single taps for notifications are a bit too unintrusive and could stand to be slightly stronger. Much of the feedback is very noticeable, though – you <em>will</em> notice when a timer reaches 0.</p>
-
-<h2>The miscellaneous</h2>
-
-<p>I think the 38 mm watch was a good choice aesthetically – I haven&#8217;t seen the 42 mm in real life, but judging by <a href="http://exactfitnessapps.com/try-it-on-apple-watch-sizing-guide.html">a paper dummy</a> and photos online, it would look too big on me for my taste.</p>
-
-<p>For some reason, I keep trying to swipe to the right from the watch face to the apps. This doesn&#8217;t work: you need to click the crown. I guess I picture them as being side-by-side.</p>
-
-<p>I thought the built-in weather app was a bit painful to use, because you had to force touch and then tap to switch between conditions, temperature and chance of rain. Turns out you can just tap the weather circle and it rotates between these modes.</p>
-
-<p>I wish Siri supported something like &#8220;Note to self: bla bla&#8221;. I make so many of those through <a href="http://captio.co/">Captio</a> on the iPhone, but having it on the wrist would be amazing.</p>
-
-<h2>The summary</h2>
-
-<p>So far, I mostly love the watch. It&#8217;s definitely not a necessity, but adds some convenience and some fun if you&#8217;ve the money to spare.</p>
-
-<p>That&#8217;s it for this post. I might write about it again when I&#8217;ve had it for longer.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[The Apple Watch is not a Fitbit wristband]]></title>
-<link href="http://haydenwei.com/posts/2015/05/the-apple-watch-is-not-a-fitbit-wristband"/>
-<updated>2015-05-21T07:05:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/05/the-apple-watch-is-not-a-fitbit-wristband</id>
-
-      <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/546793/blog/watch-pedometer.jpg" alt="" /></p>
-
-<p>I&#8217;ve previously blogged about <a href="http://thepugautomatic.com/2015/03/the-ten-thousand-steps/">using the iPhone as a step counter together with the Fitbit app</a>.</p>
-
-<p>I had hoped that the Apple Watch could fit into this arrangement, but I&#8217;m afraid it doesn&#8217;t. It does count steps, but not in a way that you can use with Fitbit challenges.</p>
-
-<p>There are two ways for an iPhone app to access step data: through the pedometer (technical reference: <a href="https://developer.apple.com/library/ios/documentation/CoreMotion/Reference/CMPedometer_class/index.html#//apple_ref/occ/cl/CMPedometer">CMPedometer from Core Motion</a>), or through the Health app (technical reference: <a href="https://developer.apple.com/healthkit/">HealthKit</a>).</p>
-
-<p>The pedometer data only comes from what the phone itself tracks. You can view it from the watch with e.g. <a href="http://pedometerplusplus.com/">Pedometer++</a>, but the watch will not contribute any data.</p>
-
-<p>The Health data comes from <em>both</em> the phone and the watch (if there are simultaneous steps, it only counts one source for that period, giving the watch priority).</p>
-
-<p>The Fitbit app uses pedometer data – the data that only comes from the phone.</p>
-
-<p>They <a href="http://9to5mac.com/2014/10/08/fitbit-says-it-has-no-current-plans-for-ios-8-health-app-integration/">might or might not</a> add Health integration in the future.</p>
-
-<p>It does not, perhaps, make business sense for them to ever add it. The iPhone tracking seems a good way to hook users that then want a wristband (we&#8217;ve had a few of those at work) – but someone who can track steps on their watch might not be interested in their wristbands. On the other hand, a big community is inviting in its own right, so keeping Apple Watch users in the fold may mean more wristband sales to their Apple Watch-less co-workers, friends and family.</p>
-
-<p>The <a href="(http://syncsolver.com/">Sync Solver app</a> can sync data from Health to Fitbit, but these steps <a href="http://syncsolver.com/healthfitbit/support/#ad9a05f2">do not count towards challenges</a> and <a href="http://syncsolver.com/healthfitbit/support/#c1486976">only sync hourly</a> among <a href="http://syncsolver.com/healthfitbit/support/">other limitations</a>.</p>
-
-<p>Thus I can&#8217;t see a way to use the watch for Fitbit in a meaningful way – you still need to carry the phone around for tracking, or buy a wristband.</p>
-
-<p>Please comment with any corrections or suggestions.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Make sharing explicit]]></title>
-<link href="http://haydenwei.com/posts/2015/05/make-sharing-explicit"/>
-<updated>2015-05-12T20:50:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/05/make-sharing-explicit</id>
-
-      <content type="html"><![CDATA[<p>When you reuse something, like a Ruby on Rails partial or i18n translation string, it&#8217;s tempting to just reference it by its current name.</p>
-
-<p>Maybe <code>admin/customers/show.html.erb</code> renders the <code>admin/customers/_invoices.html.erb</code> partial, and now you want to render it from <code>superadmin/customers/show.html.erb</code> as well.</p>
-
-<p>Or maybe you use <code>t("customers.show.title")</code> to output a translation string in the <code>customers/show.html.erb</code> template, and now you want to reuse it in a customer widget elsewhere.</p>
-
-<p>If you don&#8217;t rename the partial or the translation key, the name will be left incorrectly suggesting it&#8217;s related to just that one controller, or just that one template.</p>
-
-<p>Now every future change is in jeopardy of this reasonable misunderstanding. Someone intends to change a page title but also accidentally changes the widget. They don&#8217;t necessarily have the same reason to change.</p>
-
-<p>Instead, you can make the sharing explicit.</p>
-
-<p>You could move the partial to <code>shared/customers/_invoices.html.erb</code>, and the translation key to <code>shared.customers.title</code>.</p>
-
-<p>Now if you change any of these values, you will <em>expect</em> them to have a wider effect.</p>
-
-<p>I think of this a bit like private methods: being private suggests only being used in the same file. Being public suggests a wider scope.</p>
-
-<p>As always, there are nuances and trade-offs. Using <code>customers.show.title</code> in a link to that page could make sense, for example, since we specifically want to reference the page title.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Wrap instance variables passed to layouts]]></title>
-<link href="http://haydenwei.com/posts/2015/04/wrap-ivars"/>
-<updated>2015-04-29T22:50:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/04/wrap-ivars</id>
-
-      <content type="html"><![CDATA[<p>If your layout template shows a breadcrumb but you want to hide it on some pages, this is a reasonable way to do it:</p>
-
-<figure class='code'><figcaption><span>my_controller.rb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="vi">@hide_breadcrumbs</span> <span class="o">=</span> <span class="kp">true</span>
-</span><span class='line'>  <span class="c1"># …</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>layout.html.erb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="k">unless</span> <span class="vi">@hide_breadcrumbs</span> <span class="cp">%&gt;</span><span class="x"></span>
-</span><span class='line'><span class="x">  &lt;nav class=&quot;breadcrumbs&quot;&gt;…&lt;/nav&gt;</span>
-</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Of late I&#8217;ve started wrapping these instance variables in thin methods:</p>
-
-<figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">hide_breadcrumbs</span>
-</span><span class='line'>  <span class="vi">@hide_breadcrumbs</span> <span class="o">=</span> <span class="kp">true</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">helper_method</span> <span class="p">\</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">show_breadcrumbs?</span>
-</span><span class='line'>  <span class="o">!</span><span class="vi">@hide_breadcrumbs</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>my_controller.rb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="n">hide_breadcrumbs</span>
-</span><span class='line'>  <span class="c1"># …</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>layout.html.erb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">show_breadcrumbs?</span> <span class="cp">%&gt;</span><span class="x"></span>
-</span><span class='line'><span class="x">  &lt;nav class=&quot;breadcrumbs&quot;&gt;…&lt;/nav&gt;</span>
-</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>(If you want to learn more about <code>helper_method \</code>, see <a href="http://haydenwei.com/2015/01/backslashy-ruby/">&#8220;Backslashy Ruby&#8221;</a>.)</p>
-
-<p>I like this pattern because I&#8217;ve found instance variables in views to be bug prone and a bit difficult to maintain. I <a href="http://haydenwei.com/2013/05/locals/">don&#8217;t</a> use them when rendering action views, either.</p>
-
-<p>If an instance variable is not set, it defaults to <code>nil</code>. So if I set one in a controller over here, and read it in a view over there, that&#8217;s two places that need to write the variable in exactly the same way, and if they don&#8217;t, you might get silent bugs.</p>
-
-<p>When you wrap them in methods like this, the write and the read are adjacent in code, so they&#8217;re easier to maintain.</p>
-
-<p>You also get the expressiveness, the encapsulation and the flexibility of using a method. For example, notice how I defined a <code>#show_breadcrumbs?</code> to avoid the double negative of <code>unless @hide_breadcrumbs</code>.</p>
-
-<p>Try it out!</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
 <title type="html"><![CDATA[rails_config的正确使用姿势]]></title>
 <link href="http://haydenwei.com/posts/2015/04/rails-config-usage"/>
 <updated>2015-04-26T00:00:00+08:00</updated>
@@ -1578,8 +345,8 @@ rhs:  RuntimeError
 
 <p>3、不同settings文件的key之间的关系是<strong>合并关系</strong>。且优先级关系为:</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">environments</span><span class="o">/</span><span class="c1">#{Rails.env}.local.yml &gt; settings/#{Rails.env}.local.yml &gt; settings.local.yml</span>
-</span><span class='line'><span class="o">&gt;</span> <span class="n">environments</span><span class="o">/</span><span class="c1">#{Rails.env}.yml &gt; settings/#{Rails.env}.yml &gt; settings.yml</span>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'>environments/#<span class="o">{</span>Rails.env<span class="o">}</span>.local.yml &gt; settings/#<span class="o">{</span>Rails.env<span class="o">}</span>.local.yml &gt; settings.local.yml
+</span><span class='line'>&gt; environments/#<span class="o">{</span>Rails.env<span class="o">}</span>.yml &gt; settings/#<span class="o">{</span>Rails.env<span class="o">}</span>.yml &gt; settings.yml
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1710,23 +477,23 @@ rhs:  RuntimeError
       <content type="html"><![CDATA[<p>阅读完本篇文章，你将了解到：</p>
 
 <ul>
-<li>类似Book.where(id: 1)这样的方法是如何执行的</li>
-<li>ActiveRecord::Relation对象是什么</li>
+<li>类似 Book.where(id: 1) 这样的方法是如何执行的</li>
+<li>ActiveRecord::Relation 对象是什么</li>
 </ul>
 
 
 <h3>理解where方法的查找链</h3>
 
-<p>假设我们有一个名为Book的model:</p>
+<p>假设我们有一个名为 Book 的 model:</p>
 
 <figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Book</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>再假设我们要查询id为1的那本书，以 <code>where</code> 方法为例，那么我们的查询语句一般会这样写: <code>Book.where(id: 1)</code>；但在Book类中你并没有定义<code>where</code>方法，那么这句代码是怎样被执行的呢？让我们一起来探究一下。</p>
+<p>再假设我们要查询id为1的那本书，以 <code>where</code> 方法为例，那么我们的查询语句一般会这样写: <code>Book.where(id: 1)</code>；但在Book类中你并没有定义 <code>where</code> 方法，那么这句代码是怎样被执行的呢？让我们一起来探究一下。</p>
 
-<p>1、首先，Book类中没有定义where方法；但由于Book类继承自ActiveRecord::Base类，因此方法调用链会去尝试调用ActiveRecord::Base.where方法。</p>
+<p>1、首先，Book 类中没有定义 where 方法；但由于 Book 类继承自 ActiveRecord::Base 类，因此方法调用链会去尝试调用 ActiveRecord::Base.where 方法。</p>
 
 <p>2、通过查看ActiveRecord::Base类的源码可知，ActiveRecord::Base类也没有显式定义where方法；但ActiveRecord::Base类extend了ActiveRecord::Querying模块：</p>
 
@@ -1835,9 +602,10 @@ rhs:  RuntimeError
 
 <p>1、想象一下我们通常对ActiveRecord::Relation对象做些什么操作？比如上面得到的books对象，我们通常会有这样的操作：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>books.each do |book|
-</span><span class='line'>  p book.id
-</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">books</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">book</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">p</span> <span class="n">book</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>2、books是一个ActiveRecord::Relation对象，那么ActiveRecord::Relation.each方法是什么呢？</p>
@@ -1874,80 +642,107 @@ rhs:  RuntimeError
 
 
 
-<title type="html"><![CDATA[Ruby's String#[/regexp/]]]></title>
-<link href="http://haydenwei.com/posts/2015/03/rubys-string-brackets-regexp"/>
-<updated>2015-03-07T17:15:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/03/rubys-string-brackets-regexp</id>
+<title type="html"><![CDATA[谈谈对云计算的一些理解]]></title>
+<link href="http://haydenwei.com/posts/2015/03/cloud-computing-and-openshift"/>
+<updated>2015-03-03T00:00:00+08:00</updated>
+<id>http://haydenwei.com/posts/2015/03/cloud-computing-and-openshift</id>
 
-      <content type="html"><![CDATA[<p>One of my favorite Ruby methods is <a href="http://ruby-doc.org/core-2.2.0/String.html#method-i-5B-5D"><code>String#[]</code></a> when given a regular expression:</p>
+      <content type="html"><![CDATA[<p>现如今无论公司还是个人，都在讲云计算，似乎一听到<strong>云计算</strong>这个词就觉得高大上。那么到底什么是云计算呢？</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;fooobar&quot;</span><span class="o">[</span><span class="sr">/o+/</span><span class="o">]</span>  <span class="c1"># =&gt; &quot;ooo&quot;</span>
-</span><span class='line'><span class="s2">&quot;fooobar&quot;</span><span class="o">[</span><span class="sr">/o+(.)/</span><span class="p">,</span> <span class="mi">1</span><span class="o">]</span>  <span class="c1"># =&gt; &quot;b&quot;</span>
+<h3>什么是云计算？</h3>
+
+<p>目前使用最多的对云计算的定义是这样的：</p>
+
+<blockquote><p><strong>云计算</strong>是一种按使用量付费的模式，这种模式提供可用的、便捷的、按需的网络访问， 进入可配置的计算资源共享池（资源包括网络，服务器，存储，应用软件，服务），这些资源能够被快速提供，只需投入很少的管理工作，或与服务供应商进行很少的交互。</p></blockquote>
+
+<p>以上是美国国家标准技术研究所（NIST）给出的定义<a href="http://www.nist.gov/itl/cloud/">^CloudComputing</a>，大家千万不要被云计算这三个字中的“计算”两个字所误导而认为这是一种关于数学计算方面的新技术；实际上它代表的是一种模型或者叫模式。</p>
+
+<p>举个例子来说，我做了一个网站来提供图片存储服务，你通过访问网站来上传和下载你存储的图片。对于你（使用者）来说，上传的图片存到什么地方去了、后台有多少台服务器、服务器的网络带宽是多少&#8230;等等这些问题你一无所知，就像被云遮住了一样什么都看不见（整个网站服务就像是一朵云，你把图片扔进云里它就存储好了，要用的时候直接从云里去拿，至于这是一朵什么云你一概不知也不需要知道，这就是<strong>云</strong>的概念）；再加上这些服务都跟计算机或者大量计算相关，所以类似于我提供的这种服务模式就叫做<strong>云计算</strong>，而我就叫做<strong>云计算服务提供方</strong>。</p>
+
+<p>目前云计算领域主要包含3大部分内容，即Infrastructure as a Service（IaaS，基础设施即服务）、Platform as a Service（PaaS，平台即服务）、 Software as a Service（SaaS，软件即服务）。</p>
+
+<h3>IaaS, PaaS和SaaS的区别</h3>
+
+<p>IaaS, PaaS和SaaS是目前云计算领域的主要组成部分。如果把整个云计算想象成一个栈的话，那么IaaS就在最底层，SaaS在最顶层，而PaaS在它们之间。</p>
+
+<p><img src="http://7x2vza.com1.z0.glb.clouddn.com/cloud-computing.png" alt="云计算" /></p>
+
+<ul>
+<li><p><strong>IaaS（基础设施即服务）</strong></p>
+
+<p>IaaS是一种将服务器、存储资源、网络配置、防火墙等一系列基础设备综合起来提供给用户按需付费使用的服务。</p>
+
+<p>例如，一个公司如果需要上线一个web产品，那么运维部需要提前采购服务器、购买网络带宽、配置网络和防火墙等等，往往光是采购服务器这一步就可能需要花费一周的时间，大大延迟了产品的上线时间；而且每次新增服务器都需要重复以上过程。有了IaaS以后，你只需要考虑选择哪一个IaaS服务提供方，选定后按自己对基础资源的需求购买相应的资源即可（大部分IaaS提供方都可以免费试用），所有关于采购、配置等步骤你都不用管，你只需要在购买的资源上配置运行公司的产品所需要的环境即可。这让你仅仅聚焦于如何搭建和发布产品环境而不是繁琐的服务器采购和配置工作。</p>
+
+<p>目前IaaS服务主要提供云存储和硬件资源虚拟化（比如上例中的服务器资源），在这方面做的最好最大的是<a href="http://aws.amazon.com/cn/">Amazon Web Service（AWS）</a>，国内也有诸如<a href="http://www.qcloud.com/">腾讯云</a>这样的服务。</p></li>
+<li><p><strong>PaaS（平台即服务）</strong></p>
+
+<p>PaaS通常是在IaaS基础上提供的一种平台服务，且多聚焦于web解决方案。它在IaaS基础上将运行某一语言所需要的环境安装好后直接提供给用户（<strong>主要是开发者</strong>）使用，让用户专注于产品的创新和快速原型的开发，而不是完成从购买服务器、安装产品运行环境到部署代码等整个繁琐的过程。</p>
+
+<p>比如，你有一个很好的idea，已经用Rails来实现了它，现在迫切需要发布到网上进行推广验证。因此接下来你要购买一个服务器、购买域名、安装和配置Nginx、安装Ruby和Rails、安装MySQL数据库&#8230;然后部署代码进行测试是否部署成功。天啦，想想都觉得头痛！现在有了PaaS，你只需要两步：第一步选择开发平台（比如Rails），第二步提交代码，然后就可在线上进行访问了。所有有关该开发平台的环境配置、服务器配置、数据库安装都由PaaS帮你完成，让你更专注于代码开发从而快速实现一个好的创意。</p>
+
+<p>PaaS平台现在有很多，比如GAE，OpenShift，Heroku，国内的SAE， BAE等等。</p></li>
+<li><p><strong>SaaS（软件即服务）</strong></p>
+
+<p>  回想一下我们平常是怎样使用软件的？当我们需要使用一个软件时，我们需要下载它、安装它，然后才能使用，此时该软件是实实在在存在于我们的计算机上的。比如在以前你要收发邮件时需要下载并安装邮件客户端，还需要配置POP/SMTP地址，而且还需要时刻小心垃圾邮件占尽了磁盘空间，当软件有更新时你还需要下载更新&#8230;但有了SaaS就不一样了，再想一下你使用Gmail的场景：你仅仅在浏览器中输入了一个网址，再登录以后居然就可以收发邮件了。</p>
+
+<p>这就是SaaS，它是一种通过Internet提供软件的模式，用户无需购买和安装软件，直接向提供方租用（免费或者付费）基于Web的软件。典型的SaaS应用有Gamil, <a href="https://office.live.com">Microsoft Office Online</a>等等。</p></li>
+</ul>
+
+
+<p>当然，作为一名开发者，最为关心的应该就是PaaS了，因此下面就来谈谈OpenShift的使用。</p>
+
+<h3>OpenShift的使用</h3>
+
+<h4>1. 什么是OpenShift？</h4>
+
+<p><a href="https://www.openshift.com/">OpenShift</a>是Red Hat公司推出的一种PaaS服务，它支持Java（Wildfly, JBossEAP, Tomcat）, PHP, Node.js, Python, Ruby, Perl, MySQL, PostgreSQL, MongoDB, Jenkins, Cron, 以及JBoss xPaaS Services (Fuse, BPM Suite, BRMS, Data Virtualization, Aerogear等等)，可以说包含了目前所有的主流开发平台。</p>
+
+<p>OpenShift提供了3种版本：OpenShift Origin，OpenShift Online和OpenShift Enterprise。其中OpenShift Origin开源并托管于<a href="https://github.com/openshift/origin">Github</a>上，你可以用它来搭建自己的本地PaaS服务；OpenShift Online则是定期从OpenShift Origin打包发布的主要针对开发者的PaaS服务；而OpenShift Enterprise则主要提供给企业用户使用。因此作为开发者来讲，我们主要关心并使用的是OpenShift Online。</p>
+
+<p><a href="https://www.openshift.com/app/account/new">注册</a>一个OpenShift Online账号后，每个账号就可以<strong>免费</strong>创建并部署3个小应用程序了（small gear），每个应用程序的服务器配置为 512M RAM 和 1G 存储容量，这对于个人项目或者刚刚诞生的Good idea来说已经足够了。</p>
+
+<h4>2. 安装OpenShift</h4>
+
+<p>OpenShift提供了3种方式来创建和管理应用程序：Web Console、客户端命令行工具rhc，以及Eclipse插件。对绝大多数开发者来说最强大最完整的方式肯定是命令行工具，因此下面就以在CentOS系统上使用命令行工具rhc创建一个Ruby应用的方式来简单介绍一下OpenShift的使用。其他系统安装rhc的方法请参考<a href="https://developers.openshift.com/en/managing-client-tools.html">这里</a>。</p>
+
+<ul>
+<li><p>准备条件</p>
+
+<p>rhc是一个Gem包，因此你需要先安装RubyGems。Ruby 1.9+已经内置了RubyGems，所以如果你的系统上已经安装过Ruby 1.9+的版本的话，RubyGems就已经在你的系统上了。如果没有安装过请参考<a href="https://rubygems.org/pages/download">这里</a>。此外，rhc使用SSH和Git来管理和上传源代码，因此这两个工具也需要安装。</p></li>
+<li><p>安装rhc</p></li>
+</ul>
+
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'>gem install rhc
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The first form returns the matched part of the string. The second form returns capture group number 1.</p>
-
-<p>For one thing, it&#8217;s short and sweet.</p>
-
-<p>For another, it&#8217;s robust. <code>"fooobar".match(/x(.)/)[1]</code> will raise &#8220;undefined method `[]&#8217; for nil:NilClass&#8221;. <code>"fooobar"[/x(.)/, 1]</code> will just return <code>nil</code>.</p>
-
-<p>It&#8217;s a great choice for extracting a regexp match from a string.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
+<ul>
+<li><p>运行 <code>rhc setup</code> 按提示一步一步<a href="https://developers.openshift.com/en/getting-started-overview.html">配置rhc</a></p></li>
+<li><p>配置完成后，即可创建一个应用程序：</p></li>
+</ul>
 
 
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 可运行rhc cartridge list查看OpenShift支持的所有开发平台</span>
+</span><span class='line'><span class="c"># 创建一个名称为funny的应用程序，开发平台为ruby-2.0</span>
+</span><span class='line'>rhc create-app funny ruby-2.0
+</span></code></pre></td></tr></table></div></figure>
 
 
-<title type="html"><![CDATA[The 10,000 steps]]></title>
-<link href="http://haydenwei.com/posts/2015/03/the-ten-thousand-steps"/>
-<updated>2015-03-06T23:30:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/03/the-ten-thousand-steps</id>
+<p>OK，就这4步，一个名为funny的Ruby应用程序已经创建并部署到OpenShift上了，现在你就可以访问OpenShift返回给你的应用程序URL来查看它了，厉害吧！</p>
 
-      <content type="html"><![CDATA[<p>For a month now, I&#8217;ve counted my steps using <a href="http://en.wikipedia.org/wiki/Apple_M7">the pedometer</a> built into my iPhone 6, with a daily goal of 10,000.</p>
+<p>但遗憾的是上述URL并不能在华夏国内访问，因为它已经被功夫网（GFW）给封了。好在<strong>绑定独立域名后是可以访问的</strong>。具体方法为：</p>
 
-<p><a href="http://www.webmd.com/fitness-exercise/20150119/too-much-sitting-can-be-deadly----even-if-you-exercise-review-finds">Sitting is deadly</a>, and I&#8217;ve found that counting steps, combined with some positive peer pressure, makes me <em>want</em> to move more throughout the day.</p>
+<ol>
+<li>首先在你所购买的域名的管理界面中新增域名解析CNAME类型，将OpenShift给你的应用程序的URL解析到你所购买的域名；</li>
+<li>在OpenShift应用程序根目录中执行<code>rhc alias add &lt;应用程序名称&gt; &lt;你购买的域名&gt;</code>绑定独立域名。</li>
+</ol>
 
-<h2>The Fitbit app</h2>
 
-<p><img src="https://s3.amazonaws.com/f.cl.ly/items/2k1y301P1A2H320K3A1R/IMG_4798.PNG" alt="Fitbit screenshot" /></p>
+<p>OK，刚刚部署的应用程序现在终于可以正常访问了。关于rhc的更多用法请运行<code>rhc -h</code>查看。要了解更多的OpenShift知识或查看每种开发平台的帮助文档请阅读OpenShift的<a href="https://developers.openshift.com/">开发者文档</a>。</p>
 
-<p>With an iPhone 5s or later, you can use the free <a href="https://www.fitbit.com/iphone">Fitbit app</a>. Their <a href="http://help.fitbit.com/articles/en_US/Help_article/MobileTrack-for-iOS-FAQs">&#8220;MobileTrack&#8221;</a> feature uses the phone as the source of data – no need to buy a wristband.</p>
-
-<p>Then get co-workers and friends to install it – that accountability and positive peer pressure does a lot, even if you feel that you&#8217;re in it to challenge yourself, not others.</p>
-
-<p>My gang has been running a &#8220;Weekend Warrior&#8221; challenge every Saturday–Sunday and a &#8220;Workweek Hustle&#8221; every Monday–Friday. Independent of any ongoing challenge, you can also see a &#8220;7 day steps&#8221; running top list among your friends.</p>
-
-<p>You get push notifications if someone&#8217;s catching up to you, cheers and comments in the challenge comment thread, and virtual badges when you reach new milestones. It&#8217;s all quite fun and encouraging.</p>
-
-<h2>Pedometer++</h2>
-
-<p><img src="https://s3.amazonaws.com/f.cl.ly/items/3k3p1x1m1B3x4642093c/IMG_4796.PNG" alt="Pedometer++ widget screenshot" /></p>
-
-<p>I like <a href="http://pedometerplusplus.com/">Pedometer++</a> (free, pay to remove ads) mostly because it can show my step count as a Notification Center widget, accessible by sliding down from the top of the phone&#8217;s screen, even if the phone is locked. The app (not the widget) also provides step graphs, and a delightful confetti burst when you reach your daily goal.</p>
-
-<p>You can see very clearly in the graph when I started counting steps:</p>
-
-<p><img src="https://s3.amazonaws.com/f.cl.ly/items/192I1X1h3H37181Q1811/IMG_4797.PNG" alt="Pedometer++ graph screenshot" /></p>
-
-<p>You can also see that I might have gone a bit overboard the first weekend. You want to win the first one so you have nothing to prove later…</p>
-
-<h2>Effects</h2>
-
-<p>I&#8217;ve noticed interesting effects from having a step goal.</p>
-
-<p>Since I&#8217;m pursuing a daily goal as well as challenging other people, walking becomes preferable to sitting or standing still. Waiting is no longer tedious; it&#8217;s a chance to get some walking in. 10 minutes until the bus arrives? Excellent, that&#8217;s 1,000 steps. Code discussion? Walk and talk.</p>
-
-<p>Errands become opportunities. I used to dislike having to walk to the grocery store. Now I intentionally buy less milk every time so I have to go there more frequently. A weekend morning walk to buy breakfast can be lovely. Unexpected benefit: the fridge is less crammed.</p>
-
-<p>I&#8217;ve explored new places. Walking further feels like a win.</p>
-
-<p>At work, we&#8217;ve started taking lunch and afternoon walks. Many of us walk a bigger part of the way to work.</p>
-
-<p>I quite like how the 10,000 step commitment means that a certain chunk of your day (around 100 minutes) has to be peripatetic. You can listen to podcasts, music, audiobooks, birdsong, city life; or talk to someone; or think. What you can&#8217;t do is spend that time in a couch watching TV, or seated in front of the computer. It leaves slightly less room for sedentary life.</p>
+<hr />
 ]]></content>
     </entry>
   

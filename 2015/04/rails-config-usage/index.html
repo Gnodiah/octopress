@@ -168,8 +168,8 @@ Written <time datetime="2015-04-26T00:00:00+08:00" pubdate data-updated="true">A
 
 <p>3、不同settings文件的key之间的关系是<strong>合并关系</strong>。且优先级关系为:</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">environments</span><span class="o">/</span><span class="c1">#{Rails.env}.local.yml &gt; settings/#{Rails.env}.local.yml &gt; settings.local.yml</span>
-</span><span class='line'><span class="o">&gt;</span> <span class="n">environments</span><span class="o">/</span><span class="c1">#{Rails.env}.yml &gt; settings/#{Rails.env}.yml &gt; settings.yml</span>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'>environments/#<span class="o">{</span>Rails.env<span class="o">}</span>.local.yml &gt; settings/#<span class="o">{</span>Rails.env<span class="o">}</span>.local.yml &gt; settings.local.yml
+</span><span class='line'>&gt; environments/#<span class="o">{</span>Rails.env<span class="o">}</span>.yml &gt; settings/#<span class="o">{</span>Rails.env<span class="o">}</span>.yml &gt; settings.yml
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -330,7 +330,7 @@ Written <time datetime="2015-04-26T00:00:00+08:00" pubdate data-updated="true">A
       
         <p>
           <strong>Newer:</strong>
-          <a href="/posts/2015/04/wrap-ivars">Wrap instance variables passed to layouts</a>
+          <a href="/posts/2015/11/unforgettable-attributes">Unforgettable attributes</a>
         </p>
       
       

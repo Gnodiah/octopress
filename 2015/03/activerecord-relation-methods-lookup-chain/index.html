@@ -94,14 +94,14 @@ Written <time datetime="2015-03-20T00:00:00+08:00" pubdate data-updated="true">M
 <div class="entry-content"><p>阅读完本篇文章，你将了解到：</p>
 
 <ul>
-<li>类似Book.where(id: 1)这样的方法是如何执行的</li>
-<li>ActiveRecord::Relation对象是什么</li>
+<li>类似 Book.where(id: 1) 这样的方法是如何执行的</li>
+<li>ActiveRecord::Relation 对象是什么</li>
 </ul>
 
 
 <h3>理解where方法的查找链</h3>
 
-<p>假设我们有一个名为Book的model:</p>
+<p>假设我们有一个名为 Book 的 model:</p>
 
 <figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -110,9 +110,9 @@ Written <time datetime="2015-03-20T00:00:00+08:00" pubdate data-updated="true">M
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>再假设我们要查询id为1的那本书，以 <code>where</code> 方法为例，那么我们的查询语句一般会这样写: <code>Book.where(id: 1)</code>；但在Book类中你并没有定义<code>where</code>方法，那么这句代码是怎样被执行的呢？让我们一起来探究一下。</p>
+<p>再假设我们要查询id为1的那本书，以 <code>where</code> 方法为例，那么我们的查询语句一般会这样写: <code>Book.where(id: 1)</code>；但在Book类中你并没有定义 <code>where</code> 方法，那么这句代码是怎样被执行的呢？让我们一起来探究一下。</p>
 
-<p>1、首先，Book类中没有定义where方法；但由于Book类继承自ActiveRecord::Base类，因此方法调用链会去尝试调用ActiveRecord::Base.where方法。</p>
+<p>1、首先，Book 类中没有定义 where 方法；但由于 Book 类继承自 ActiveRecord::Base 类，因此方法调用链会去尝试调用 ActiveRecord::Base.where 方法。</p>
 
 <p>2、通过查看ActiveRecord::Base类的源码可知，ActiveRecord::Base类也没有显式定义where方法；但ActiveRecord::Base类extend了ActiveRecord::Querying模块：</p>
 
@@ -288,9 +288,10 @@ Written <time datetime="2015-03-20T00:00:00+08:00" pubdate data-updated="true">M
 <figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='plain'><span class='line'>books.each do |book|
-</span><span class='line'>  p book.id
-</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">books</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">book</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">p</span> <span class="n">book</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>2、books是一个ActiveRecord::Relation对象，那么ActiveRecord::Relation.each方法是什么呢？</p>
@@ -361,7 +362,7 @@ Written <time datetime="2015-03-20T00:00:00+08:00" pubdate data-updated="true">M
       
         <p>
           <strong>Older:</strong>
-          <a href="/posts/2015/03/rubys-string-brackets-regexp">Ruby's String#[/regexp/]</a>
+          <a href="/posts/2015/03/cloud-computing-and-openshift">谈谈对云计算的一些理解</a>
         </p>
       
     </p>

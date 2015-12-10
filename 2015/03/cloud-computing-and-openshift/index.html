@@ -158,24 +158,25 @@ Written <time datetime="2015-03-03T00:00:00+08:00" pubdate data-updated="true">M
 </ul>
 
 
-<p><del>
-gem install rhc
-</del></p>
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem install rhc
+</span></code></pre></td></tr></table></div></figure>
+
 
 <ul>
-<li><p>运行<code>rhc setup</code>按提示一步一步<a href="https://developers.openshift.com/en/getting-started-overview.html">配置rhc</a></p></li>
+<li><p>运行 <code>rhc setup</code> 按提示一步一步<a href="https://developers.openshift.com/en/getting-started-overview.html">配置rhc</a></p></li>
 <li><p>配置完成后，即可创建一个应用程序：</p></li>
 </ul>
 
 
-<p>~~~</p>
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 可运行rhc cartridge list查看OpenShift支持的所有开发平台</span>
+</span><span class='line'><span class="c"># 创建一个名称为funny的应用程序，开发平台为ruby-2.0</span>
+</span><span class='line'>rhc create-app funny ruby-2.0
+</span></code></pre></td></tr></table></div></figure>
 
-<h1>可运行rhc cartridge list查看OpenShift支持的所有开发平台</h1>
-
-<h1>创建一个名称为funny的应用程序，开发平台为ruby-2.0</h1>
-
-<p>rhc create-app funny ruby-2.0
-~~~</p>
 
 <p>OK，就这4步，一个名为funny的Ruby应用程序已经创建并部署到OpenShift上了，现在你就可以访问OpenShift返回给你的应用程序URL来查看它了，厉害吧！</p>
 
@@ -213,14 +214,9 @@ gem install rhc
       
         <p>
           <strong>Newer:</strong>
-          <a href="/posts/2015/03/the-ten-thousand-steps">The 10,000 steps</a>
+          <a href="/posts/2015/03/activerecord-relation-methods-lookup-chain">理解ActiveRecord::Relation.where等方法的查找链</a>
         </p>
       
-      
-        <p>
-          <strong>Older:</strong>
-          <a href="/posts/2015/02/tests-lie-and-thats-ok">Tests lie and that's OK</a>
-        </p>
       
     </p>
   </footer>

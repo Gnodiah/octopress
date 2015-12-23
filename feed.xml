@@ -6,8 +6,8 @@
 </description>
     <link>http://haydenwei.com/</link>
     <atom:link href="http://haydenwei.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2015-12-23 19:11:18 +0800</pubDate>
-    <lastBuildDate>2015-12-23 19:11:18 +0800</lastBuildDate>
+    <pubDate>2015-12-23 19:14:32 +0800</pubDate>
+    <lastBuildDate>2015-12-23 19:14:32 +0800</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -29,22 +29,19 @@
 
 &lt;p&gt;安装好 bundler 之后，就可以使用它来创建一个空白的 gem 包框架了。用法非常简单：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 &lt;p&gt;第一次使用该命令创建 gem 包时，会询问你是否创建测试目录以及是否创建 LICENSE.txt 文件等信息，该配置会保存在 ~/.bundle/config 文件中，以后再使用该命令创建 gem 包时会默认使用该配置。给 gem 添加测试代码是个好习惯，所以建议你在上面的询问信息时选择其中的一个测试框架，也可以直接给 &lt;code&gt;bundle gem&lt;/code&gt; 命令添加 -t 参数来指定使用默认的 rspec 作为测试框架（更多关于该命令的参数可以 &lt;code&gt;bundle help gem&lt;/code&gt; 来&lt;a href=&quot;http://bundler.io/v1.11/bundle_gem.html&quot;&gt;查看&lt;/a&gt;）：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 &lt;p&gt;或使用 &amp;#8211;test 参数来指定所要使用的测试框架：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#8211;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minitest&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#8211;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minitest&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 

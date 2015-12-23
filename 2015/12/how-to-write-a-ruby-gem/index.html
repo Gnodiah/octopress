@@ -108,22 +108,19 @@ Written <time datetime="2015-12-23T00:00:00+08:00" pubdate data-updated="true">D
 
 <p>安装好 bundler 之后，就可以使用它来创建一个空白的 gem 包框架了。用法非常简单：</p>
 
-<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">bundle</span> <span class="n">gem</span> <span class="no">GEM_NAME</span>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">bundle</span> <span class="n">gem</span> <span class="no">GEM_NAME</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>第一次使用该命令创建 gem 包时，会询问你是否创建测试目录以及是否创建 LICENSE.txt 文件等信息，该配置会保存在 ~/.bundle/config 文件中，以后再使用该命令创建 gem 包时会默认使用该配置。给 gem 添加测试代码是个好习惯，所以建议你在上面的询问信息时选择其中的一个测试框架，也可以直接给 <code>bundle gem</code> 命令添加 -t 参数来指定使用默认的 rspec 作为测试框架（更多关于该命令的参数可以 <code>bundle help gem</code> 来<a href="http://bundler.io/v1.11/bundle_gem.html">查看</a>）：</p>
 
-<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">bundle</span> <span class="n">gem</span> <span class="no">GEM_NAME</span> <span class="o">-</span><span class="n">t</span>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">bundle</span> <span class="n">gem</span> <span class="no">GEM_NAME</span> <span class="o">-</span><span class="n">t</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>或使用 &#8211;test 参数来指定所要使用的测试框架：</p>
 
-<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">bundle</span> <span class="n">gem</span> <span class="no">GEM_NAME</span> <span class="o">--</span><span class="nb">test</span><span class="o">=</span><span class="n">minitest</span>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">bundle</span> <span class="n">gem</span> <span class="no">GEM_NAME</span> <span class="o">--</span><span class="nb">test</span><span class="o">=</span><span class="n">minitest</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

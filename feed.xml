@@ -6,8 +6,8 @@
 </description>
     <link>http://haydenwei.com/</link>
     <atom:link href="http://haydenwei.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2015-12-23 19:14:32 +0800</pubDate>
-    <lastBuildDate>2015-12-23 19:14:32 +0800</lastBuildDate>
+    <pubDate>2015-12-23 19:16:47 +0800</pubDate>
+    <lastBuildDate>2015-12-23 19:16:47 +0800</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -260,8 +260,9 @@
 
 &lt;p&gt;前面提过，&lt;code&gt;bundle gem&lt;/code&gt; 命令附带提供了一些有助于开发 gem 的 rake 命令， &lt;code&gt;rake install:local&lt;/code&gt; 就是其中之一，该命令会打包为 .gem 文件放在 pkg 目录并安装到当前的 gemset 中，也就是 &lt;code&gt;rake build&lt;/code&gt; 和 &lt;code&gt;gem install&lt;/code&gt;这两个命令的合体。在本例中，运行该命令后会生成 pkg/elklogger-0.0.1.gem 文件，同时也会被安装到当前的 gemset 中，可使用 &lt;code&gt;gem list | grep elklogger&lt;/code&gt; 查找到。如果想将该 gem 包安装到指定的 gemset 的话，在执行 &lt;code&gt;rake install:local&lt;/code&gt; 之前你需要先 &lt;code&gt;rvm use&lt;/code&gt; 来切换到对应的 gemset 去。&lt;/p&gt;
 
-&lt;p&gt;安装好以后，就可以在该 gemset 环境中的 ruby 文件中通过 &lt;code&gt;require &#8216;elklogger&#8217;&lt;/code&gt; 得到 Elklogger 对象，从而使用该 gem 包提供的功能了。
-&lt;strong&gt;NOTE:&lt;/strong&gt; 注意这种方式不适用于类似 Rails 等项目，因为 Rails 项目使用的是 Gemfile 中定义的 gem 包依赖关系，而不是当前 gemset 中的所有包。要想在 Rails 中使用，就必须在 Gemfile 中声明，这种情况下可以使用第 2 种方式。&lt;/p&gt;
+&lt;p&gt;安装好以后，就可以在该 gemset 环境中的 ruby 文件中通过 &lt;code&gt;require &#8216;elklogger&#8217;&lt;/code&gt; 得到 Elklogger 对象，从而使用该 gem 包提供的功能了。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; 注意这种方式不适用于类似 Rails 等项目，因为 Rails 项目使用的是 Gemfile 中定义的 gem 包依赖关系，而不是当前 gemset 中的所有包。要想在 Rails 中使用，就必须在 Gemfile 中声明，这种情况下可以使用第 2 种方式。&lt;/p&gt;
 
 &lt;h3&gt;打包并发布 gem 包&lt;/h3&gt;
 

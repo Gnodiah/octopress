@@ -39,8 +39,7 @@ Rails中的`Settings`并不是Rails自带的，而是`rails_config`这个gem包�
 
 1、同一个setting文件中的相同key之间是**覆盖关系**。(后者会直接整个覆盖掉前者，不会对子节点key进行合并)
 
-``` ruby linenos:false
-# File: config/settings.yml
+``` ruby config/settings.yml linenos:false
 change_pwd_switch: 1
 change_pwd_switch: 2
 
@@ -59,13 +58,14 @@ solr:
 
 2、同一个setting文件与其local文件中相同key之间是**合并关系**。(local文件优先级更高)
 
-``` ruby linenos:false
-# File: config/settings.yml
+``` ruby config/settings.yml linenos:false
 solr:
   host: http://127.0.0.1
   port: 8983
   path: /solr/monitor
+```
 
+``` ruby config/settings.local.yml linenos:false
 # File: config/settings.local.yml
 solr:
   username: 'Hayden'
@@ -88,8 +88,7 @@ environments/#{Rails.env}.local.yml > settings/#{Rails.env}.local.yml > settings
 - 如果key对应的value是不同类型或不可合并的类型时，对value进行覆盖；
 - 如果key对应的value是可以合并的类型(比如数组)时，则对value进行合并。
 
-``` ruby linenos:false
-# File: config/settings.yml
+``` ruby config/settings.yml linenos:false
 change_pwd_switch: [11, 88]
 
 # File: config/settings.local.yml
@@ -100,8 +99,7 @@ change_pwd_switch: [23, 45]
 
 5、在第4点中，如果中途被打断，则还是会对value进行覆盖操作，而不是合并。
 
-``` ruby linenos:false
-# File: config/settings.yml
+``` ruby config/settings.yml linenos:false
 change_pwd_switch: [11, 88]
 
 # File: config/settings/development.yml
@@ -116,8 +114,7 @@ change_pwd_switch: [23, 45]
 6、在development模式下，每一次页面请求都会调用`Settings.reload!`来重新加载和解析所有的settings文件，因此理论上修改了settings文件后不需要重启Rails。
 7、在settings文件中是允许内嵌ruby代码的，这在某些情况下很有用。例如：
 
-```ruby
-# File: config/settings.yml
+```ruby config/settings.yml
 size: 2
 computed: <%= 1 + 2 + 3 %>
 

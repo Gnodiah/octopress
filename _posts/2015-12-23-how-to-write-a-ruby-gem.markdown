@@ -4,7 +4,7 @@ title: "书写并发布自己的Ruby Gem"
 date: 2015-12-23
 author: Hayden Wei
 comments: true
-categories: [Gem]
+categories: [Ruby Gem]
 tags: [Ruby Gem]
 duoshuo_thhead_key: 6
 

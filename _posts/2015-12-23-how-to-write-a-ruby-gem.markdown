@@ -28,20 +28,20 @@ Bundler version 1.11.2
 
 安装好 bundler 之后，就可以使用它来创建一个空白的 gem 包框架了。用法非常简单：
 
-``` ruby
+``` ruby linenos:false
 bundle gem GEM_NAME
 ```
 
 第一次使用该命令创建 gem 包时，会询问你是否创建测试目录以及是否创建 LICENSE.txt 文件等信息，该配置会保存在 ~/.bundle/config 文件中，以后再使用该命令创建 gem 包时会默认使用该配置。给 gem 添加测试代码是个好习惯，所以建议你在上面的询问信息时选择其中的一个测试框架，也可以直接给 `bundle gem` 命令添加 -t 参数来指定使用默认的 rspec 作为测试框架（更多关于该命令的参数可以 `bundle help gem` 来[查看](http://bundler.io/v1.11/bundle_gem.html)）：
 
 
-``` ruby
+``` ruby linenos:false
 bundle gem GEM_NAME -t
 ```
 
 或使用 --test 参数来指定所要使用的测试框架：
 
-``` ruby
+``` ruby linenos:false
 bundle gem GEM_NAME --test=minitest
 ```
 

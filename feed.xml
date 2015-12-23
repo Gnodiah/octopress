@@ -6,9 +6,311 @@
 </description>
     <link>http://haydenwei.com/</link>
     <atom:link href="http://haydenwei.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2015-12-11 16:14:23 +0800</pubDate>
-    <lastBuildDate>2015-12-11 16:14:23 +0800</lastBuildDate>
+    <pubDate>2015-12-23 18:51:27 +0800</pubDate>
+    <lastBuildDate>2015-12-23 18:51:27 +0800</lastBuildDate>
     <generator>Jekyll v</generator>
+    
+      <item>
+        <title>书写并发布自己的Ruby Gem</title>
+        <description>&lt;p&gt;关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们开发的便利，&lt;a href=&quot;https://rubygems.org/&quot;&gt;RubyGems&lt;/a&gt; 上已经有数不清的 gem 了 。所以，简而言之呢，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不再需要直接粗暴地 copy 一份代码。&lt;/p&gt;
+
+&lt;p&gt;学习 gem 最好的资料是 &lt;a href=&quot;http://guides.rubygems.org/&quot;&gt;RubyGems Guides&lt;/a&gt; ，它详细介绍了有关 gem 的很多信息，包括如何创建一个自己的 gem 。所以，我建议你把它完整地读一遍，这对你更深层次地理解 gem 有很大的好处。但 RubyGems Guides 中介绍的是如何一步一步地手动创建 gem，需要你从一个空目录开始创建所有需要的文件和子目录，太繁琐了！怎么办呢？有没有方法能够快速地生成一个 gem 包的框架，而我们只需要在此基础上完成该 gem 所要提供的功能就好了呢？&lt;/p&gt;
+
+&lt;p&gt;这就要请出我们这篇文章所要使用的 &lt;code&gt;bundle gem&lt;/code&gt; 命令了。下面我们会以创建一个名为 elklogger 的 gem 来理解书写和发布 gem 的整个过程。该 gem 提供了日志统一格式化的功能，也就是说，在引入了该 gem 的所有项目中，使用 gem 包提供的方法生成的日志的格式都是一致的。&lt;/p&gt;
+
+&lt;h3&gt;生成 gem 包框架&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;bundle gem&lt;/code&gt; 命令是由 &lt;a href=&quot;http://bundler.io/&quot;&gt;bundler&lt;/a&gt; 这个 gem 包提供的，它用于创建一个 gem 包所需的框架，而不用你一个一个文件去添加。要使用这个命令，首先需要确认是否已经安装好 bundler ，可使用 &lt;code&gt;bundle version&lt;/code&gt; 查看本机 bundler 的版本，结果类似于：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;plain&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;Bundler version 1.11.2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;如果本机没有安装，则使用 &lt;code&gt;gem install bundler&lt;/code&gt; 来安装它。&lt;/p&gt;
+
+&lt;p&gt;安装好 bundler 之后，就可以使用它来创建一个空白的 gem 包框架了。用法非常简单：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;第一次使用该命令创建 gem 包时，会询问你是否创建测试目录以及是否创建 LICENSE.txt 文件等信息，该配置会保存在 ~/.bundle/config 文件中，以后再使用该命令创建 gem 包时会默认使用该配置。给 gem 添加测试代码是个好习惯，所以建议你在上面的询问信息时选择其中的一个测试框架，也可以直接给 &lt;code&gt;bundle gem&lt;/code&gt; 命令添加 -t 参数来指定使用默认的 rspec 作为测试框架（更多关于该命令的参数可以 &lt;code&gt;bundle help gem&lt;/code&gt; 来&lt;a href=&quot;http://bundler.io/v1.11/bundle_gem.html&quot;&gt;查看&lt;/a&gt;）：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;或使用 &amp;#8211;test 参数来指定所要使用的测试框架：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#8211;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minitest&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;该命令做了3件事：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建指定的 gem 包目录并初始化 gem 包的基本结构&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;git init&lt;/code&gt; 命令初始化新建的 gem 包目录&lt;/li&gt;
+&lt;li&gt;提供了一些帮助你开发 gem 包的 rake 命令（可进入目录后使用 &lt;code&gt;rake -T&lt;/code&gt; 查看这些 rake 命令）&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;本例中我们使用 &lt;code&gt;bundle gem elklogger -t&lt;/code&gt; 命令生成的 elklogger gem 框架结构如下：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;elklogger_spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;spec_helper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gemspec&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Gemfile&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;LICENSE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Rakefile&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;README&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;md&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;h3&gt;理解 gem 包目录结构&lt;/h3&gt;
+
+&lt;p&gt;如上面生成的框架结构所示，看起来有点让人摸不着头脑，让人觉得不知道该如何组织文件结构。但我来告诉你，其实这很简单，我们在开发一个 gem 时，通常主要关心和修改的是如下几个部分：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;lib 目录&lt;/strong&gt;
+lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 根目录下必须有一个与 gem 包名字一样的 .rb 文件，这是 gem 包的入口文件（如本例中的 lib/elklogger.rb）。其它的源代码可以在 lib 下按需组织目录结构，然后再 require 到 gem 包的入口文件中即可。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;spec 目录或 test 目录&lt;/strong&gt;
+这是书写和存放 gem 包测试代码的目录。根据你选择的测试框架不同会分别是 spec 目录或 test 目录。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;.gemspec 文件&lt;/strong&gt;
+这是 gem 包最重要的一个文件，它定义了 gem 包的所有元数据（metadata），包括 gem 包的作者、Email、gem 包的功能描述信息、开发模式下所依赖的其它 gem 包等等一切信息。可以去&lt;a href=&quot;http://guides.rubygems.org/specification-reference/&quot;&gt;这里&lt;/a&gt;进行更全面更深入的了解和学习。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;README.md 文件&lt;/strong&gt;
+该文件用于书写 gem 包的使用说明文档。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;除此之外的其它文件或目录保持原样就可以了，或者后期有需要再去酌情修改。&lt;/p&gt;
+
+&lt;h3&gt;实现 gem 包功能&lt;/h3&gt;
+
+&lt;p&gt;下面我们就来完成该gem包的功能。&lt;/p&gt;
+
+&lt;h4&gt;完善 .gemspec 文件&lt;/h4&gt;
+
+&lt;p&gt;在书写 lib 源代码和 rspec 测试代码完成功能之前，我们先来完善一下 .gemspec 文件。上面说过，此文件是非常重要的一个文件，它描述了该 gem 包的所有信息。但目前我们不需要去了解它的全部，只关注前面几项即可，即 name ~ license 之间的信息，按需修改即可，其它项保持不变。修改后的内容为：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;elklogger.gemspec&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;2&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;3&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;4&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;5&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;6&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;7&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;8&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;9&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Gem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Specification&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;summary&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;%q{Specific formatted logger for ELK-stack.}&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;description&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;%q{Write formatted log infos to log file, used by ELK-stack.}&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;homepage&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allowed_push_host&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;https://rubygems.org&amp;quot;&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;h4&gt;测试驱动开发：完成功能&lt;/h4&gt;
+
+&lt;p&gt;elklogger gem 包的功能是将日志内容按照指定的格式进行格式化后输出，我们期望的格式为：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2015&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#8255]  INFO &#8211; : message\n&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;为此，我们采用 &lt;strong&gt;测试驱动开发&lt;/strong&gt; 的方式，先添加 rspec 代码。打开 spec/elklogger_spec.rb 文件，添加如下代码：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;spec/elklogger_spec.rb&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;2&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;3&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;4&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;5&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;6&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;7&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;8&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;9&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;10&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;11&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;12&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;13&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;14&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;15&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Elklogger&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;has a formmatted output&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;/tmp/elklogger_test.log.elk&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;logger&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;hello test!&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;reg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/I, \[&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strftime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;%Y-%m-%d&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;#\d+\]  INFO &#8211; : hello test!\n/&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;readlines&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;last&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reg&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;运行 &lt;code&gt;rake spec&lt;/code&gt;，出现测试未通过。这是正常的，因为我们还没有实现功能：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Failures&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Elklogger&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;has&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;formmatted&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;     &lt;span class=&quot;no&quot;&gt;Failure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;       &lt;span class=&quot;n&quot;&gt;expected&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#&amp;lt;NilClass:8&amp;gt; =&amp;gt; nil&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;                &lt;span class=&quot;n&quot;&gt;got&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#&amp;lt;NilClass:8&amp;gt; =&amp;gt; nil&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;       &lt;span class=&quot;no&quot;&gt;Compared&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;equal?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;which&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;compares&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;identity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;     &lt;span class=&quot;c1&quot;&gt;# ./spec/elklogger_spec.rb:19:in `block (2 levels) in &amp;lt;top (required)&amp;gt;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Finished&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00251&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;files&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;took&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0868&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;examples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;failure&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;现在我们来实现 &lt;strong&gt;红变绿&lt;/strong&gt; 的过程。在 lib/elklogger.rb 中实现功能：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;lib/elklogger.rb&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;2&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;3&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;4&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;5&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Elklogger&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;format_message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;severity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;progname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;no&quot;&gt;Formatter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Format&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;severity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strftime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;%Y-%m-%d&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;severity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;progname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;lib/elklogger/version.rb 则为这样：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;lib/elklogger/version.rb&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;2&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;3&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;4&lt;/span&gt;
+&lt;span class=&#8217;line-number&#8217;&gt;5&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;logger&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Elklogger&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Logger&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;no&quot;&gt;VERSION&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;0.0.1&amp;quot;&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;那么再运行 &lt;code&gt;rake spec&lt;/code&gt; ，发现测试通过了！&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Elklogger&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;has&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;has&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;formmatted&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Finished&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;0011&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;files&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;took&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;07&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;839&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;examples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;failures&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;h4&gt;完善 README.md 文件&lt;/h4&gt;
+
+&lt;p&gt;OK，功能已经完成了，那么现在需要告诉别人如何使用。我们把它写在 README.md 中（限于篇幅，此例中就不贴文件内容了）。&lt;/p&gt;
+
+&lt;h3&gt;本地测试 gem 包&lt;/h3&gt;
+
+&lt;p&gt;本地测试 gem 包有几种方式，&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;bin/console&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;bundler 提供了 bin/console 这个工具，它加载了 gem 中 lib 目录下的所有源代码，你可以用它来以 irb 交互的方式自测 gem 包所提供的功能是否正常。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用 :path 或 :git 参数&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;在 Gemfile 中，除了使用 &lt;code&gt;gem &#8216;mysql2&#8217;&lt;/code&gt; 这样的语法直接在 source 源中查找相应的 gem 包外，&lt;code&gt;gem&lt;/code&gt; 命令还提供了 :path 和 :git 两种参数。前者允许你将其指向本地的 gem 包源代码目录，后者允许你将其指向一个 git 网络路径。这样，我们就可以运用 :path 参数在其他项目中对 gem 包进行本地测试了，而不用每次改动后都打包成 gem 包再安装。&lt;/p&gt;
+
+&lt;p&gt;对于本例，我们在一个项目的 Gemfile 文件中添加如下一行：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;elklogger&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;/home/path/to/elklogger&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;然后再 &lt;code&gt;bundle install&lt;/code&gt; 就可以在项目中使用了。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;rake install:local&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;前面提过，&lt;code&gt;bundle gem&lt;/code&gt; 命令附带提供了一些有助于开发 gem 的 rake 命令， &lt;code&gt;rake install:local&lt;/code&gt; 就是其中之一，该命令会打包为 .gem 文件放在 pkg 目录并安装到当前的 gemset 中，也就是 &lt;code&gt;rake build&lt;/code&gt; 和 &lt;code&gt;gem install&lt;/code&gt;这两个命令的合体。在本例中，运行该命令后会生成 pkg/elklogger-0.0.1.gem 文件，同时也会被安装到当前的 gemset 中，可使用 &lt;code&gt;gem list | grep elklogger&lt;/code&gt; 查找到。如果想将该 gem 包安装到指定的 gemset 的话，在执行 &lt;code&gt;rake install:local&lt;/code&gt; 之前你需要先 &lt;code&gt;rvm use&lt;/code&gt; 来切换到对应的 gemset 去。&lt;/p&gt;
+
+&lt;p&gt;安装好以后，就可以在该 gemset 环境中的 ruby 文件中通过 &lt;code&gt;require &#8216;elklogger&#8217;&lt;/code&gt; 得到 Elklogger 对象，从而使用该 gem 包提供的功能了。
+&lt;strong&gt;NOTE:&lt;/strong&gt; 注意这种方式不适用于类似 Rails 等项目，因为 Rails 项目使用的是 Gemfile 中定义的 gem 包依赖关系，而不是当前 gemset 中的所有包。要想在 Rails 中使用，就必须在 Gemfile 中声明，这种情况下可以使用第 2 种方式。&lt;/p&gt;
+
+&lt;h3&gt;打包并发布 gem 包&lt;/h3&gt;
+
+&lt;p&gt;如果只是想单独打包并不发布该 gem，可使用 &lt;code&gt;rake build&lt;/code&gt; ，执行该命令后会在 pkg 目录下生成打包后的文件。例如 elklogger-0.0.1.gem。&lt;/p&gt;
+
+&lt;p&gt;如果想打包并且同时发布出去，也很简单，使用 &lt;code&gt;rake release&lt;/code&gt; 即可将打包后的 gem 包发布到 RubyGems 供他人下载和安装。但在发布之前，我们需要先提交我们的代码，由于当初 &lt;code&gt;bundle gem&lt;/code&gt; 初始化 git 仓库时并没有添加源，所以我们先去 github 上新建一个仓库，然后将其作为我们 gem 包的远端源添加进去再提交代码：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;remote&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;origin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:/&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gnodiah&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;finish develop&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;再来运行 &lt;code&gt;rake release&lt;/code&gt; ，输入用户名和密码后即发布成功了。此命令做了 3 件事：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;运行 &lt;code&gt;rake build&lt;/code&gt; 打包 gem&lt;/li&gt;
+&lt;li&gt;以当前 gem 版本在 git 分支上打一个 tag 标签&lt;/li&gt;
+&lt;li&gt;发布上传 gem 包到 RubyGems&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;OK，到目前为止，elklogger gem 包已经完成并发布到 RubyGems 了，此时就可以使用 &lt;code&gt;gem install elklogger&lt;/code&gt; 直接安装了（如果当前源没有，记得加上 &amp;#8211;source &amp;#8216;https://rubygems.org&amp;#8217;）。&lt;/p&gt;
+
+&lt;p&gt;最后的最后，别忘了 push 源代码到 git 仓库：&lt;/p&gt;
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;origin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+&lt;h3&gt;弦外之音&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;与 &lt;code&gt;bundle gem&lt;/code&gt; 功能类似的还有 &lt;a href=&quot;https://github.com/technicalpickles/jeweler&quot;&gt;jeweler&lt;/a&gt;，可以去了解一下。但现在可能没有 bundler 这么流行，Github 上也很久没有更新了。&lt;/li&gt;
+&lt;li&gt;Github 上大家也总结了这么一篇文章： &lt;a href=&quot;https://github.com/radar/guides/blob/master/gem-development.md&quot;&gt;Developing a RubyGem using Bundler&lt;/a&gt;，值得一看。&lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>2015-12-24 02:32:50 +0800</pubDate>
+        <link>http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</link>
+        <guid isPermaLink="true">http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</guid>
+        
+        <category>Ruby Gem</category>
+        
+        
+        <category>Gem</category>
+        
+      </item>
     
       <item>
         <title>Elixir block keywords</title>

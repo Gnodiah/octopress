@@ -129,8 +129,7 @@ Written <time datetime="2015-04-26T00:00:00+08:00" pubdate data-updated="true">A
 
 <p>1、同一个setting文件中的相同key之间是<strong>覆盖关系</strong>。(后者会直接整个覆盖掉前者，不会对子节点key进行合并)</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">1</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">1</span>
 </span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">2</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1"># Settings.change_pwd_switch #=&gt; 2</span>
@@ -149,13 +148,16 @@ Written <time datetime="2015-04-26T00:00:00+08:00" pubdate data-updated="true">A
 
 <p>2、同一个setting文件与其local文件中相同key之间是<strong>合并关系</strong>。(local文件优先级更高)</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">solr</span><span class="p">:</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">solr</span><span class="p">:</span>
 </span><span class='line'>  <span class="n">host</span><span class="p">:</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
 </span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">8983</span>
 </span><span class='line'>  <span class="n">path</span><span class="p">:</span> <span class="sr">/solr/moni</span><span class="n">tor</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># File: config/settings.local.yml</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/settings.local.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.local.yml</span>
 </span><span class='line'><span class="n">solr</span><span class="p">:</span>
 </span><span class='line'>  <span class="n">username</span><span class="p">:</span> <span class="s1">&#39;Hayden&#39;</span>
 </span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">12121</span>
@@ -181,8 +183,7 @@ Written <time datetime="2015-04-26T00:00:00+08:00" pubdate data-updated="true">A
 </ul>
 
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1"># File: config/settings.local.yml</span>
 </span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">45</span><span class="o">]</span>
@@ -193,8 +194,7 @@ Written <time datetime="2015-04-26T00:00:00+08:00" pubdate data-updated="true">A
 
 <p>5、在第4点中，如果中途被打断，则还是会对value进行覆盖操作，而不是合并。</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1"># File: config/settings/development.yml</span>
 </span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">2</span>   <span class="c1"># 这里中途被不同类型的value打断</span>
@@ -209,13 +209,11 @@ Written <time datetime="2015-04-26T00:00:00+08:00" pubdate data-updated="true">A
 <p>6、在development模式下，每一次页面请求都会调用<code>Settings.reload!</code>来重新加载和解析所有的settings文件，因此理论上修改了settings文件后不需要重启Rails。
 7、在settings文件中是允许内嵌ruby代码的，这在某些情况下很有用。例如：</p>
 
-<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">size</span><span class="p">:</span> <span class="mi">2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">size</span><span class="p">:</span> <span class="mi">2</span>
 </span><span class='line'><span class="n">computed</span><span class="p">:</span> <span class="o">&lt;</span><span class="sx">%= 1 + 2 + 3 %&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="sx"># Settings.computed #=</span><span class="o">&gt;</span> <span class="mi">6</span>
@@ -330,7 +328,7 @@ Written <time datetime="2015-04-26T00:00:00+08:00" pubdate data-updated="true">A
       
         <p>
           <strong>Newer:</strong>
-          <a href="/posts/2015/11/unforgettable-attributes">Unforgettable attributes</a>
+          <a href="/posts/2015/12/how-to-write-a-ruby-gem">书写并发布自己的Ruby Gem</a>
         </p>
       
       

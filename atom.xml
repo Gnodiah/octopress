@@ -3,7 +3,7 @@
   <title><![CDATA[The Stick Talk]]></title>
   <link href="http://haydenwei.com/atom.xml" rel="self"/>
   <link href="http://haydenwei.com/"/>
-  <updated>2015-12-23T19:16:47+08:00</updated>
+  <updated>2015-12-23T20:21:14+08:00</updated>
   <id>http://haydenwei.com/</id>
   <author>
     <name><![CDATA[Hayden Wei]]></name>
@@ -286,251 +286,6 @@
 
 
 
-<title type="html"><![CDATA[Elixir block keywords]]></title>
-<link href="http://haydenwei.com/posts/2015/12/elixir-block-keywords"/>
-<updated>2015-12-03T22:25:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/12/elixir-block-keywords</id>
-
-      <content type="html"><![CDATA[<p>Exploring Elixir, I tried this:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">Example</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  def</span> <span class="n">foobar</span><span class="p">(</span><span class="k">do</span><span class="p">:</span> <span class="n">_</span><span class="p">,</span> <span class="k">else</span><span class="p">:</span> <span class="n">_</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Example</span><span class="o">.</span><span class="n">foobar</span> <span class="k">do</span>
-</span><span class='line'><span class="k"> </span><span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;true&quot;</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'> <span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;false&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And it worked. Well, in a sense. The code runs, but it outputs <em>both</em> &#8220;true&#8221; and &#8220;false&#8221;.</p>
-
-<p>What&#8217;s going on here? Let&#8217;s try another experiment:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">IO</span><span class="o">.</span><span class="n">inspect</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="s2">&quot;true&quot;</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'>  <span class="s2">&quot;false&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># =&gt; [do: &quot;true&quot;, else: &quot;false&quot;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="https://groups.google.com/forum/#!topic/elixir-lang-talk/jVqCeLcaUV0/discussion">Turns out</a> this is language-level syntactic sugar (e.g. <a href="https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/src/elixir_tokenizer.erl#L1050-L1053">1</a>, <a href="https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/src/elixir_exp_clauses.erl">2</a>, <a href="https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/lib/macro.ex#L652">3</a>) that desugars to a plain keyword list. And that explains why the code above would output both &#8220;true&#8221; and &#8220;false&#8221; – it&#8217;s equivalent to</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">Example</span><span class="o">.</span><span class="n">foobar</span><span class="p">([</span><span class="k">do</span><span class="p">:</span> <span class="no">IO</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">),</span> <span class="k">else</span><span class="p">:</span> <span class="no">IO</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="s2">&quot;false&quot;</span><span class="p">)])</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The keyword list is evaluated before it&#8217;s even passed to the function, like any keyword list would be. That includes evaluating the <code>IO.puts</code> function calls.</p>
-
-<p>Now that we have the full list of block keywords (from the Elixir source) we can go completely crazy:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="no">IO</span><span class="o">.</span><span class="n">inspect</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="s2">&quot;a&quot;</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'>  <span class="s2">&quot;b&quot;</span>
-</span><span class='line'><span class="k">catch</span>
-</span><span class='line'>  <span class="s2">&quot;c&quot;</span>
-</span><span class='line'><span class="k">rescue</span>
-</span><span class='line'>  <span class="s2">&quot;d&quot;</span>
-</span><span class='line'><span class="k">after</span>
-</span><span class='line'>  <span class="s2">&quot;e&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># =&gt; [do: &quot;a&quot;, else: &quot;b&quot;, catch: &quot;c&quot;, rescue: &quot;d&quot;, after: &quot;e&quot;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So these are all available to your own functions, like in our <code>Example.foobar</code> example. But what use are they if every branch is evaluated all the time?</p>
-
-<p>Macros to the rescue.</p>
-
-<p><a href="https://xkcd.com/208/"><img src="https://s3.amazonaws.com/f.cl.ly/items/1a201F0e150Y3E1s2X2f/everybody_stand_back.png" alt="" class="center no-box"></a></p>
-
-<p><a href="http://elixir-lang.org/getting-started/meta/macros.html">Elixir macros</a> get access to the syntax tree of a piece of code, without the code being evaluated first. They can then slice and dice the code and return another syntax tree, that <em>will</em> be evaluated.</p>
-
-<p>Elixir&#8217;s own <code>if/do/else</code> is <a href="https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/lib/kernel.ex#L2321-L2341">just a macro</a> using these keyword lists.</p>
-
-<p>Just for fun, we could make a macro that randomly executes one of two branches, and then always runs the <code>after</code> branch:</p>
-
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='elixir'><span class='line'><span class="k">defmodule</span> <span class="no">MyMacro</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  defmacro</span> <span class="n">pick</span><span class="p">([</span><span class="k">do</span><span class="p">:</span> <span class="n">option1</span><span class="p">,</span> <span class="k">else</span><span class="p">:</span> <span class="n">option2</span><span class="p">,</span> <span class="k">after</span><span class="p">:</span> <span class="n">after_block</span><span class="p">])</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="ss">:random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="ss">:os</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">option</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">random</span><span class="p">([</span><span class="n">option1</span><span class="p">,</span> <span class="n">option2</span><span class="p">])</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">option</span><span class="p">,</span> <span class="n">after_block</span><span class="p">]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">defmodule</span> <span class="no">Example</span> <span class="k">do</span>
-</span><span class='line'><span class="k">  </span><span class="kn">require</span> <span class="no">MyMacro</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="n">run</span> <span class="k">do</span>
-</span><span class='line'><span class="k">    </span><span class="no">MyMacro</span><span class="o">.</span><span class="n">pick</span> <span class="k">do</span>
-</span><span class='line'><span class="k">      </span><span class="no">IO</span><span class="o">.</span><span class="n">write</span> <span class="s2">&quot;dog&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="no">IO</span><span class="o">.</span><span class="n">write</span> <span class="s2">&quot;cat&quot;</span>
-</span><span class='line'>    <span class="k">after</span>
-</span><span class='line'>      <span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;!&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Example</span><span class="o">.</span><span class="n">run</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Outputs either of these:</span>
-</span><span class='line'><span class="c1"># dog!</span>
-</span><span class='line'><span class="c1"># cat!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I haven&#8217;t used this myself, other than in silly experiments. I can picture it being handy for some DSLs, though. If you apply this to anything interesting, please do let me know in a comment!</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
-<title type="html"><![CDATA[Unforgettable attributes]]></title>
-<link href="http://haydenwei.com/posts/2015/11/unforgettable-attributes"/>
-<updated>2015-11-14T08:55:00+08:00</updated>
-<id>http://haydenwei.com/posts/2015/11/unforgettable-attributes</id>
-
-      <content type="html"><![CDATA[<p><em>This blog post describes a design pattern for ensuring you consider every attribute in certain situations. I&#8217;ll use Ruby on Rails in the examples, but the general pattern should apply to any language or framework.</em></p>
-
-<h2>The problem</h2>
-
-<p>On <a href="http://dev.auctionet.com">our</a> <a href="https://auctionet.com">auction site</a>, there are &#8220;lots&#8221; (items for sale). Each lot has a title, description, a cached &#8220;highest bid amount&#8221; and several more attributes.</p>
-
-<p>(I&#8217;m simplifying the data model for the sake of the example. It&#8217;s actually composed of more than one model, and doesn&#8217;t work precisely as described here.)</p>
-
-<p>If a lot goes unsold, it may be relisted. Since we want to keep the history of listings, we make a copy.</p>
-
-<p>So what should we copy? The title and description should be included. The highest bid amount should not, since the new listing won&#8217;t have any bids to start with.</p>
-
-<p>Alright, we&#8217;ll write our code:</p>
-
-<figure class='code'><figcaption><span>relister.rb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">includes</span> <span class="o">=</span> <span class="sx">%w[ title description ]</span>
-</span><span class='line'><span class="n">new_lot</span> <span class="o">=</span> <span class="no">Lot</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">new_lot</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">old_lot</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="o">*</span><span class="n">includes</span><span class="p">)</span>
-</span><span class='line'><span class="n">new_lot</span><span class="o">.</span><span class="n">save!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then a few months later, someone adds an &#8220;artist&#8221; attribute. They forgot all about our relister, so relisted lots don&#8217;t carry it over as we would have liked.</p>
-
-<p>We could instead list the attributes to <em>exclude</em>, but then if someone adds a new attribute and forgets to revise the relister, we would include that new attribute even if we shouldn&#8217;t.</p>
-
-<h2>The solution</h2>
-
-<p>The solution we settled on for situations like this is to list all includes <em>and</em> excludes.</p>
-
-<p>When we relist, we go through every attribute. We include the ones we should, ignore the ones we shouldn&#8217;t, and raise an exception if we encounter a new attribute that we don&#8217;t know how to handle.</p>
-
-<p>This is that rare thing, a perfect solution. We&#8217;re guaranteed that we can&#8217;t forget to declare how to handle a new attribute. If we do, we&#8217;ll be told.</p>
-
-<p>If the relisting is covered by integrated tests at all, they will trigger these exceptions as soon as you add a new attribute and forget to declare it.</p>
-
-<h3>Example code</h3>
-
-<figure class='code'><figcaption><span>relister.rb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">new_lot</span> <span class="o">=</span> <span class="no">Lot</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">new_lot</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="no">Lot</span><span class="o">::</span><span class="no">IncludesAndExcludes</span><span class="o">.</span><span class="n">attributes_from_lot</span><span class="p">(</span><span class="n">old_lot</span><span class="p">)</span>
-</span><span class='line'><span class="n">new_lot</span><span class="o">.</span><span class="n">save!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>lot/includes_and_excludes.rb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Lot</span><span class="o">::</span><span class="no">IncludesAndExcludes</span>
-</span><span class='line'>  <span class="no">LOT_INCLUDES</span> <span class="o">=</span> <span class="o">[</span>
-</span><span class='line'>    <span class="ss">:title</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">:description</span><span class="p">,</span>
-</span><span class='line'>  <span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="no">LOT_EXCLUDES</span> <span class="o">=</span> <span class="o">[</span>
-</span><span class='line'>    <span class="ss">:id</span><span class="p">,</span> <span class="ss">:created_at</span><span class="p">,</span> <span class="ss">:updated_at</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">:highest_bid_amount</span><span class="p">,</span>
-</span><span class='line'>  <span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">attributes_from_lot</span><span class="p">(</span><span class="n">lot</span><span class="p">)</span>
-</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">lot</span><span class="p">,</span> <span class="no">LOT_INCLUDES</span><span class="p">,</span> <span class="no">LOT_EXCLUDES</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">includes</span><span class="p">,</span> <span class="n">excludes</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@record</span><span class="p">,</span> <span class="vi">@includes</span><span class="p">,</span> <span class="vi">@excludes</span> <span class="o">=</span> <span class="n">record</span><span class="p">,</span> <span class="n">includes</span><span class="p">,</span> <span class="n">excludes</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">attributes</span>
-</span><span class='line'>    <span class="n">attributes</span> <span class="o">=</span> <span class="vi">@record</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">symbolize_keys</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">attributes</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">({})</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="nb">hash</span><span class="o">|</span>
-</span><span class='line'>      <span class="k">if</span> <span class="vi">@includes</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-</span><span class='line'>        <span class="nb">hash</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">elsif</span> <span class="vi">@excludes</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-</span><span class='line'>        <span class="c1"># Ignore this known exclude.</span>
-</span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="k">raise</span> <span class="s2">&quot;Don&#39;t know whether or not to include </span><span class="si">#{</span><span class="vi">@record</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">#</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>attributes_for_lot</code> class method passes in the constants to the instance, to illustrate how it may work if you&#8217;re dealing with more than one model. In the real world, we have more than one model in place of <code>Lot</code>.</p>
-
-<p>This also makes it very easy to test – and you can test it lightning-fast without loading Rails, if you have that set up.</p>
-
-<figure class='code'><figcaption><span>spec/lot/includes_and_excludes_spec.rb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Lot</span><span class="o">::</span><span class="no">IncludesAndExcludes</span><span class="p">,</span> <span class="s2">&quot;#attributes&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;includes the attributes to include&quot;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">record</span> <span class="o">=</span> <span class="n">double</span><span class="p">(</span><span class="n">attributes</span><span class="p">:</span> <span class="p">{</span> <span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="n">age</span><span class="p">:</span> <span class="mi">42</span> <span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">actual</span> <span class="o">=</span> <span class="no">Lot</span><span class="o">::</span><span class="no">IncludesAndExcludes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="o">[</span> <span class="ss">:name</span> <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="ss">:age</span> <span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span>
-</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="kp">include</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;excludes the attributes to exclude&quot;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">record</span> <span class="o">=</span> <span class="n">double</span><span class="p">(</span><span class="n">attributes</span><span class="p">:</span> <span class="p">{</span> <span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="n">age</span><span class="p">:</span> <span class="mi">42</span> <span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">actual</span> <span class="o">=</span> <span class="no">Lot</span><span class="o">::</span><span class="no">IncludesAndExcludes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="o">[</span> <span class="ss">:name</span> <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="ss">:age</span> <span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span>
-</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span><span class="o">.</span><span class="n">not_to</span> <span class="kp">include</span><span class="p">(</span><span class="ss">:age</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;raises if an undeclared attribute is present&quot;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">record</span> <span class="o">=</span> <span class="n">double</span><span class="p">(</span>
-</span><span class='line'>      <span class="n">attributes</span><span class="p">:</span> <span class="p">{</span> <span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="n">age</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="s2">&quot;Bar&quot;</span> <span class="p">},</span>
-</span><span class='line'>      <span class="n">class</span><span class="p">:</span> <span class="n">double</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;MyClass&quot;</span><span class="p">),</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">expect</span> <span class="p">{</span>
-</span><span class='line'>      <span class="no">Lot</span><span class="o">::</span><span class="no">IncludesAndExcludes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="o">[</span> <span class="ss">:name</span> <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="ss">:age</span> <span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span>
-</span><span class='line'>    <span class="p">}</span><span class="o">.</span><span class="n">to</span> <span class="n">raise_error</span><span class="p">(</span><span class="sr">/MyClass#location/</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Other uses</h2>
-
-<p>This can be used for anything, of course. We&#8217;ve used it for relisting things and for cloning things more generally.</p>
-
-<p>Most recently, we used it for reversing financial vouchers in an accounting system: basically, you create a copy but invert some of the numbers. For the copy part, we employed this pattern.</p>
-]]></content>
-    </entry>
-  
-    <entry>
-      
-
-
-
-
 <title type="html"><![CDATA[rails_config的正确使用姿势]]></title>
 <link href="http://haydenwei.com/posts/2015/04/rails-config-usage"/>
 <updated>2015-04-26T00:00:00+08:00</updated>
@@ -574,8 +329,7 @@
 
 <p>1、同一个setting文件中的相同key之间是<strong>覆盖关系</strong>。(后者会直接整个覆盖掉前者，不会对子节点key进行合并)</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">1</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">1</span>
 </span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">2</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1"># Settings.change_pwd_switch #=&gt; 2</span>
@@ -594,13 +348,16 @@
 
 <p>2、同一个setting文件与其local文件中相同key之间是<strong>合并关系</strong>。(local文件优先级更高)</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">solr</span><span class="p">:</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">solr</span><span class="p">:</span>
 </span><span class='line'>  <span class="n">host</span><span class="p">:</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
 </span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">8983</span>
 </span><span class='line'>  <span class="n">path</span><span class="p">:</span> <span class="sr">/solr/moni</span><span class="n">tor</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># File: config/settings.local.yml</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/settings.local.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.local.yml</span>
 </span><span class='line'><span class="n">solr</span><span class="p">:</span>
 </span><span class='line'>  <span class="n">username</span><span class="p">:</span> <span class="s1">&#39;Hayden&#39;</span>
 </span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">12121</span>
@@ -626,8 +383,7 @@
 </ul>
 
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1"># File: config/settings.local.yml</span>
 </span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">45</span><span class="o">]</span>
@@ -638,8 +394,7 @@
 
 <p>5、在第4点中，如果中途被打断，则还是会对value进行覆盖操作，而不是合并。</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1"># File: config/settings/development.yml</span>
 </span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">2</span>   <span class="c1"># 这里中途被不同类型的value打断</span>
@@ -654,8 +409,7 @@
 <p>6、在development模式下，每一次页面请求都会调用<code>Settings.reload!</code>来重新加载和解析所有的settings文件，因此理论上修改了settings文件后不需要重启Rails。
 7、在settings文件中是允许内嵌ruby代码的，这在某些情况下很有用。例如：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.yml</span>
-</span><span class='line'><span class="n">size</span><span class="p">:</span> <span class="mi">2</span>
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">size</span><span class="p">:</span> <span class="mi">2</span>
 </span><span class='line'><span class="n">computed</span><span class="p">:</span> <span class="o">&lt;</span><span class="sx">%= 1 + 2 + 3 %&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="sx"># Settings.computed #=</span><span class="o">&gt;</span> <span class="mi">6</span>
@@ -923,7 +677,7 @@
 
 <blockquote><p><strong>云计算</strong>是一种按使用量付费的模式，这种模式提供可用的、便捷的、按需的网络访问， 进入可配置的计算资源共享池（资源包括网络，服务器，存储，应用软件，服务），这些资源能够被快速提供，只需投入很少的管理工作，或与服务供应商进行很少的交互。</p></blockquote>
 
-<p>以上是美国国家标准技术研究所（NIST）给出的定义<a href="http://www.nist.gov/itl/cloud/">^CloudComputing</a>，大家千万不要被云计算这三个字中的“计算”两个字所误导而认为这是一种关于数学计算方面的新技术；实际上它代表的是一种模型或者叫模式。</p>
+<p>以上是美国国家标准技术研究所（NIST）给出的<a href="http://www.nist.gov/itl/cloud/">定义</a>，大家千万不要被云计算这三个字中的“计算”两个字所误导而认为这是一种关于数学计算方面的新技术；实际上它代表的是一种模型或者叫模式。</p>
 
 <p>举个例子来说，我做了一个网站来提供图片存储服务，你通过访问网站来上传和下载你存储的图片。对于你（使用者）来说，上传的图片存到什么地方去了、后台有多少台服务器、服务器的网络带宽是多少&#8230;等等这些问题你一无所知，就像被云遮住了一样什么都看不见（整个网站服务就像是一朵云，你把图片扔进云里它就存储好了，要用的时候直接从云里去拿，至于这是一朵什么云你一概不知也不需要知道，这就是<strong>云</strong>的概念）；再加上这些服务都跟计算机或者大量计算相关，所以类似于我提供的这种服务模式就叫做<strong>云计算</strong>，而我就叫做<strong>云计算服务提供方</strong>。</p>
 
@@ -982,7 +736,7 @@
 </ul>
 
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'>gem install rhc
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">rhc</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -992,9 +746,9 @@
 </ul>
 
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 可运行rhc cartridge list查看OpenShift支持的所有开发平台</span>
-</span><span class='line'><span class="c"># 创建一个名称为funny的应用程序，开发平台为ruby-2.0</span>
-</span><span class='line'>rhc create-app funny ruby-2.0
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># 可运行rhc cartridge list查看OpenShift支持的所有开发平台</span>
+</span><span class='line'><span class="c1"># 创建一个名称为funny的应用程序，开发平台为ruby-2.0</span>
+</span><span class='line'><span class="n">rhc</span> <span class="n">create</span><span class="o">-</span><span class="n">app</span> <span class="n">funny</span> <span class="n">ruby</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

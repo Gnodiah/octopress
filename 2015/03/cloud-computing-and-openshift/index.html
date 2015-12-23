@@ -99,7 +99,7 @@ Written <time datetime="2015-03-03T00:00:00+08:00" pubdate data-updated="true">M
 
 <blockquote><p><strong>云计算</strong>是一种按使用量付费的模式，这种模式提供可用的、便捷的、按需的网络访问， 进入可配置的计算资源共享池（资源包括网络，服务器，存储，应用软件，服务），这些资源能够被快速提供，只需投入很少的管理工作，或与服务供应商进行很少的交互。</p></blockquote>
 
-<p>以上是美国国家标准技术研究所（NIST）给出的定义<a href="http://www.nist.gov/itl/cloud/">^CloudComputing</a>，大家千万不要被云计算这三个字中的“计算”两个字所误导而认为这是一种关于数学计算方面的新技术；实际上它代表的是一种模型或者叫模式。</p>
+<p>以上是美国国家标准技术研究所（NIST）给出的<a href="http://www.nist.gov/itl/cloud/">定义</a>，大家千万不要被云计算这三个字中的“计算”两个字所误导而认为这是一种关于数学计算方面的新技术；实际上它代表的是一种模型或者叫模式。</p>
 
 <p>举个例子来说，我做了一个网站来提供图片存储服务，你通过访问网站来上传和下载你存储的图片。对于你（使用者）来说，上传的图片存到什么地方去了、后台有多少台服务器、服务器的网络带宽是多少&#8230;等等这些问题你一无所知，就像被云遮住了一样什么都看不见（整个网站服务就像是一朵云，你把图片扔进云里它就存储好了，要用的时候直接从云里去拿，至于这是一朵什么云你一概不知也不需要知道，这就是<strong>云</strong>的概念）；再加上这些服务都跟计算机或者大量计算相关，所以类似于我提供的这种服务模式就叫做<strong>云计算</strong>，而我就叫做<strong>云计算服务提供方</strong>。</p>
 
@@ -158,8 +158,7 @@ Written <time datetime="2015-03-03T00:00:00+08:00" pubdate data-updated="true">M
 </ul>
 
 
-<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem install rhc
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">rhc</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -169,12 +168,9 @@ Written <time datetime="2015-03-03T00:00:00+08:00" pubdate data-updated="true">M
 </ul>
 
 
-<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 可运行rhc cartridge list查看OpenShift支持的所有开发平台</span>
-</span><span class='line'><span class="c"># 创建一个名称为funny的应用程序，开发平台为ruby-2.0</span>
-</span><span class='line'>rhc create-app funny ruby-2.0
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># 可运行rhc cartridge list查看OpenShift支持的所有开发平台</span>
+</span><span class='line'><span class="c1"># 创建一个名称为funny的应用程序，开发平台为ruby-2.0</span>
+</span><span class='line'><span class="n">rhc</span> <span class="n">create</span><span class="o">-</span><span class="n">app</span> <span class="n">funny</span> <span class="n">ruby</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

@@ -218,6 +218,7 @@ gem 'elklogger', :path => '/home/path/to/elklogger'
 前面提过，`bundle gem` 命令附带提供了一些有助于开发 gem 的 rake 命令， `rake install:local` 就是其中之一，该命令会打包为 .gem 文件放在 pkg 目录并安装到当前的 gemset 中，也就是 `rake build` 和 `gem install`这两个命令的合体。在本例中，运行该命令后会生成 pkg/elklogger-0.0.1.gem 文件，同时也会被安装到当前的 gemset 中，可使用 `gem list | grep elklogger` 查找到。如果想将该 gem 包安装到指定的 gemset 的话，在执行 `rake install:local` 之前你需要先 `rvm use` 来切换到对应的 gemset 去。
 
 安装好以后，就可以在该 gemset 环境中的 ruby 文件中通过 `require 'elklogger'` 得到 Elklogger 对象，从而使用该 gem 包提供的功能了。
+
 **NOTE:** 注意这种方式不适用于类似 Rails 等项目，因为 Rails 项目使用的是 Gemfile 中定义的 gem 包依赖关系，而不是当前 gemset 中的所有包。要想在 Rails 中使用，就必须在 Gemfile 中声明，这种情况下可以使用第 2 种方式。
 
 ### 打包并发布 gem 包

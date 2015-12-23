@@ -6,8 +6,8 @@
 </description>
     <link>http://haydenwei.com/</link>
     <atom:link href="http://haydenwei.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2015-12-23 18:51:27 +0800</pubDate>
-    <lastBuildDate>2015-12-23 18:51:27 +0800</lastBuildDate>
+    <pubDate>2015-12-23 19:06:23 +0800</pubDate>
+    <lastBuildDate>2015-12-23 19:06:23 +0800</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -22,8 +22,7 @@
 
 &lt;p&gt;&lt;code&gt;bundle gem&lt;/code&gt; 命令是由 &lt;a href=&quot;http://bundler.io/&quot;&gt;bundler&lt;/a&gt; 这个 gem 包提供的，它用于创建一个 gem 包所需的框架，而不用你一个一个文件去添加。要使用这个命令，首先需要确认是否已经安装好 bundler ，可使用 &lt;code&gt;bundle version&lt;/code&gt; 查看本机 bundler 的版本，结果类似于：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;plain&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;Bundler version 1.11.2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;plain&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;Bundler version 1.11.2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 &lt;p&gt;如果本机没有安装，则使用 &lt;code&gt;gem install bundler&lt;/code&gt; 来安装它。&lt;/p&gt;
@@ -80,14 +79,18 @@
 &lt;p&gt;如上面生成的框架结构所示，看起来有点让人摸不着头脑，让人觉得不知道该如何组织文件结构。但我来告诉你，其实这很简单，我们在开发一个 gem 时，通常主要关心和修改的是如下几个部分：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;lib 目录&lt;/strong&gt;
-lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 根目录下必须有一个与 gem 包名字一样的 .rb 文件，这是 gem 包的入口文件（如本例中的 lib/elklogger.rb）。其它的源代码可以在 lib 下按需组织目录结构，然后再 require 到 gem 包的入口文件中即可。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;spec 目录或 test 目录&lt;/strong&gt;
-这是书写和存放 gem 包测试代码的目录。根据你选择的测试框架不同会分别是 spec 目录或 test 目录。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;.gemspec 文件&lt;/strong&gt;
-这是 gem 包最重要的一个文件，它定义了 gem 包的所有元数据（metadata），包括 gem 包的作者、Email、gem 包的功能描述信息、开发模式下所依赖的其它 gem 包等等一切信息。可以去&lt;a href=&quot;http://guides.rubygems.org/specification-reference/&quot;&gt;这里&lt;/a&gt;进行更全面更深入的了解和学习。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;README.md 文件&lt;/strong&gt;
-该文件用于书写 gem 包的使用说明文档。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;lib 目录&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 根目录下必须有一个与 gem 包名字一样的 .rb 文件，这是 gem 包的入口文件（如本例中的 lib/elklogger.rb）。其它的源代码可以在 lib 下按需组织目录结构，然后再 require 到 gem 包的入口文件中即可。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;spec 目录或 test 目录&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;这是书写和存放 gem 包测试代码的目录。根据你选择的测试框架不同会分别是 spec 目录或 test 目录。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;.gemspec 文件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;这是 gem 包最重要的一个文件，它定义了 gem 包的所有元数据（metadata），包括 gem 包的作者、Email、gem 包的功能描述信息、开发模式下所依赖的其它 gem 包等等一切信息。可以去&lt;a href=&quot;http://guides.rubygems.org/specification-reference/&quot;&gt;这里&lt;/a&gt;进行更全面更深入的了解和学习。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;README.md 文件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;该文件用于书写 gem 包的使用说明文档。&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
@@ -167,20 +170,19 @@ lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 
 
 &lt;p&gt;运行 &lt;code&gt;rake spec&lt;/code&gt;，出现测试未通过。这是正常的，因为我们还没有实现功能：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Failures&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;plain&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;Failures:
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Elklogger&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;has&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;formmatted&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;     &lt;span class=&quot;no&quot;&gt;Failure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  1) Elklogger has a formmatted output
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;     Failure/Error: expect(result).not_to be nil
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;       &lt;span class=&quot;n&quot;&gt;expected&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#&amp;lt;NilClass:8&amp;gt; =&amp;gt; nil&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;                &lt;span class=&quot;n&quot;&gt;got&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#&amp;lt;NilClass:8&amp;gt; =&amp;gt; nil&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;       expected not #&amp;lt;NilClass:8&gt; =&gt; nil
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;                got #&amp;lt;NilClass:8&gt; =&gt; nil
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;       &lt;span class=&quot;no&quot;&gt;Compared&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;equal?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;which&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;compares&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;identity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;     &lt;span class=&quot;c1&quot;&gt;# ./spec/elklogger_spec.rb:19:in `block (2 levels) in &amp;lt;top (required)&amp;gt;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;       Compared using equal?, which compares object identity.
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;     # ./spec/elklogger_spec.rb:19:in `block (2 levels) in &amp;lt;top (required)&gt;&#8217;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Finished&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00251&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;files&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;took&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0868&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;examples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;failure&lt;/span&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;Finished in 0.00251 seconds (files took 0.0868 seconds to load)
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;2 examples, 1 failure&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 &lt;p&gt;现在我们来实现 &lt;strong&gt;红变绿&lt;/strong&gt; 的过程。在 lib/elklogger.rb 中实现功能：&lt;/p&gt;
@@ -215,13 +217,12 @@ lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 
 
 &lt;p&gt;那么再运行 &lt;code&gt;rake spec&lt;/code&gt; ，发现测试通过了！&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Elklogger&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;has&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;has&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;formmatted&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Finished&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;0011&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;files&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;took&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;07&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;839&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;examples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;failures&lt;/span&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;plain&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;Elklogger
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  has a version number
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  has a formmatted output
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt; 
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;Finished in 0.00119 seconds (files took 0.07839 seconds to load)
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;2 examples, 0 failures&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 &lt;h4&gt;完善 README.md 文件&lt;/h4&gt;
@@ -270,9 +271,9 @@ lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 
 
 &lt;p&gt;如果想打包并且同时发布出去，也很简单，使用 &lt;code&gt;rake release&lt;/code&gt; 即可将打包后的 gem 包发布到 RubyGems 供他人下载和安装。但在发布之前，我们需要先提交我们的代码，由于当初 &lt;code&gt;bundle gem&lt;/code&gt; 初始化 git 仓库时并没有添加源，所以我们先去 github 上新建一个仓库，然后将其作为我们 gem 包的远端源添加进去再提交代码：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;remote&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;origin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:/&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gnodiah&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;finish develop&amp;#39;&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;sh&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;git remote add origin https://github.com/Gnodiah/elklogger.git
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;git add .
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;git commit -m &lt;span class=&quot;s1&quot;&gt;&amp;#39;finish develop&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
@@ -289,7 +290,7 @@ lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 
 
 &lt;p&gt;最后的最后，别忘了 push 源代码到 git 仓库：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;origin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;sh&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;git push origin master
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 

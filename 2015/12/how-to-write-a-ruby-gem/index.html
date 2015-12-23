@@ -101,8 +101,7 @@ Written <time datetime="2015-12-24T02:32:50+08:00" pubdate data-updated="true">D
 
 <p><code>bundle gem</code> 命令是由 <a href="http://bundler.io/">bundler</a> 这个 gem 包提供的，它用于创建一个 gem 包所需的框架，而不用你一个一个文件去添加。要使用这个命令，首先需要确认是否已经安装好 bundler ，可使用 <code>bundle version</code> 查看本机 bundler 的版本，结果类似于：</p>
 
-<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='plain'><span class='line'>Bundler version 1.11.2</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>Bundler version 1.11.2</span></code></pre></td></tr></table></div></figure>
 
 
 <p>如果本机没有安装，则使用 <code>gem install bundler</code> 来安装它。</p>
@@ -159,14 +158,18 @@ Written <time datetime="2015-12-24T02:32:50+08:00" pubdate data-updated="true">D
 <p>如上面生成的框架结构所示，看起来有点让人摸不着头脑，让人觉得不知道该如何组织文件结构。但我来告诉你，其实这很简单，我们在开发一个 gem 时，通常主要关心和修改的是如下几个部分：</p>
 
 <ul>
-<li><p><strong>lib 目录</strong>
-lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 根目录下必须有一个与 gem 包名字一样的 .rb 文件，这是 gem 包的入口文件（如本例中的 lib/elklogger.rb）。其它的源代码可以在 lib 下按需组织目录结构，然后再 require 到 gem 包的入口文件中即可。</p></li>
-<li><p><strong>spec 目录或 test 目录</strong>
-这是书写和存放 gem 包测试代码的目录。根据你选择的测试框架不同会分别是 spec 目录或 test 目录。</p></li>
-<li><p><strong>.gemspec 文件</strong>
-这是 gem 包最重要的一个文件，它定义了 gem 包的所有元数据（metadata），包括 gem 包的作者、Email、gem 包的功能描述信息、开发模式下所依赖的其它 gem 包等等一切信息。可以去<a href="http://guides.rubygems.org/specification-reference/">这里</a>进行更全面更深入的了解和学习。</p></li>
-<li><p><strong>README.md 文件</strong>
-该文件用于书写 gem 包的使用说明文档。</p></li>
+<li><p><strong>lib 目录</strong></p>
+
+<p>lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 根目录下必须有一个与 gem 包名字一样的 .rb 文件，这是 gem 包的入口文件（如本例中的 lib/elklogger.rb）。其它的源代码可以在 lib 下按需组织目录结构，然后再 require 到 gem 包的入口文件中即可。</p></li>
+<li><p><strong>spec 目录或 test 目录</strong></p>
+
+<p>这是书写和存放 gem 包测试代码的目录。根据你选择的测试框架不同会分别是 spec 目录或 test 目录。</p></li>
+<li><p><strong>.gemspec 文件</strong></p>
+
+<p>这是 gem 包最重要的一个文件，它定义了 gem 包的所有元数据（metadata），包括 gem 包的作者、Email、gem 包的功能描述信息、开发模式下所依赖的其它 gem 包等等一切信息。可以去<a href="http://guides.rubygems.org/specification-reference/">这里</a>进行更全面更深入的了解和学习。</p></li>
+<li><p><strong>README.md 文件</strong></p>
+
+<p>该文件用于书写 gem 包的使用说明文档。</p></li>
 </ul>
 
 
@@ -246,20 +249,19 @@ lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 
 
 <p>运行 <code>rake spec</code>，出现测试未通过。这是正常的，因为我们还没有实现功能：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Failures</span><span class="p">:</span>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>Failures:
 </span><span class='line'>
-</span><span class='line'>  <span class="mi">1</span><span class="p">)</span> <span class="no">Elklogger</span> <span class="n">has</span> <span class="n">a</span> <span class="n">formmatted</span> <span class="n">output</span>
-</span><span class='line'>     <span class="no">Failure</span><span class="o">/</span><span class="no">Error</span><span class="p">:</span> <span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">not_to</span> <span class="n">be</span> <span class="kp">nil</span>
+</span><span class='line'>  1) Elklogger has a formmatted output
+</span><span class='line'>     Failure/Error: expect(result).not_to be nil
 </span><span class='line'>
-</span><span class='line'>       <span class="n">expected</span> <span class="ow">not</span> <span class="c1">#&lt;NilClass:8&gt; =&gt; nil</span>
-</span><span class='line'>                <span class="n">got</span> <span class="c1">#&lt;NilClass:8&gt; =&gt; nil</span>
+</span><span class='line'>       expected not #&lt;NilClass:8> => nil
+</span><span class='line'>                got #&lt;NilClass:8> => nil
 </span><span class='line'>
-</span><span class='line'>       <span class="no">Compared</span> <span class="n">using</span> <span class="nb">equal?</span><span class="p">,</span> <span class="n">which</span> <span class="n">compares</span> <span class="n">object</span> <span class="n">identity</span><span class="o">.</span>
-</span><span class='line'>     <span class="c1"># ./spec/elklogger_spec.rb:19:in `block (2 levels) in &lt;top (required)&gt;&#39;</span>
+</span><span class='line'>       Compared using equal?, which compares object identity.
+</span><span class='line'>     # ./spec/elklogger_spec.rb:19:in `block (2 levels) in &lt;top (required)>'
 </span><span class='line'>
-</span><span class='line'><span class="no">Finished</span> <span class="k">in</span> <span class="mi">0</span><span class="o">.</span><span class="mo">00251</span> <span class="n">seconds</span> <span class="p">(</span><span class="n">files</span> <span class="n">took</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0868</span> <span class="n">seconds</span> <span class="n">to</span> <span class="nb">load</span><span class="p">)</span>
-</span><span class='line'><span class="mi">2</span> <span class="n">examples</span><span class="p">,</span> <span class="mi">1</span> <span class="n">failure</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>Finished in 0.00251 seconds (files took 0.0868 seconds to load)
+</span><span class='line'>2 examples, 1 failure</span></code></pre></td></tr></table></div></figure>
 
 
 <p>现在我们来实现 <strong>红变绿</strong> 的过程。在 lib/elklogger.rb 中实现功能：</p>
@@ -294,13 +296,12 @@ lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 
 
 <p>那么再运行 <code>rake spec</code> ，发现测试通过了！</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Elklogger</span>
-</span><span class='line'>  <span class="n">has</span> <span class="n">a</span> <span class="n">version</span> <span class="n">number</span>
-</span><span class='line'>  <span class="n">has</span> <span class="n">a</span> <span class="n">formmatted</span> <span class="n">output</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Finished</span> <span class="k">in</span> <span class="mi">0</span><span class="o">.</span><span class="mo">0011</span><span class="mi">9</span> <span class="n">seconds</span> <span class="p">(</span><span class="n">files</span> <span class="n">took</span> <span class="mi">0</span><span class="o">.</span><span class="mo">07</span><span class="mi">839</span> <span class="n">seconds</span> <span class="n">to</span> <span class="nb">load</span><span class="p">)</span>
-</span><span class='line'><span class="mi">2</span> <span class="n">examples</span><span class="p">,</span> <span class="mi">0</span> <span class="n">failures</span>
-</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>Elklogger
+</span><span class='line'>  has a version number
+</span><span class='line'>  has a formmatted output
+</span><span class='line'> 
+</span><span class='line'>Finished in 0.00119 seconds (files took 0.07839 seconds to load)
+</span><span class='line'>2 examples, 0 failures</span></code></pre></td></tr></table></div></figure>
 
 
 <h4>完善 README.md 文件</h4>
@@ -349,9 +350,9 @@ lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 
 
 <p>如果想打包并且同时发布出去，也很简单，使用 <code>rake release</code> 即可将打包后的 gem 包发布到 RubyGems 供他人下载和安装。但在发布之前，我们需要先提交我们的代码，由于当初 <code>bundle gem</code> 初始化 git 仓库时并没有添加源，所以我们先去 github 上新建一个仓库，然后将其作为我们 gem 包的远端源添加进去再提交代码：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">origin</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="no">Gnodiah</span><span class="o">/</span><span class="n">elklogger</span><span class="o">.</span><span class="n">git</span>
-</span><span class='line'><span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
-</span><span class='line'><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s1">&#39;finish develop&#39;</span>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'>git remote add origin https://github.com/Gnodiah/elklogger.git
+</span><span class='line'>git add .
+</span><span class='line'>git commit -m <span class="s1">&#39;finish develop&#39;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -368,7 +369,7 @@ lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 
 
 <p>最后的最后，别忘了 push 源代码到 git 仓库：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">master</span>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'>git push origin master
 </span></code></pre></td></tr></table></div></figure>
 
 

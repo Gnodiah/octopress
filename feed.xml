@@ -6,8 +6,8 @@
 </description>
     <link>http://haydenwei.com/</link>
     <atom:link href="http://haydenwei.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2015-12-23 19:06:23 +0800</pubDate>
-    <lastBuildDate>2015-12-23 19:06:23 +0800</lastBuildDate>
+    <pubDate>2015-12-23 19:11:18 +0800</pubDate>
+    <lastBuildDate>2015-12-23 19:11:18 +0800</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -29,19 +29,22 @@
 
 &lt;p&gt;安装好 bundler 之后，就可以使用它来创建一个空白的 gem 包框架了。用法非常简单：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 &lt;p&gt;第一次使用该命令创建 gem 包时，会询问你是否创建测试目录以及是否创建 LICENSE.txt 文件等信息，该配置会保存在 ~/.bundle/config 文件中，以后再使用该命令创建 gem 包时会默认使用该配置。给 gem 添加测试代码是个好习惯，所以建议你在上面的询问信息时选择其中的一个测试框架，也可以直接给 &lt;code&gt;bundle gem&lt;/code&gt; 命令添加 -t 参数来指定使用默认的 rspec 作为测试框架（更多关于该命令的参数可以 &lt;code&gt;bundle help gem&lt;/code&gt; 来&lt;a href=&quot;http://bundler.io/v1.11/bundle_gem.html&quot;&gt;查看&lt;/a&gt;）：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 &lt;p&gt;或使用 &amp;#8211;test 参数来指定所要使用的测试框架：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#8211;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minitest&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GEM_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#8211;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minitest&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
@@ -56,22 +59,21 @@
 
 &lt;p&gt;本例中我们使用 &lt;code&gt;bundle gem elklogger -t&lt;/code&gt; 命令生成的 elklogger gem 框架结构如下：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;elklogger_spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;spec_helper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gemspec&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Gemfile&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;LICENSE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;Rakefile&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;README&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;md&lt;/span&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;plain&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;bin/
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  console*
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  setup*
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;lib/
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  elklogger/
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;    version.rb
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  elklogger.rb
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;spec/
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  elklogger_spec.rb
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  spec_helper.rb
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;elklogger.gemspec
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;Gemfile
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;LICENSE.txt
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;Rakefile
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;README.md&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 &lt;h3&gt;理解 gem 包目录结构&lt;/h3&gt;
@@ -129,8 +131,7 @@
 
 &lt;p&gt;elklogger gem 包的功能是将日志内容按照指定的格式进行格式化后输出，我们期望的格式为：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2015&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#8255]  INFO &#8211; : message\n&lt;/span&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;plain&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;I, [2015-12-23#8255]  INFO &#8211; : message\n&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 &lt;p&gt;为此，我们采用 &lt;strong&gt;测试驱动开发&lt;/strong&gt; 的方式，先添加 rspec 代码。打开 spec/elklogger_spec.rb 文件，添加如下代码：&lt;/p&gt;
@@ -271,9 +272,9 @@
 
 &lt;p&gt;如果想打包并且同时发布出去，也很简单，使用 &lt;code&gt;rake release&lt;/code&gt; 即可将打包后的 gem 包发布到 RubyGems 供他人下载和安装。但在发布之前，我们需要先提交我们的代码，由于当初 &lt;code&gt;bundle gem&lt;/code&gt; 初始化 git 仓库时并没有添加源，所以我们先去 github 上新建一个仓库，然后将其作为我们 gem 包的远端源添加进去再提交代码：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;sh&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;git remote add origin https://github.com/Gnodiah/elklogger.git
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;git add .
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;git commit -m &lt;span class=&quot;s1&quot;&gt;&amp;#39;finish develop&amp;#39;&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;remote&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;origin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:/&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gnodiah&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elklogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;finish develop&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
@@ -290,7 +291,7 @@
 
 &lt;p&gt;最后的最后，别忘了 push 源代码到 git 仓库：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;sh&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;git push origin master
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;origin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
@@ -302,7 +303,7 @@
 &lt;/ol&gt;
 
 </description>
-        <pubDate>2015-12-24 02:32:50 +0800</pubDate>
+        <pubDate>2015-12-23 00:00:00 +0800</pubDate>
         <link>http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</link>
         <guid isPermaLink="true">http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</guid>
         

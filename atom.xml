@@ -3,7 +3,7 @@
   <title><![CDATA[The Stick Talk]]></title>
   <link href="http://haydenwei.com/atom.xml" rel="self"/>
   <link href="http://haydenwei.com/"/>
-  <updated>2015-12-23T19:06:23+08:00</updated>
+  <updated>2015-12-23T19:11:18+08:00</updated>
   <id>http://haydenwei.com/</id>
   <author>
     <name><![CDATA[Hayden Wei]]></name>
@@ -20,7 +20,7 @@
 
 <title type="html"><![CDATA[书写并发布自己的Ruby Gem]]></title>
 <link href="http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem"/>
-<updated>2015-12-24T02:32:50+08:00</updated>
+<updated>2015-12-23T00:00:00+08:00</updated>
 <id>http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</id>
 
       <content type="html"><![CDATA[<p>关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们开发的便利，<a href="https://rubygems.org/">RubyGems</a> 上已经有数不清的 gem 了 。所以，简而言之呢，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不再需要直接粗暴地 copy 一份代码。</p>
@@ -67,22 +67,21 @@
 
 <p>本例中我们使用 <code>bundle gem elklogger -t</code> 命令生成的 elklogger gem 框架结构如下：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">bin</span><span class="o">/</span>
-</span><span class='line'>  <span class="n">console</span><span class="o">*</span>
-</span><span class='line'>  <span class="n">setup</span><span class="o">*</span>
-</span><span class='line'><span class="n">lib</span><span class="o">/</span>
-</span><span class='line'>  <span class="n">elklogger</span><span class="o">/</span>
-</span><span class='line'>    <span class="n">version</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'>  <span class="n">elklogger</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'><span class="n">spec</span><span class="o">/</span>
-</span><span class='line'>  <span class="n">elklogger_spec</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'>  <span class="n">spec_helper</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'><span class="n">elklogger</span><span class="o">.</span><span class="n">gemspec</span>
-</span><span class='line'><span class="no">Gemfile</span>
-</span><span class='line'><span class="no">LICENSE</span><span class="o">.</span><span class="n">txt</span>
-</span><span class='line'><span class="no">Rakefile</span>
-</span><span class='line'><span class="no">README</span><span class="o">.</span><span class="n">md</span>
-</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>bin/
+</span><span class='line'>  console*
+</span><span class='line'>  setup*
+</span><span class='line'>lib/
+</span><span class='line'>  elklogger/
+</span><span class='line'>    version.rb
+</span><span class='line'>  elklogger.rb
+</span><span class='line'>spec/
+</span><span class='line'>  elklogger_spec.rb
+</span><span class='line'>  spec_helper.rb
+</span><span class='line'>elklogger.gemspec
+</span><span class='line'>Gemfile
+</span><span class='line'>LICENSE.txt
+</span><span class='line'>Rakefile
+</span><span class='line'>README.md</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>理解 gem 包目录结构</h3>
@@ -131,8 +130,7 @@
 
 <p>elklogger gem 包的功能是将日志内容按照指定的格式进行格式化后输出，我们期望的格式为：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">I</span><span class="p">,</span> <span class="o">[</span><span class="mi">2015</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">23</span><span class="c1">#8255]  INFO -- : message\n</span>
-</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>I, [2015-12-23#8255]  INFO -- : message\n</span></code></pre></td></tr></table></div></figure>
 
 
 <p>为此，我们采用 <strong>测试驱动开发</strong> 的方式，先添加 rspec 代码。打开 spec/elklogger_spec.rb 文件，添加如下代码：</p>
@@ -248,9 +246,9 @@
 
 <p>如果想打包并且同时发布出去，也很简单，使用 <code>rake release</code> 即可将打包后的 gem 包发布到 RubyGems 供他人下载和安装。但在发布之前，我们需要先提交我们的代码，由于当初 <code>bundle gem</code> 初始化 git 仓库时并没有添加源，所以我们先去 github 上新建一个仓库，然后将其作为我们 gem 包的远端源添加进去再提交代码：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'>git remote add origin https://github.com/Gnodiah/elklogger.git
-</span><span class='line'>git add .
-</span><span class='line'>git commit -m <span class="s1">&#39;finish develop&#39;</span>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">origin</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="no">Gnodiah</span><span class="o">/</span><span class="n">elklogger</span><span class="o">.</span><span class="n">git</span>
+</span><span class='line'><span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
+</span><span class='line'><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s1">&#39;finish develop&#39;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -267,7 +265,7 @@
 
 <p>最后的最后，别忘了 push 源代码到 git 仓库：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'>git push origin master
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">master</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

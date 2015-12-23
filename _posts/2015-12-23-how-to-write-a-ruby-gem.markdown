@@ -20,7 +20,7 @@ duoshuo_thhead_key: 6
 
 `bundle gem` 命令是由 [bundler](http://bundler.io/) 这个 gem 包提供的，它用于创建一个 gem 包所需的框架，而不用你一个一个文件去添加。要使用这个命令，首先需要确认是否已经安装好 bundler ，可使用 `bundle version` 查看本机 bundler 的版本，结果类似于：
 
-```
+``` linenos:false
 Bundler version 1.11.2
 ```
 
@@ -76,15 +76,19 @@ README.md
 如上面生成的框架结构所示，看起来有点让人摸不着头脑，让人觉得不知道该如何组织文件结构。但我来告诉你，其实这很简单，我们在开发一个 gem 时，通常主要关心和修改的是如下几个部分：
 
 - **lib 目录**
+
   lib 目录用于存放 gem 包所要实现的功能的源代码。而且在 lib 根目录下必须有一个与 gem 包名字一样的 .rb 文件，这是 gem 包的入口文件（如本例中的 lib/elklogger.rb）。其它的源代码可以在 lib 下按需组织目录结构，然后再 require 到 gem 包的入口文件中即可。
 
 - **spec 目录或 test 目录**
+
   这是书写和存放 gem 包测试代码的目录。根据你选择的测试框架不同会分别是 spec 目录或 test 目录。
 
 - **.gemspec 文件**
+
   这是 gem 包最重要的一个文件，它定义了 gem 包的所有元数据（metadata），包括 gem 包的作者、Email、gem 包的功能描述信息、开发模式下所依赖的其它 gem 包等等一切信息。可以去[这里](http://guides.rubygems.org/specification-reference/)进行更全面更深入的了解和学习。
 
 - **README.md 文件**
+
   该文件用于书写 gem 包的使用说明文档。
 
 除此之外的其它文件或目录保持原样就可以了，或者后期有需要再去酌情修改。
@@ -139,7 +143,7 @@ end
 
 运行 `rake spec`，出现测试未通过。这是正常的，因为我们还没有实现功能：
 
-``` ruby linenos:false
+``` linenos:false
 Failures:
 
   1) Elklogger has a formmatted output
@@ -177,7 +181,7 @@ end
 
 那么再运行 `rake spec` ，发现测试通过了！
 
-``` ruby linenos:false
+``` linenos:false
 Elklogger
   has a version number
   has a formmatted output
@@ -222,7 +226,7 @@ gem 'elklogger', :path => '/home/path/to/elklogger'
 
 如果想打包并且同时发布出去，也很简单，使用 `rake release` 即可将打包后的 gem 包发布到 RubyGems 供他人下载和安装。但在发布之前，我们需要先提交我们的代码，由于当初 `bundle gem` 初始化 git 仓库时并没有添加源，所以我们先去 github 上新建一个仓库，然后将其作为我们 gem 包的远端源添加进去再提交代码：
 
-``` ruby linenos:false
+``` sh linenos:false
 git remote add origin https://github.com/Gnodiah/elklogger.git
 git add .
 git commit -m 'finish develop'
@@ -238,7 +242,7 @@ OK，到目前为止，elklogger gem 包已经完成并发布到 RubyGems 了，
 
 最后的最后，别忘了 push 源代码到 git 仓库：
 
-``` ruby linenos:false
+``` sh linenos:false
 git push origin master
 ```
 

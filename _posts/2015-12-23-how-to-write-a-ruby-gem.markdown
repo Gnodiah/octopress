@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "书写并发布自己的Ruby Gem"
-date: 2015-12-23 18:32:50
+date: 2015-12-23
 author: Hayden Wei
 comments: true
 categories: [Gem]
@@ -28,20 +28,20 @@ Bundler version 1.11.2
 
 安装好 bundler 之后，就可以使用它来创建一个空白的 gem 包框架了。用法非常简单：
 
-``` ruby linenos:false
+``` ruby
 bundle gem GEM_NAME
 ```
 
 第一次使用该命令创建 gem 包时，会询问你是否创建测试目录以及是否创建 LICENSE.txt 文件等信息，该配置会保存在 ~/.bundle/config 文件中，以后再使用该命令创建 gem 包时会默认使用该配置。给 gem 添加测试代码是个好习惯，所以建议你在上面的询问信息时选择其中的一个测试框架，也可以直接给 `bundle gem` 命令添加 -t 参数来指定使用默认的 rspec 作为测试框架（更多关于该命令的参数可以 `bundle help gem` 来[查看](http://bundler.io/v1.11/bundle_gem.html)）：
 
 
-``` ruby linenos:false
+``` ruby
 bundle gem GEM_NAME -t
 ```
 
 或使用 --test 参数来指定所要使用的测试框架：
 
-``` ruby linenos:false
+``` ruby
 bundle gem GEM_NAME --test=minitest
 ```
 
@@ -53,7 +53,7 @@ bundle gem GEM_NAME --test=minitest
 
 本例中我们使用 `bundle gem elklogger -t` 命令生成的 elklogger gem 框架结构如下：
 
-``` ruby linenos:false
+``` linenos:false
 bin/
   console*
   setup*
@@ -117,7 +117,7 @@ end
 
 elklogger gem 包的功能是将日志内容按照指定的格式进行格式化后输出，我们期望的格式为：
 
-``` ruby linenos:false
+``` linenos:false
 I, [2015-12-23#8255]  INFO -- : message\n
 ```
 
@@ -226,7 +226,7 @@ gem 'elklogger', :path => '/home/path/to/elklogger'
 
 如果想打包并且同时发布出去，也很简单，使用 `rake release` 即可将打包后的 gem 包发布到 RubyGems 供他人下载和安装。但在发布之前，我们需要先提交我们的代码，由于当初 `bundle gem` 初始化 git 仓库时并没有添加源，所以我们先去 github 上新建一个仓库，然后将其作为我们 gem 包的远端源添加进去再提交代码：
 
-``` sh linenos:false
+``` ruby linenos:false
 git remote add origin https://github.com/Gnodiah/elklogger.git
 git add .
 git commit -m 'finish develop'
@@ -242,7 +242,7 @@ OK，到目前为止，elklogger gem 包已经完成并发布到 RubyGems 了，
 
 最后的最后，别忘了 push 源代码到 git 仓库：
 
-``` sh linenos:false
+``` ruby linenos:false
 git push origin master
 ```
 

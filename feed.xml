@@ -6,15 +6,13 @@
 </description>
     <link>http://haydenwei.com/</link>
     <atom:link href="http://haydenwei.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2015-12-24 14:36:12 +0800</pubDate>
-    <lastBuildDate>2015-12-24 14:36:12 +0800</lastBuildDate>
+    <pubDate>2015-12-24 14:41:29 +0800</pubDate>
+    <lastBuildDate>2015-12-24 14:41:29 +0800</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
         <title>每个Rubyist都应该构建并发布自己的Gem</title>
-        <description>&lt;p&gt;&lt;em&gt;本文使用的 bundler 版本是 1.11.2&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们的开发便利，&lt;a href=&quot;https://rubygems.org/&quot;&gt;RubyGems&lt;/a&gt; 上目前已经有数十万个 gem ，总下载量也已经接近&lt;a href=&quot;https://rubygems.org/stats&quot;&gt;70亿次&lt;/a&gt;。简单点说，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不是直接简单粗暴地 copy 一份代码。&lt;/p&gt;
+        <description>&lt;p&gt;关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们的开发便利，&lt;a href=&quot;https://rubygems.org/&quot;&gt;RubyGems&lt;/a&gt; 上目前已经有数十万个 gem ，总下载量也已经接近&lt;a href=&quot;https://rubygems.org/stats&quot;&gt;70亿次&lt;/a&gt;。简单点说，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不是直接简单粗暴地 copy 一份代码。&lt;/p&gt;
 
 &lt;p&gt;学习 gem 最好的资料是 &lt;a href=&quot;http://guides.rubygems.org/&quot;&gt;RubyGems Guides&lt;/a&gt; ，它详细介绍了有关 gem 的很多信息，包括如何创建一个自己的 gem 。所以，我建议你把它完整地读一遍，这对你更深层次地理解 gem 有很大的好处。但对于如何创建和发布一个 gem 这一点来说， RubyGems Guides 中介绍的是如何一步一步地手动创建 gem，需要你从一个空目录开始创建所有需要的文件和子目录。太繁琐了！怎么办呢？有没有方法能够快速地生成一个 gem 包的框架，而我们只需要在此基础上完成该 gem 所要提供的功能就好了呢？&lt;/p&gt;
 
@@ -302,6 +300,8 @@
 &lt;li&gt;Github 上大家也总结了这么一篇文章： &lt;a href=&quot;https://github.com/radar/guides/blob/master/gem-development.md&quot;&gt;Developing a RubyGem using Bundler&lt;/a&gt;，值得一看。&lt;/li&gt;
 &lt;/ol&gt;
 
+
+&lt;p&gt;&lt;em&gt;（注：本文使用的 bundler 版本是 1.11.2）&lt;/em&gt;&lt;/p&gt;
 </description>
         <pubDate>2015-12-23 00:00:00 +0800</pubDate>
         <link>http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</link>
@@ -324,9 +324,7 @@
     
       <item>
         <title>rails_config的正确使用姿势</title>
-        <description>&lt;p&gt;&lt;em&gt;本文内容基于 rails_config 0.3.1版本，目前 rails_config 的最新稳定版为0.4.2。虽然版本有所升级，但核心设计应该不会有变化。如有疑问，欢迎指出并留言讨论。&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;还记得我们在很多 Rails 项目中，将配置信息写到 config/settings.yml 文件，然后在代码中使用类似于 &lt;code&gt;Settings.service.host&lt;/code&gt; 这样的用法来读取配置文件的情景吗？咋一看还以为这是 Rails 本身提供的特性，其实并不是，而是 &lt;a href=&quot;https://github.com/railsconfig/rails_config&quot;&gt;rails_config&lt;/a&gt; 这个 gem 包提供给我们的。虽然 Settings 看起来是一个常量(&lt;em&gt;因为以大写字母开头&lt;/em&gt;)，但实际上它是 RailsConfig::Options 类的一个实例对象，包含了当前项目中所有 settings 文件中配置的 key-value 对。&lt;/p&gt;
+        <description>&lt;p&gt;还记得我们在很多 Rails 项目中，将配置信息写到 config/settings.yml 文件，然后在代码中使用类似于 &lt;code&gt;Settings.service.host&lt;/code&gt; 这样的用法来读取配置文件的情景吗？咋一看还以为这是 Rails 本身提供的特性，其实并不是，而是 &lt;a href=&quot;https://github.com/railsconfig/rails_config&quot;&gt;rails_config&lt;/a&gt; 这个 gem 包提供给我们的。虽然 Settings 看起来是一个常量(&lt;em&gt;因为以大写字母开头&lt;/em&gt;)，但实际上它是 RailsConfig::Options 类的一个实例对象，包含了当前项目中所有 settings 文件中配置的 key-value 对。&lt;/p&gt;
 
 &lt;p&gt;它有两种使用方式：&lt;/p&gt;
 
@@ -536,6 +534,8 @@
 &lt;p&gt;&lt;strong&gt;Q3: 我很好奇它的解析和合并算法，它是怎么实现的呢？&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;A3:&lt;/strong&gt; 这是 rails_config 中最核心和最重要的部分了，其实现封装在 &lt;code&gt;DeepMerge&lt;/code&gt; 这个 module 中。如有兴趣可以直接阅读源码来了解它的实现，&lt;a href=&quot;https://github.com/railsconfig/rails_config/blob/master/lib/rails_config/vendor/deep_merge.rb&quot;&gt;源码传送门在这里&lt;/a&gt;。即使不想阅读源码，但了解它的存在也是有必要的。因为如果以后你自己的项目中遇到要解析和合并多个yml文件的内容时，可以直接拿来使用，或者参考它的实现，毕竟我们还是要把时间用在更有意义的地方，避免重复造轮子。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;（注：本文内容基于 rails_config 0.3.1版本，目前 rails_config 的最新稳定版为0.4.2。虽然版本有所升级，但核心设计应该不会有变化。如有疑问，欢迎指出并留言讨论。）&lt;/em&gt;&lt;/p&gt;
 </description>
         <pubDate>2015-04-26 00:00:00 +0800</pubDate>
         <link>http://haydenwei.com/posts/2015/04/rails-config-usage</link>
@@ -914,8 +914,6 @@
 
 
 &lt;p&gt;OK，刚刚部署的应用程序现在终于可以正常访问了。关于rhc的更多用法请运行&lt;code&gt;rhc -h&lt;/code&gt;查看。要了解更多的OpenShift知识或查看每种开发平台的帮助文档请阅读OpenShift的&lt;a href=&quot;https://developers.openshift.com/&quot;&gt;开发者文档&lt;/a&gt;。&lt;/p&gt;
-
-&lt;hr /&gt;
 </description>
         <pubDate>2015-03-03 00:00:00 +0800</pubDate>
         <link>http://haydenwei.com/posts/2015/03/cloud-computing-and-openshift</link>

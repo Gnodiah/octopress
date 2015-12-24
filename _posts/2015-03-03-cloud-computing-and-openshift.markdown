@@ -96,6 +96,4 @@ OK，就这4步，一个名为funny的Ruby应用程序已经创建并部署到Op
 
 OK，刚刚部署的应用程序现在终于可以正常访问了。关于rhc的更多用法请运行`rhc -h`查看。要了解更多的OpenShift知识或查看每种开发平台的帮助文档请阅读OpenShift的[开发者文档](https://developers.openshift.com/)。
 
----
-
 [CloudComputing]: http://www.nist.gov/itl/cloud/

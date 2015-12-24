@@ -10,8 +10,6 @@ duoshuo_thhead_key: 5
 
 ---
 
-*本文内容基于 rails_config 0.3.1版本，目前 rails_config 的最新稳定版为0.4.2。虽然版本有所升级，但核心设计应该不会有变化。如有疑问，欢迎指出并留言讨论。*
-
 还记得我们在很多 Rails 项目中，将配置信息写到 config/settings.yml 文件，然后在代码中使用类似于 `Settings.service.host` 这样的用法来读取配置文件的情景吗？咋一看还以为这是 Rails 本身提供的特性，其实并不是，而是 [rails_config][rails_config] 这个 gem 包提供给我们的。虽然 Settings 看起来是一个常量(*因为以大写字母开头*)，但实际上它是 RailsConfig::Options 类的一个实例对象，包含了当前项目中所有 settings 文件中配置的 key-value 对。
 
 它有两种使用方式：
@@ -185,6 +183,8 @@ Settings.reload_from_files(
 **Q3: 我很好奇它的解析和合并算法，它是怎么实现的呢？**
 
 **A3:** 这是 rails_config 中最核心和最重要的部分了，其实现封装在 `DeepMerge` 这个 module 中。如有兴趣可以直接阅读源码来了解它的实现，[源码传送门在这里][deep-merge-source]。即使不想阅读源码，但了解它的存在也是有必要的。因为如果以后你自己的项目中遇到要解析和合并多个yml文件的内容时，可以直接拿来使用，或者参考它的实现，毕竟我们还是要把时间用在更有意义的地方，避免重复造轮子。
+
+*（注：本文内容基于 rails_config 0.3.1版本，目前 rails_config 的最新稳定版为0.4.2。虽然版本有所升级，但核心设计应该不会有变化。如有疑问，欢迎指出并留言讨论。）*
 
 [rails_config]: https://github.com/railsconfig/rails_config
 [deep-merge-source]: https://github.com/railsconfig/rails_config/blob/master/lib/rails_config/vendor/deep_merge.rb

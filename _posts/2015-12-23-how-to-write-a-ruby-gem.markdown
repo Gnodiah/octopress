@@ -10,8 +10,6 @@ duoshuo_thhead_key: 6
 
 ---
 
-*本文使用的 bundler 版本是 1.11.2*
-
 关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们的开发便利，[RubyGems](https://rubygems.org/) 上目前已经有数十万个 gem ，总下载量也已经接近[70亿次](https://rubygems.org/stats)。简单点说，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不是直接简单粗暴地 copy 一份代码。
 
 学习 gem 最好的资料是 [RubyGems Guides](http://guides.rubygems.org/) ，它详细介绍了有关 gem 的很多信息，包括如何创建一个自己的 gem 。所以，我建议你把它完整地读一遍，这对你更深层次地理解 gem 有很大的好处。但对于如何创建和发布一个 gem 这一点来说， RubyGems Guides 中介绍的是如何一步一步地手动创建 gem，需要你从一个空目录开始创建所有需要的文件和子目录。太繁琐了！怎么办呢？有没有方法能够快速地生成一个 gem 包的框架，而我们只需要在此基础上完成该 gem 所要提供的功能就好了呢？
@@ -253,3 +251,5 @@ git push origin master
 
 1. 与 `bundle gem` 功能类似的还有 [jeweler](https://github.com/technicalpickles/jeweler)，可以去了解一下。但现在可能没有 bundler 这么流行，Github 上也很久没有更新了。
 2. Github 上大家也总结了这么一篇文章： [Developing a RubyGem using Bundler](https://github.com/radar/guides/blob/master/gem-development.md)，值得一看。
+
+*（注：本文使用的 bundler 版本是 1.11.2）*

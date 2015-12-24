@@ -4,8 +4,8 @@ title: "理解ActiveRecord::Relation.where等方法的查找链"
 date: 2015-03-20
 author: Hayden Wei
 comments: true
-categories: [Rails]
-tags: [Rails ActiveRecord Relation where]
+categories: [Rails,技术]
+tags: [Rails,ActiveRecord,Relation,where]
 duoshuo_thhead_key: 4
 
 ---

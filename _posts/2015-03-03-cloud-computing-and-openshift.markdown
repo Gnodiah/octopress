@@ -4,7 +4,7 @@ title: "谈谈对云计算的一些理解"
 date: 2015-03-03
 author: Hayden Wei
 comments: true
-categories: [云计算]
+categories: [技术]
 tags: [云计算, OpenShift]
 duoshuo_thhead_key: 3
 

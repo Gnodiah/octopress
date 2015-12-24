@@ -4,11 +4,13 @@ title: "每个Rubyist都应该构建并发布自己的Gem"
 date: 2015-12-23
 author: Hayden Wei
 comments: true
-categories: [技术,Ruby,Gem]
-tags: [技术,Ruby,Gem]
+categories: [Gem,Ruby,技术]
+tags: [Gem,Ruby,技术]
 duoshuo_thhead_key: 6
 
 ---
+
+*本文使用的 bundler 版本是 1.11.2*
 
 关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们的开发便利，[RubyGems](https://rubygems.org/) 上目前已经有数十万个 gem ，总下载量也已经接近[70亿次](https://rubygems.org/stats)。简单点说，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不是直接简单粗暴地 copy 一份代码。
 

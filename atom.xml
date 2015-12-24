@@ -3,7 +3,7 @@
   <title><![CDATA[The Stick Talk]]></title>
   <link href="http://haydenwei.com/atom.xml" rel="self"/>
   <link href="http://haydenwei.com/"/>
-  <updated>2015-12-24T12:00:24+08:00</updated>
+  <updated>2015-12-24T14:36:12+08:00</updated>
   <id>http://haydenwei.com/</id>
   <author>
     <name><![CDATA[Hayden Wei]]></name>
@@ -23,7 +23,9 @@
 <updated>2015-12-23T00:00:00+08:00</updated>
 <id>http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</id>
 
-      <content type="html"><![CDATA[<p>关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们的开发便利，<a href="https://rubygems.org/">RubyGems</a> 上目前已经有数十万个 gem ，总下载量也已经接近<a href="https://rubygems.org/stats">70亿次</a>。简单点说，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不是直接简单粗暴地 copy 一份代码。</p>
+      <content type="html"><![CDATA[<p><em>本文使用的 bundler 版本是 1.11.2</em></p>
+
+<p>关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们的开发便利，<a href="https://rubygems.org/">RubyGems</a> 上目前已经有数十万个 gem ，总下载量也已经接近<a href="https://rubygems.org/stats">70亿次</a>。简单点说，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不是直接简单粗暴地 copy 一份代码。</p>
 
 <p>学习 gem 最好的资料是 <a href="http://guides.rubygems.org/">RubyGems Guides</a> ，它详细介绍了有关 gem 的很多信息，包括如何创建一个自己的 gem 。所以，我建议你把它完整地读一遍，这对你更深层次地理解 gem 有很大的好处。但对于如何创建和发布一个 gem 这一点来说， RubyGems Guides 中介绍的是如何一步一步地手动创建 gem，需要你从一个空目录开始创建所有需要的文件和子目录。太繁琐了！怎么办呢？有没有方法能够快速地生成一个 gem 包的框架，而我们只需要在此基础上完成该 gem 所要提供的功能就好了呢？</p>
 
@@ -291,11 +293,11 @@
 <updated>2015-04-26T00:00:00+08:00</updated>
 <id>http://haydenwei.com/posts/2015/04/rails-config-usage</id>
 
-      <content type="html"><![CDATA[<h3>前言</h3>
+      <content type="html"><![CDATA[<p><em>本文内容基于 rails_config 0.3.1版本，目前 rails_config 的最新稳定版为0.4.2。虽然版本有所升级，但核心设计应该不会有变化。如有疑问，欢迎指出并留言讨论。</em></p>
 
-<p>Rails中的<code>Settings</code>并不是Rails自带的，而是<code>rails_config</code>这个gem包提供给我们的。虽然Settings看起来是一个常量(<em>因为以大写字母开头</em>)，但实际上它是RailsConfig::Options类的一个实例对象，包含了当前项目中所有settings文件中配置的key-value对。</p>
+<p>还记得我们在很多 Rails 项目中，将配置信息写到 config/settings.yml 文件，然后在代码中使用类似于 <code>Settings.service.host</code> 这样的用法来读取配置文件的情景吗？咋一看还以为这是 Rails 本身提供的特性，其实并不是，而是 <a href="https://github.com/railsconfig/rails_config">rails_config</a> 这个 gem 包提供给我们的。虽然 Settings 看起来是一个常量(<em>因为以大写字母开头</em>)，但实际上它是 RailsConfig::Options 类的一个实例对象，包含了当前项目中所有 settings 文件中配置的 key-value 对。</p>
 
-<p>其有两种使用方式：</p>
+<p>它有两种使用方式：</p>
 
 <ul>
 <li>Settings.key(.sub_key)</li>
@@ -305,7 +307,7 @@
 
 <h3>Settings使用姿势说明</h3>
 
-<p><a href="https://github.com/railsconfig/rails_config">rails_config</a>默认的settings文件有6个，分别为:</p>
+<p>rails_config 默认的 settings 文件有 6 个，分别为:</p>
 
 <ul>
 <li>config/settings.yml</li>
@@ -317,48 +319,44 @@
 </ul>
 
 
-<p>因此，在使用Settings过程中会存在两个问题：</p>
+<p>因此，在使用 Settings 过程中会存在两个问题：</p>
 
 <ol>
-<li>同一个setting文件的内容是如何被解析的？</li>
-<li>不同settings文件的内容是如何被解析和合并的？</li>
+<li>同一个 setting 文件的内容是如何被解析的？</li>
+<li>不同 settings 文件的内容是如何被解析和合并的？</li>
 </ol>
 
 
 <p>我们先来看结果：</p>
 
-<p>1、同一个setting文件中的相同key之间是<strong>覆盖关系</strong>。(后者会直接整个覆盖掉前者，不会对子节点key进行合并)</p>
+<p>1、同一个 setting 文件中的相同 key 之间是 <strong>覆盖关系</strong>。(后者会直接整个覆盖掉前者，不会对子节点 key 进行合并)</p>
 
 <figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">1</span>
 </span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">2</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1"># Settings.change_pwd_switch #=&gt; 2</span>
-</span><span class='line'>
 </span><span class='line'><span class="n">solr</span><span class="p">:</span>
 </span><span class='line'>  <span class="n">host</span><span class="p">:</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
 </span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">8983</span>
-</span><span class='line'>  <span class="n">path</span><span class="p">:</span> <span class="sr">/solr/moni</span><span class="n">tor</span>
 </span><span class='line'><span class="n">solr</span><span class="p">:</span>
 </span><span class='line'>  <span class="n">host</span><span class="p">:</span> <span class="mi">192</span><span class="o">.</span><span class="mi">168</span><span class="o">.</span><span class="mi">100</span><span class="o">.</span><span class="mi">46</span>
 </span><span class='line'>
+</span><span class='line'><span class="c1"># Settings.change_pwd_switch #=&gt; 2</span>
 </span><span class='line'><span class="c1"># Settings.solr.host #=&gt; 192.168.100.46</span>
 </span><span class='line'><span class="c1"># Settings.solr.port #=&gt; nil</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>2、同一个setting文件与其local文件中相同key之间是<strong>合并关系</strong>。(local文件优先级更高)</p>
+<p>2、同一个 setting 文件与其 .local 文件中相同 key 之间是 <strong>合并关系</strong>。（.local 文件优先级更高）</p>
 
 <figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">solr</span><span class="p">:</span>
 </span><span class='line'>  <span class="n">host</span><span class="p">:</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
 </span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">8983</span>
-</span><span class='line'>  <span class="n">path</span><span class="p">:</span> <span class="sr">/solr/moni</span><span class="n">tor</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 
 
-<figure class='code'><figcaption><span>config/settings.local.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: config/settings.local.yml</span>
-</span><span class='line'><span class="n">solr</span><span class="p">:</span>
+<figure class='code'><figcaption><span>config/settings.local.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">solr</span><span class="p">:</span>
 </span><span class='line'>  <span class="n">username</span><span class="p">:</span> <span class="s1">&#39;Hayden&#39;</span>
 </span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">12121</span>
 </span><span class='line'>
@@ -368,46 +366,58 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>3、不同settings文件的key之间的关系是<strong>合并关系</strong>。且优先级关系为:</p>
+<p>3、不同 settings 文件的 key 之间的关系是 <strong>合并关系</strong>。且优先级关系从高到低依次为:</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='sh'><span class='line'>environments/#<span class="o">{</span>Rails.env<span class="o">}</span>.local.yml &gt; settings/#<span class="o">{</span>Rails.env<span class="o">}</span>.local.yml &gt; settings.local.yml
-</span><span class='line'>&gt; environments/#<span class="o">{</span>Rails.env<span class="o">}</span>.yml &gt; settings/#<span class="o">{</span>Rails.env<span class="o">}</span>.yml &gt; settings.yml
-</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>config/environments/#{Rails.env}.local.yml >
+</span><span class='line'>config/settings/#{Rails.env}.local.yml >
+</span><span class='line'>config/settings.local.yml >
+</span><span class='line'>config/environments/#{Rails.env}.yml >
+</span><span class='line'>config/settings/#{Rails.env}.yml >
+</span><span class='line'>config/settings.yml</span></code></pre></td></tr></table></div></figure>
 
 
-<p>4、不同settings文件的相同key在合并过程中的原则是：</p>
+<p>4、不同 settings 文件的相同 key 在合并过程中的原则是：</p>
 
 <ul>
-<li>如果key对应的value是不同类型或不可合并的类型时，对value进行覆盖；</li>
-<li>如果key对应的value是可以合并的类型(比如数组)时，则对value进行合并。</li>
+<li>如果 key 对应的 value 是不同类型或不可合并的类型时，对 value 进行覆盖；</li>
+<li>如果 key 对应的 value 是可以合并的类型(比如数组)时，则对 value 进行合并。</li>
 </ul>
 
 
 <figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># File: config/settings.local.yml</span>
-</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">45</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/settings.loca.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">45</span><span class="o">]</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1"># Settings.change_pwd_switch #=&gt; [11, 88, 23, 45]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>5、在第4点中，如果中途被打断，则还是会对value进行覆盖操作，而不是合并。</p>
+<p>5、在第 4 点中，如果中途被打断，则还是会对 value 进行覆盖操作，而不是合并。</p>
 
 <figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># File: config/settings/development.yml</span>
-</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">2</span>   <span class="c1"># 这里中途被不同类型的value打断</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># File: config/settings.local.yml</span>
-</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">45</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/settings/development.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">2</span>   <span class="c1"># 这里中途被不同类型的value打断</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/settings.local.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">45</span><span class="o">]</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1"># Settings.change_pwd_switch #=&gt; [23, 45]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>6、在development模式下，每一次页面请求都会调用<code>Settings.reload!</code>来重新加载和解析所有的settings文件，因此理论上修改了settings文件后不需要重启Rails。
-7、在settings文件中是允许内嵌ruby代码的，这在某些情况下很有用。例如：</p>
+<p>6、在 development 模式下，每一次页面请求都会调用 <code>Settings.reload!</code> 来重新加载和解析所有的 settings 文件，因此理论上修改了 settings 文件后不需要重启 Rails。
+7、在 settings 文件中是允许内嵌 ruby 代码的，这在某些情况下很有用。例如：</p>
 
 <figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">size</span><span class="p">:</span> <span class="mi">2</span>
 </span><span class='line'><span class="n">computed</span><span class="p">:</span> <span class="o">&lt;</span><span class="sx">%= 1 + 2 + 3 %&gt;</span>
@@ -418,9 +428,9 @@
 
 <h3>追根溯源</h3>
 
-<p>我们先来了解下rails_config在Rails启动过程中做了什么：</p>
+<p>我们先来了解下 rails_config 在 Rails 启动过程中做了什么：</p>
 
-<p>1、加载config/initializers/rails_config.rb文件(该文件是rails_config的自定义文件。例如，如果你不想使用默认的Settings来引用配置文件，就可以在该文件中进行修改其常量名称。如下)</p>
+<p>1、加载 config/initializers/rails_config.rb 文件，该文件是 rails_config 的自定义文件。例如，如果你不想使用默认的 Settings 来引用配置文件，就可以在该文件中进行修改其常量名称：</p>
 
 <figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="no">RailsConfig</span><span class="o">.</span><span class="n">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
 </span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">const_name</span> <span class="o">=</span> <span class="s2">&quot;MySettings&quot;</span>
@@ -428,16 +438,15 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>2、加载所有默认的settings配置文件，将其解析为一个RailsConfig::Options(继承自<a href="http://ruby-doc.org/stdlib-2.1.1/libdoc/ostruct/rdoc/OpenStruct.html">OpenStruct</a>，是一个类似于Hash的数据结构)对象，并将该对象赋值给Settings常量，以便我们通过<code>Settings.xxx</code>的方式来调用。</p>
+<p>2、加载所有默认的 settings 配置文件，将其解析为一个 RailsConfig::Options (继承自<a href="http://ruby-doc.org/stdlib-2.1.1/libdoc/ostruct/rdoc/OpenStruct.html">OpenStruct</a>，是一个类似于 Hash 的数据结构)对象，并将该对象赋值给 Settings 常量，以便我们通过 <code>Settings.xxx</code> 的方式来调用。</p>
 
 <hr />
 
-<p><strong>Q1: 上面所说的6个settings文件是有优先级的，为什么必须是这样的顺序呢？</strong></p>
+<p><strong>Q1: 上面所说的 6 个 settings 文件是有优先级的，为什么必须是这样的顺序呢？</strong></p>
 
-<p><strong>A1:</strong> 没有其他原因，仅仅是因为rails_config的代码中是这样定义死的，源码如下：</p>
+<p><strong>A1:</strong> 没有其他原因，仅仅是因为 rails_config 的代码中是这样定义死的，源码如下：</p>
 
-<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># File: lib/rails_config/integration/rails.rb +14</span>
-</span><span class='line'><span class="no">RailsConfig</span><span class="o">.</span><span class="n">load_and_set_settings</span><span class="p">(</span>
+<figure class='code'><figcaption><span>lib/rails_config/integration/rails.rb</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="no">RailsConfig</span><span class="o">.</span><span class="n">load_and_set_settings</span><span class="p">(</span>
 </span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;settings.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
 </span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;settings&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="si">}</span><span class="s2">.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
 </span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;environments&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="si">}</span><span class="s2">.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
@@ -449,22 +458,22 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>不难看出，方法传入的是一个数组参数，在用<code>each</code>遍历时，后者必然会覆盖前者，因而自然就产生了如上所说的优先级顺序。</p>
+<p>不难看出，方法传入的是一个数组参数，在用 <code>each</code> 遍历时，后者必然会覆盖前者，因而自然就产生了如上所说的优先级顺序。</p>
 
-<p><strong>Q2: 我不想使用默认的优先级顺序，我想在运行时改变它们之间的顺序；我还想加入自己的yml配置文件&#8230;可以吗？</strong></p>
+<p><strong>Q2: 我不想使用默认的优先级顺序，我想在运行时改变它们之间的顺序；我还想加入自己的 yml 配置文件&#8230;可以吗？</strong></p>
 
 <p><strong>A2:</strong> 完全没有问题。</p>
 
-<p>1、如果想在默认的6个settings配置文件基础上加入自己的yml配置文件，你可以在程序中任何需要的地方加入如下代码片段：</p>
+<p>1、如果想在默认的6个 settings 配置文件基础上加入自己的 yml 配置文件，你可以在程序中任何需要的地方加入如下代码片段：</p>
 
 <figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Settings</span><span class="o">.</span><span class="n">add_source!</span><span class="p">(</span><span class="s2">&quot;/path/to/my_settings.yml&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="no">Settings</span><span class="o">.</span><span class="n">reload!</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>此时你的my_settings.yml文件中的配置就可以直接用<code>Settings.xxx</code>来调用了，而且你的my_settings.yml文件拥有最高的优先级。</p>
+<p>此时你的 my_settings.yml 文件中的配置就可以直接用 <code>Settings.xxx</code> 来调用了，而且你的 my_settings.yml 文件拥有最高的优先级。</p>
 
-<p>2、如果你想完全自定义需要加载的settings文件及其顺序，可以在程序中任何需要的地方加入如下代码片段：</p>
+<p>2、如果你想完全自定义需要加载的 settings 文件及其顺序，可以在程序中任何需要的地方加入如下代码片段：</p>
 
 <figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Settings</span><span class="o">.</span><span class="n">reload_from_files</span><span class="p">(</span>
 </span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;settings.local.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
@@ -473,15 +482,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>这样Settings中就只包含了settings.local.yml和my_settings.yml中的配置。</p>
+<p>这样 Settings 中就只包含了 settings.local.yml 和 my_settings.yml 中的配置。</p>
 
 <p><strong>Q3: 我很好奇它的解析和合并算法，它是怎么实现的呢？</strong></p>
 
-<p><strong>A3:</strong> 这是rails_config中最核心和最重要的部分了，其实现封装在<code>DeepMerge</code>这个module中。如有兴趣可以直接阅读源码来了解它的实现，<a href="https://github.com/railsconfig/rails_config/blob/master/lib/rails_config/vendor/deep_merge.rb">源码传送门在这里</a>。</p>
-
-<p>就算你不想看它的实现，但了解它的存在也是有必要的。因为如果以后你自己的项目中遇到要解析和合并多个yml文件的内容时，可以直接拿来使用，或者参考它的实现，毕竟我们还是要把时间用在更有意义的地方，避免重复造轮子嘛。</p>
-
-<blockquote><p>注： 以上内容基于<code>rails_config -v 0.3.1</code>，目前rails_config的最新稳定版为0.4.2。虽然版本有所升级，但核心设计应该不会有变化。如有疑问，欢迎指出并留言讨论。</p></blockquote>
+<p><strong>A3:</strong> 这是 rails_config 中最核心和最重要的部分了，其实现封装在 <code>DeepMerge</code> 这个 module 中。如有兴趣可以直接阅读源码来了解它的实现，<a href="https://github.com/railsconfig/rails_config/blob/master/lib/rails_config/vendor/deep_merge.rb">源码传送门在这里</a>。即使不想阅读源码，但了解它的存在也是有必要的。因为如果以后你自己的项目中遇到要解析和合并多个yml文件的内容时，可以直接拿来使用，或者参考它的实现，毕竟我们还是要把时间用在更有意义的地方，避免重复造轮子。</p>
 ]]></content>
     </entry>
   

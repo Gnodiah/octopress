@@ -6,13 +6,15 @@
 </description>
     <link>http://haydenwei.com/</link>
     <atom:link href="http://haydenwei.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2015-12-24 12:00:24 +0800</pubDate>
-    <lastBuildDate>2015-12-24 12:00:24 +0800</lastBuildDate>
+    <pubDate>2015-12-24 14:36:12 +0800</pubDate>
+    <lastBuildDate>2015-12-24 14:36:12 +0800</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
         <title>每个Rubyist都应该构建并发布自己的Gem</title>
-        <description>&lt;p&gt;关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们的开发便利，&lt;a href=&quot;https://rubygems.org/&quot;&gt;RubyGems&lt;/a&gt; 上目前已经有数十万个 gem ，总下载量也已经接近&lt;a href=&quot;https://rubygems.org/stats&quot;&gt;70亿次&lt;/a&gt;。简单点说，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不是直接简单粗暴地 copy 一份代码。&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;本文使用的 bundler 版本是 1.11.2&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;关于 gem 是什么，其实不用多说，每一个 Rubyist 都不会感到陌生。无论是纯 Ruby 开发还是 Rails 等框架开发，我们都在享受着 gem 带给我们的开发便利，&lt;a href=&quot;https://rubygems.org/&quot;&gt;RubyGems&lt;/a&gt; 上目前已经有数十万个 gem ，总下载量也已经接近&lt;a href=&quot;https://rubygems.org/stats&quot;&gt;70亿次&lt;/a&gt;。简单点说，一个 gem 就是一系列 Ruby 代码的组合，它实现了某种或某些特定的功能。打包成 gem 是为了更好地重用代码，或分享给他人使用，而不是直接简单粗暴地 copy 一份代码。&lt;/p&gt;
 
 &lt;p&gt;学习 gem 最好的资料是 &lt;a href=&quot;http://guides.rubygems.org/&quot;&gt;RubyGems Guides&lt;/a&gt; ，它详细介绍了有关 gem 的很多信息，包括如何创建一个自己的 gem 。所以，我建议你把它完整地读一遍，这对你更深层次地理解 gem 有很大的好处。但对于如何创建和发布一个 gem 这一点来说， RubyGems Guides 中介绍的是如何一步一步地手动创建 gem，需要你从一个空目录开始创建所有需要的文件和子目录。太繁琐了！怎么办呢？有没有方法能够快速地生成一个 gem 包的框架，而我们只需要在此基础上完成该 gem 所要提供的功能就好了呢？&lt;/p&gt;
 
@@ -305,11 +307,11 @@
         <link>http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</link>
         <guid isPermaLink="true">http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</guid>
         
-        <category>技术</category>
+        <category>Gem</category>
         
         <category>Ruby</category>
         
-        <category>Gem</category>
+        <category>技术</category>
         
         
         <category>Gem</category>
@@ -322,11 +324,11 @@
     
       <item>
         <title>rails_config的正确使用姿势</title>
-        <description>&lt;h3&gt;前言&lt;/h3&gt;
+        <description>&lt;p&gt;&lt;em&gt;本文内容基于 rails_config 0.3.1版本，目前 rails_config 的最新稳定版为0.4.2。虽然版本有所升级，但核心设计应该不会有变化。如有疑问，欢迎指出并留言讨论。&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Rails中的&lt;code&gt;Settings&lt;/code&gt;并不是Rails自带的，而是&lt;code&gt;rails_config&lt;/code&gt;这个gem包提供给我们的。虽然Settings看起来是一个常量(&lt;em&gt;因为以大写字母开头&lt;/em&gt;)，但实际上它是RailsConfig::Options类的一个实例对象，包含了当前项目中所有settings文件中配置的key-value对。&lt;/p&gt;
+&lt;p&gt;还记得我们在很多 Rails 项目中，将配置信息写到 config/settings.yml 文件，然后在代码中使用类似于 &lt;code&gt;Settings.service.host&lt;/code&gt; 这样的用法来读取配置文件的情景吗？咋一看还以为这是 Rails 本身提供的特性，其实并不是，而是 &lt;a href=&quot;https://github.com/railsconfig/rails_config&quot;&gt;rails_config&lt;/a&gt; 这个 gem 包提供给我们的。虽然 Settings 看起来是一个常量(&lt;em&gt;因为以大写字母开头&lt;/em&gt;)，但实际上它是 RailsConfig::Options 类的一个实例对象，包含了当前项目中所有 settings 文件中配置的 key-value 对。&lt;/p&gt;
 
-&lt;p&gt;其有两种使用方式：&lt;/p&gt;
+&lt;p&gt;它有两种使用方式：&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Settings.key(.sub_key)&lt;/li&gt;
@@ -336,7 +338,7 @@
 
 &lt;h3&gt;Settings使用姿势说明&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/railsconfig/rails_config&quot;&gt;rails_config&lt;/a&gt;默认的settings文件有6个，分别为:&lt;/p&gt;
+&lt;p&gt;rails_config 默认的 settings 文件有 6 个，分别为:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;config/settings.yml&lt;/li&gt;
@@ -348,48 +350,44 @@
 &lt;/ul&gt;
 
 
-&lt;p&gt;因此，在使用Settings过程中会存在两个问题：&lt;/p&gt;
+&lt;p&gt;因此，在使用 Settings 过程中会存在两个问题：&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;同一个setting文件的内容是如何被解析的？&lt;/li&gt;
-&lt;li&gt;不同settings文件的内容是如何被解析和合并的？&lt;/li&gt;
+&lt;li&gt;同一个 setting 文件的内容是如何被解析的？&lt;/li&gt;
+&lt;li&gt;不同 settings 文件的内容是如何被解析和合并的？&lt;/li&gt;
 &lt;/ol&gt;
 
 
 &lt;p&gt;我们先来看结果：&lt;/p&gt;
 
-&lt;p&gt;1、同一个setting文件中的相同key之间是&lt;strong&gt;覆盖关系&lt;/strong&gt;。(后者会直接整个覆盖掉前者，不会对子节点key进行合并)&lt;/p&gt;
+&lt;p&gt;1、同一个 setting 文件中的相同 key 之间是 &lt;strong&gt;覆盖关系&lt;/strong&gt;。(后者会直接整个覆盖掉前者，不会对子节点 key 进行合并)&lt;/p&gt;
 
 &lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# Settings.change_pwd_switch #=&amp;gt; 2&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;solr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:/&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;127&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8983&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/solr/moni&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tor&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;solr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;168&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;46&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# Settings.change_pwd_switch #=&amp;gt; 2&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# Settings.solr.host #=&amp;gt; 192.168.100.46&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# Settings.solr.port #=&amp;gt; nil&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
-&lt;p&gt;2、同一个setting文件与其local文件中相同key之间是&lt;strong&gt;合并关系&lt;/strong&gt;。(local文件优先级更高)&lt;/p&gt;
+&lt;p&gt;2、同一个 setting 文件与其 .local 文件中相同 key 之间是 &lt;strong&gt;合并关系&lt;/strong&gt;。（.local 文件优先级更高）&lt;/p&gt;
 
 &lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;solr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:/&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;127&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8983&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/solr/moni&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tor&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
 
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.local.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# File: config/settings.local.yml&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;solr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.local.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;solr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hayden&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12121&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
@@ -399,52 +397,60 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
-&lt;p&gt;3、不同settings文件的key之间的关系是&lt;strong&gt;合并关系&lt;/strong&gt;。且优先级关系为:&lt;/p&gt;
+&lt;p&gt;3、不同 settings 文件的 key 之间的关系是 &lt;strong&gt;合并关系&lt;/strong&gt;。且优先级关系从高到低依次为:&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;sh&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;environments/#&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Rails.env&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.local.yml &amp;gt; settings/#&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Rails.env&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.local.yml &amp;gt; settings.local.yml
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&amp;gt; environments/#&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Rails.env&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.yml &amp;gt; settings/#&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Rails.env&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.yml &amp;gt; settings.yml
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;plain&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;config/environments/#{Rails.env}.local.yml &gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;config/settings/#{Rails.env}.local.yml &gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;config/settings.local.yml &gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;config/environments/#{Rails.env}.yml &gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;config/settings/#{Rails.env}.yml &gt;
+&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;config/settings.yml&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
-&lt;p&gt;4、不同settings文件的相同key在合并过程中的原则是：&lt;/p&gt;
+&lt;p&gt;4、不同 settings 文件的相同 key 在合并过程中的原则是：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;如果key对应的value是不同类型或不可合并的类型时，对value进行覆盖；&lt;/li&gt;
-&lt;li&gt;如果key对应的value是可以合并的类型(比如数组)时，则对value进行合并。&lt;/li&gt;
+&lt;li&gt;如果 key 对应的 value 是不同类型或不可合并的类型时，对 value 进行覆盖；&lt;/li&gt;
+&lt;li&gt;如果 key 对应的 value 是可以合并的类型(比如数组)时，则对 value 进行合并。&lt;/li&gt;
 &lt;/ul&gt;
 
 
 &lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# File: config/settings.local.yml&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.loca.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# Settings.change_pwd_switch #=&amp;gt; [11, 88, 23, 45]&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
-&lt;p&gt;5、在第4点中，如果中途被打断，则还是会对value进行覆盖操作，而不是合并。&lt;/p&gt;
+&lt;p&gt;5、在第 4 点中，如果中途被打断，则还是会对 value 进行覆盖操作，而不是合并。&lt;/p&gt;
 
 &lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# File: config/settings/development.yml&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 这里中途被不同类型的value打断&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# File: config/settings.local.yml&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings/development.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 这里中途被不同类型的value打断&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
+
+
+
+
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.local.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;change_pwd_switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# Settings.change_pwd_switch #=&amp;gt; [23, 45]&lt;/span&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
-&lt;p&gt;6、在development模式下，每一次页面请求都会调用&lt;code&gt;Settings.reload!&lt;/code&gt;来重新加载和解析所有的settings文件，因此理论上修改了settings文件后不需要重启Rails。
-7、在settings文件中是允许内嵌ruby代码的，这在某些情况下很有用。例如：&lt;/p&gt;
+&lt;p&gt;6、在 development 模式下，每一次页面请求都会调用 &lt;code&gt;Settings.reload!&lt;/code&gt; 来重新加载和解析所有的 settings 文件，因此理论上修改了 settings 文件后不需要重启 Rails。
+7、在 settings 文件中是允许内嵌 ruby 代码的，这在某些情况下很有用。例如：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
-&lt;span class=&#8217;line-number&#8217;&gt;2&lt;/span&gt;
-&lt;span class=&#8217;line-number&#8217;&gt;3&lt;/span&gt;
-&lt;span class=&#8217;line-number&#8217;&gt;4&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;config/settings.yml&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;n&quot;&gt;computed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;%= 1 + 2 + 3 %&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;sx&quot;&gt;# Settings.computed #=&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;
@@ -453,9 +459,9 @@
 
 &lt;h3&gt;追根溯源&lt;/h3&gt;
 
-&lt;p&gt;我们先来了解下rails_config在Rails启动过程中做了什么：&lt;/p&gt;
+&lt;p&gt;我们先来了解下 rails_config 在 Rails 启动过程中做了什么：&lt;/p&gt;
 
-&lt;p&gt;1、加载config/initializers/rails_config.rb文件(该文件是rails_config的自定义文件。例如，如果你不想使用默认的Settings来引用配置文件，就可以在该文件中进行修改其常量名称。如下)&lt;/p&gt;
+&lt;p&gt;1、加载 config/initializers/rails_config.rb 文件，该文件是 rails_config 的自定义文件。例如，如果你不想使用默认的 Settings 来引用配置文件，就可以在该文件中进行修改其常量名称：&lt;/p&gt;
 
 &lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
 &lt;span class=&#8217;line-number&#8217;&gt;2&lt;/span&gt;
@@ -466,15 +472,15 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
-&lt;p&gt;2、加载所有默认的settings配置文件，将其解析为一个RailsConfig::Options(继承自&lt;a href=&quot;http://ruby-doc.org/stdlib-2.1.1/libdoc/ostruct/rdoc/OpenStruct.html&quot;&gt;OpenStruct&lt;/a&gt;，是一个类似于Hash的数据结构)对象，并将该对象赋值给Settings常量，以便我们通过&lt;code&gt;Settings.xxx&lt;/code&gt;的方式来调用。&lt;/p&gt;
+&lt;p&gt;2、加载所有默认的 settings 配置文件，将其解析为一个 RailsConfig::Options (继承自&lt;a href=&quot;http://ruby-doc.org/stdlib-2.1.1/libdoc/ostruct/rdoc/OpenStruct.html&quot;&gt;OpenStruct&lt;/a&gt;，是一个类似于 Hash 的数据结构)对象，并将该对象赋值给 Settings 常量，以便我们通过 &lt;code&gt;Settings.xxx&lt;/code&gt; 的方式来调用。&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;&lt;strong&gt;Q1: 上面所说的6个settings文件是有优先级的，为什么必须是这样的顺序呢？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Q1: 上面所说的 6 个 settings 文件是有优先级的，为什么必须是这样的顺序呢？&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;A1:&lt;/strong&gt; 没有其他原因，仅仅是因为rails_config的代码中是这样定义死的，源码如下：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;A1:&lt;/strong&gt; 没有其他原因，仅仅是因为 rails_config 的代码中是这样定义死的，源码如下：&lt;/p&gt;
 
-&lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
+&lt;figure class=&#8217;code&#8217;&gt;&lt;figcaption&gt;&lt;span&gt;lib/rails_config/integration/rails.rb&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
 &lt;span class=&#8217;line-number&#8217;&gt;2&lt;/span&gt;
 &lt;span class=&#8217;line-number&#8217;&gt;3&lt;/span&gt;
 &lt;span class=&#8217;line-number&#8217;&gt;4&lt;/span&gt;
@@ -483,9 +489,7 @@
 &lt;span class=&#8217;line-number&#8217;&gt;7&lt;/span&gt;
 &lt;span class=&#8217;line-number&#8217;&gt;8&lt;/span&gt;
 &lt;span class=&#8217;line-number&#8217;&gt;9&lt;/span&gt;
-&lt;span class=&#8217;line-number&#8217;&gt;10&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;c1&quot;&gt;# File: lib/rails_config/integration/rails.rb +14&lt;/span&gt;
-&lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;RailsConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load_and_set_settings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;&lt;code class=&#8217;ruby&#8217;&gt;&lt;span class=&#8217;line&#8217;&gt;&lt;span class=&quot;no&quot;&gt;RailsConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load_and_set_settings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;config&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;settings.yml&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;config&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;settings&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.yml&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&#8217;line&#8217;&gt;  &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;config&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;environments&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.yml&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -497,13 +501,13 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
-&lt;p&gt;不难看出，方法传入的是一个数组参数，在用&lt;code&gt;each&lt;/code&gt;遍历时，后者必然会覆盖前者，因而自然就产生了如上所说的优先级顺序。&lt;/p&gt;
+&lt;p&gt;不难看出，方法传入的是一个数组参数，在用 &lt;code&gt;each&lt;/code&gt; 遍历时，后者必然会覆盖前者，因而自然就产生了如上所说的优先级顺序。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Q2: 我不想使用默认的优先级顺序，我想在运行时改变它们之间的顺序；我还想加入自己的yml配置文件&amp;#8230;可以吗？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Q2: 我不想使用默认的优先级顺序，我想在运行时改变它们之间的顺序；我还想加入自己的 yml 配置文件&amp;#8230;可以吗？&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;A2:&lt;/strong&gt; 完全没有问题。&lt;/p&gt;
 
-&lt;p&gt;1、如果想在默认的6个settings配置文件基础上加入自己的yml配置文件，你可以在程序中任何需要的地方加入如下代码片段：&lt;/p&gt;
+&lt;p&gt;1、如果想在默认的6个 settings 配置文件基础上加入自己的 yml 配置文件，你可以在程序中任何需要的地方加入如下代码片段：&lt;/p&gt;
 
 &lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
 &lt;span class=&#8217;line-number&#8217;&gt;2&lt;/span&gt;
@@ -512,9 +516,9 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
-&lt;p&gt;此时你的my_settings.yml文件中的配置就可以直接用&lt;code&gt;Settings.xxx&lt;/code&gt;来调用了，而且你的my_settings.yml文件拥有最高的优先级。&lt;/p&gt;
+&lt;p&gt;此时你的 my_settings.yml 文件中的配置就可以直接用 &lt;code&gt;Settings.xxx&lt;/code&gt; 来调用了，而且你的 my_settings.yml 文件拥有最高的优先级。&lt;/p&gt;
 
-&lt;p&gt;2、如果你想完全自定义需要加载的settings文件及其顺序，可以在程序中任何需要的地方加入如下代码片段：&lt;/p&gt;
+&lt;p&gt;2、如果你想完全自定义需要加载的 settings 文件及其顺序，可以在程序中任何需要的地方加入如下代码片段：&lt;/p&gt;
 
 &lt;figure class=&#8217;code&#8217;&gt;&lt;div class=&#8217;highlight&#8217;&gt;&lt;table&gt;&lt;td class=&#8217;gutter&#8217;&gt;&lt;pre class=&#8217;line-numbers&#8217;&gt;&lt;span class=&#8217;line-number&#8217;&gt;1&lt;/span&gt;
 &lt;span class=&#8217;line-number&#8217;&gt;2&lt;/span&gt;
@@ -527,24 +531,26 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;
 
 
-&lt;p&gt;这样Settings中就只包含了settings.local.yml和my_settings.yml中的配置。&lt;/p&gt;
+&lt;p&gt;这样 Settings 中就只包含了 settings.local.yml 和 my_settings.yml 中的配置。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Q3: 我很好奇它的解析和合并算法，它是怎么实现的呢？&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;A3:&lt;/strong&gt; 这是rails_config中最核心和最重要的部分了，其实现封装在&lt;code&gt;DeepMerge&lt;/code&gt;这个module中。如有兴趣可以直接阅读源码来了解它的实现，&lt;a href=&quot;https://github.com/railsconfig/rails_config/blob/master/lib/rails_config/vendor/deep_merge.rb&quot;&gt;源码传送门在这里&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;就算你不想看它的实现，但了解它的存在也是有必要的。因为如果以后你自己的项目中遇到要解析和合并多个yml文件的内容时，可以直接拿来使用，或者参考它的实现，毕竟我们还是要把时间用在更有意义的地方，避免重复造轮子嘛。&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;注： 以上内容基于&lt;code&gt;rails_config -v 0.3.1&lt;/code&gt;，目前rails_config的最新稳定版为0.4.2。虽然版本有所升级，但核心设计应该不会有变化。如有疑问，欢迎指出并留言讨论。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;A3:&lt;/strong&gt; 这是 rails_config 中最核心和最重要的部分了，其实现封装在 &lt;code&gt;DeepMerge&lt;/code&gt; 这个 module 中。如有兴趣可以直接阅读源码来了解它的实现，&lt;a href=&quot;https://github.com/railsconfig/rails_config/blob/master/lib/rails_config/vendor/deep_merge.rb&quot;&gt;源码传送门在这里&lt;/a&gt;。即使不想阅读源码，但了解它的存在也是有必要的。因为如果以后你自己的项目中遇到要解析和合并多个yml文件的内容时，可以直接拿来使用，或者参考它的实现，毕竟我们还是要把时间用在更有意义的地方，避免重复造轮子。&lt;/p&gt;
 </description>
         <pubDate>2015-04-26 00:00:00 +0800</pubDate>
         <link>http://haydenwei.com/posts/2015/04/rails-config-usage</link>
         <guid isPermaLink="true">http://haydenwei.com/posts/2015/04/rails-config-usage</guid>
         
-        <category>Rails rails_config Settings</category>
+        <category>Rails</category>
+        
+        <category>rails_config</category>
+        
+        <category>Settings</category>
         
         
         <category>Rails</category>
+        
+        <category>技术</category>
         
       </item>
     
@@ -797,10 +803,18 @@
         <link>http://haydenwei.com/posts/2015/03/activerecord-relation-methods-lookup-chain</link>
         <guid isPermaLink="true">http://haydenwei.com/posts/2015/03/activerecord-relation-methods-lookup-chain</guid>
         
-        <category>Rails ActiveRecord Relation where</category>
+        <category>Rails</category>
+        
+        <category>ActiveRecord</category>
+        
+        <category>Relation</category>
+        
+        <category>where</category>
         
         
         <category>Rails</category>
+        
+        <category>技术</category>
         
       </item>
     
@@ -912,7 +926,7 @@
         <category>OpenShift</category>
         
         
-        <category>云计算</category>
+        <category>技术</category>
         
       </item>
     

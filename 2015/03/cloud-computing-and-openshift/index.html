@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>谈谈对云计算的一些理解 - The Stick Talk</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://haydenwei.com//posts/2015/03/cloud-computing-and-openshift">
+  <link href="/posts/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/posts/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="/posts/atom.xml" rel="alternate" title="The Stick Talk" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/posts/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/posts/2015/03/cloud-computing-and-openshift">谈谈对云计算的一些理解</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-03-03T00:00:00+08:00" pubdate data-updated="true">March  3, 2015 at 00:00 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/posts/tag/技术/'>技术</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>现如今无论公司还是个人，都在讲云计算，似乎一听到<strong>云计算</strong>这个词就觉得高大上。那么到底什么是云计算呢？</p>
+
+<h3>什么是云计算？</h3>
+
+<p>目前使用最多的对云计算的定义是这样的：</p>
+
+<blockquote><p><strong>云计算</strong>是一种按使用量付费的模式，这种模式提供可用的、便捷的、按需的网络访问， 进入可配置的计算资源共享池（资源包括网络，服务器，存储，应用软件，服务），这些资源能够被快速提供，只需投入很少的管理工作，或与服务供应商进行很少的交互。</p></blockquote>
+
+<p>以上是美国国家标准技术研究所（NIST）给出的<a href="http://www.nist.gov/itl/cloud/">定义</a>，大家千万不要被云计算这三个字中的“计算”两个字所误导而认为这是一种关于数学计算方面的新技术；实际上它代表的是一种模型或者叫模式。</p>
+
+<p>举个例子来说，我做了一个网站来提供图片存储服务，你通过访问网站来上传和下载你存储的图片。对于你（使用者）来说，上传的图片存到什么地方去了、后台有多少台服务器、服务器的网络带宽是多少&#8230;等等这些问题你一无所知，就像被云遮住了一样什么都看不见（整个网站服务就像是一朵云，你把图片扔进云里它就存储好了，要用的时候直接从云里去拿，至于这是一朵什么云你一概不知也不需要知道，这就是<strong>云</strong>的概念）；再加上这些服务都跟计算机或者大量计算相关，所以类似于我提供的这种服务模式就叫做<strong>云计算</strong>，而我就叫做<strong>云计算服务提供方</strong>。</p>
+
+<p>目前云计算领域主要包含3大部分内容，即Infrastructure as a Service（IaaS，基础设施即服务）、Platform as a Service（PaaS，平台即服务）、 Software as a Service（SaaS，软件即服务）。</p>
+
+<h3>IaaS, PaaS和SaaS的区别</h3>
+
+<p>IaaS, PaaS和SaaS是目前云计算领域的主要组成部分。如果把整个云计算想象成一个栈的话，那么IaaS就在最底层，SaaS在最顶层，而PaaS在它们之间。</p>
+
+<p><img src="http://7x2vza.com1.z0.glb.clouddn.com/cloud-computing.png" alt="云计算" /></p>
+
+<ul>
+<li><p><strong>IaaS（基础设施即服务）</strong></p>
+
+<p>IaaS是一种将服务器、存储资源、网络配置、防火墙等一系列基础设备综合起来提供给用户按需付费使用的服务。</p>
+
+<p>例如，一个公司如果需要上线一个web产品，那么运维部需要提前采购服务器、购买网络带宽、配置网络和防火墙等等，往往光是采购服务器这一步就可能需要花费一周的时间，大大延迟了产品的上线时间；而且每次新增服务器都需要重复以上过程。有了IaaS以后，你只需要考虑选择哪一个IaaS服务提供方，选定后按自己对基础资源的需求购买相应的资源即可（大部分IaaS提供方都可以免费试用），所有关于采购、配置等步骤你都不用管，你只需要在购买的资源上配置运行公司的产品所需要的环境即可。这让你仅仅聚焦于如何搭建和发布产品环境而不是繁琐的服务器采购和配置工作。</p>
+
+<p>目前IaaS服务主要提供云存储和硬件资源虚拟化（比如上例中的服务器资源），在这方面做的最好最大的是<a href="http://aws.amazon.com/cn/">Amazon Web Service（AWS）</a>，国内也有诸如<a href="http://www.qcloud.com/">腾讯云</a>这样的服务。</p></li>
+<li><p><strong>PaaS（平台即服务）</strong></p>
+
+<p>PaaS通常是在IaaS基础上提供的一种平台服务，且多聚焦于web解决方案。它在IaaS基础上将运行某一语言所需要的环境安装好后直接提供给用户（<strong>主要是开发者</strong>）使用，让用户专注于产品的创新和快速原型的开发，而不是完成从购买服务器、安装产品运行环境到部署代码等整个繁琐的过程。</p>
+
+<p>比如，你有一个很好的idea，已经用Rails来实现了它，现在迫切需要发布到网上进行推广验证。因此接下来你要购买一个服务器、购买域名、安装和配置Nginx、安装Ruby和Rails、安装MySQL数据库&#8230;然后部署代码进行测试是否部署成功。天啦，想想都觉得头痛！现在有了PaaS，你只需要两步：第一步选择开发平台（比如Rails），第二步提交代码，然后就可在线上进行访问了。所有有关该开发平台的环境配置、服务器配置、数据库安装都由PaaS帮你完成，让你更专注于代码开发从而快速实现一个好的创意。</p>
+
+<p>PaaS平台现在有很多，比如GAE，OpenShift，Heroku，国内的SAE， BAE等等。</p></li>
+<li><p><strong>SaaS（软件即服务）</strong></p>
+
+<p>  回想一下我们平常是怎样使用软件的？当我们需要使用一个软件时，我们需要下载它、安装它，然后才能使用，此时该软件是实实在在存在于我们的计算机上的。比如在以前你要收发邮件时需要下载并安装邮件客户端，还需要配置POP/SMTP地址，而且还需要时刻小心垃圾邮件占尽了磁盘空间，当软件有更新时你还需要下载更新&#8230;但有了SaaS就不一样了，再想一下你使用Gmail的场景：你仅仅在浏览器中输入了一个网址，再登录以后居然就可以收发邮件了。</p>
+
+<p>这就是SaaS，它是一种通过Internet提供软件的模式，用户无需购买和安装软件，直接向提供方租用（免费或者付费）基于Web的软件。典型的SaaS应用有Gamil, <a href="https://office.live.com">Microsoft Office Online</a>等等。</p></li>
+</ul>
+
+
+<p>当然，作为一名开发者，最为关心的应该就是PaaS了，因此下面就来谈谈OpenShift的使用。</p>
+
+<h3>OpenShift的使用</h3>
+
+<h4>1. 什么是OpenShift？</h4>
+
+<p><a href="https://www.openshift.com/">OpenShift</a>是Red Hat公司推出的一种PaaS服务，它支持Java（Wildfly, JBossEAP, Tomcat）, PHP, Node.js, Python, Ruby, Perl, MySQL, PostgreSQL, MongoDB, Jenkins, Cron, 以及JBoss xPaaS Services (Fuse, BPM Suite, BRMS, Data Virtualization, Aerogear等等)，可以说包含了目前所有的主流开发平台。</p>
+
+<p>OpenShift提供了3种版本：OpenShift Origin，OpenShift Online和OpenShift Enterprise。其中OpenShift Origin开源并托管于<a href="https://github.com/openshift/origin">Github</a>上，你可以用它来搭建自己的本地PaaS服务；OpenShift Online则是定期从OpenShift Origin打包发布的主要针对开发者的PaaS服务；而OpenShift Enterprise则主要提供给企业用户使用。因此作为开发者来讲，我们主要关心并使用的是OpenShift Online。</p>
+
+<p><a href="https://www.openshift.com/app/account/new">注册</a>一个OpenShift Online账号后，每个账号就可以<strong>免费</strong>创建并部署3个小应用程序了（small gear），每个应用程序的服务器配置为 512M RAM 和 1G 存储容量，这对于个人项目或者刚刚诞生的Good idea来说已经足够了。</p>
+
+<h4>2. 安装OpenShift</h4>
+
+<p>OpenShift提供了3种方式来创建和管理应用程序：Web Console、客户端命令行工具rhc，以及Eclipse插件。对绝大多数开发者来说最强大最完整的方式肯定是命令行工具，因此下面就以在CentOS系统上使用命令行工具rhc创建一个Ruby应用的方式来简单介绍一下OpenShift的使用。其他系统安装rhc的方法请参考<a href="https://developers.openshift.com/en/managing-client-tools.html">这里</a>。</p>
+
+<ul>
+<li><p>准备条件</p>
+
+<p>rhc是一个Gem包，因此你需要先安装RubyGems。Ruby 1.9+已经内置了RubyGems，所以如果你的系统上已经安装过Ruby 1.9+的版本的话，RubyGems就已经在你的系统上了。如果没有安装过请参考<a href="https://rubygems.org/pages/download">这里</a>。此外，rhc使用SSH和Git来管理和上传源代码，因此这两个工具也需要安装。</p></li>
+<li><p>安装rhc</p></li>
+</ul>
+
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">rhc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>运行 <code>rhc setup</code> 按提示一步一步<a href="https://developers.openshift.com/en/getting-started-overview.html">配置rhc</a></p></li>
+<li><p>配置完成后，即可创建一个应用程序：</p></li>
+</ul>
+
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># 可运行rhc cartridge list查看OpenShift支持的所有开发平台</span>
+</span><span class='line'><span class="c1"># 创建一个名称为funny的应用程序，开发平台为ruby-2.0</span>
+</span><span class='line'><span class="n">rhc</span> <span class="n">create</span><span class="o">-</span><span class="n">app</span> <span class="n">funny</span> <span class="n">ruby</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>OK，就这4步，一个名为funny的Ruby应用程序已经创建并部署到OpenShift上了，现在你就可以访问OpenShift返回给你的应用程序URL来查看它了，厉害吧！</p>
+
+<p>但遗憾的是上述URL并不能在华夏国内访问，因为它已经被功夫网（GFW）给封了。好在<strong>绑定独立域名后是可以访问的</strong>。具体方法为：</p>
+
+<ol>
+<li>首先在你所购买的域名的管理界面中新增域名解析CNAME类型，将OpenShift给你的应用程序的URL解析到你所购买的域名；</li>
+<li>在OpenShift应用程序根目录中执行<code>rhc alias add &lt;应用程序名称&gt; &lt;你购买的域名&gt;</code>绑定独立域名。</li>
+</ol>
+
+
+<p>OK，刚刚部署的应用程序现在终于可以正常访问了。关于rhc的更多用法请运行<code>rhc -h</code>查看。要了解更多的OpenShift知识或查看每种开发平台的帮助文档请阅读OpenShift的<a href="https://developers.openshift.com/">开发者文档</a>。</p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/posts/2015/03/activerecord-relation-methods-lookup-chain">理解ActiveRecord::Relation.where等方法的查找链</a>
+        </p>
+      
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/posts">
+      <img src="/posts/images/custom/pug_1x.png" srcset="/posts/images/custom/pug_2x.png 2x, /posts/images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/posts">The Stick Talk</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="/posts/atom.xml">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2026742"></script>
+<!-- UY END -->
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  Pug art by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

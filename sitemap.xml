@@ -2,34 +2,34 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://haydenwei.com/posts/2015/03/cloud-computing-and-openshift</loc>
-        <lastmod>2015-12-25T17:42:02+08:00</lastmod>
+        <lastmod>2015-12-25T17:48:50+08:00</lastmod>
     </url>
     <url>
         <loc>http://haydenwei.com/posts/2015/03/activerecord-relation-methods-lookup-chain</loc>
-        <lastmod>2015-12-25T17:42:02+08:00</lastmod>
+        <lastmod>2015-12-25T17:48:50+08:00</lastmod>
     </url>
     <url>
         <loc>http://haydenwei.com/posts/2015/04/rails-config-usage</loc>
-        <lastmod>2015-12-25T17:42:02+08:00</lastmod>
+        <lastmod>2015-12-25T17:48:50+08:00</lastmod>
     </url>
     <url>
         <loc>http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</loc>
-        <lastmod>2015-12-25T17:42:02+08:00</lastmod>
+        <lastmod>2015-12-25T17:48:50+08:00</lastmod>
     </url>
     <url>
         <loc>http://haydenwei.com/robots.txt</loc>
-        <lastmod>2015-12-25T17:42:02+08:00</lastmod>
+        <lastmod>2015-12-25T17:48:50+08:00</lastmod>
     </url>
     <url>
         <loc>http://haydenwei.com/feed.xml</loc>
-        <lastmod>2015-12-25T17:42:02+08:00</lastmod>
+        <lastmod>2015-12-25T17:48:50+08:00</lastmod>
     </url>
     <url>
         <loc>http://haydenwei.com/about/</loc>
-        <lastmod>2015-12-25T17:42:02+08:00</lastmod>
+        <lastmod>2015-12-25T17:48:50+08:00</lastmod>
     </url>
     <url>
         <loc>http://haydenwei.com/</loc>
-        <lastmod>2015-12-25T17:42:02+08:00</lastmod>
+        <lastmod>2015-12-25T17:48:50+08:00</lastmod>
     </url>
 </urlset>

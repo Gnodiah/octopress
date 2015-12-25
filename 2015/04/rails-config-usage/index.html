@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>rails_config的正确使用姿势 - The Stick Talk</title>
+  <meta name="author" content="Hayden Wei">
+  <meta name="Generator" content="Jekyll & Octopress (http://octopress.org)">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://haydenwei.com//posts/2015/04/rails-config-usage">
+  <link href="/posts/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/posts/javascripts/octopress.min.js" type="text/javascript"></script>
+  <link href="/posts/atom.xml" rel="alternate" title="The Stick Talk" type="application/atom+xml">
+  
+
+
+
+<!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+
+  
+  <link href="/posts/images/custom/favicon.ico" rel="icon">
+</head>
+
+<body   >
+  <div id="main">
+    <div id="content">
+      <div>
+
+
+
+
+
+
+
+
+
+
+
+<article class="hentry " role="article">
+  
+  <header>
+    <h1 class="entry-title">
+
+<a href="/posts/2015/04/rails-config-usage">rails_config的正确使用姿势</a>
+
+</h1>
+
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+Written <time datetime="2015-04-26T00:00:00+08:00" pubdate data-updated="true">April 26, 2015 at 00:00 CST</time>.
+        
+
+<span class="categories">
+  Tagged
+  
+    <a class='category' href='/posts/tag/rails/'>Rails</a>, <a class='category' href='/posts/tag/技术/'>技术</a>.
+  
+</span>
+
+
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>还记得我们在很多 Rails 项目中，将配置信息写到 config/settings.yml 文件，然后在代码中使用类似于 <code>Settings.service.host</code> 这样的用法来读取配置文件的情景吗？咋一看还以为这是 Rails 本身提供的特性，其实并不是，而是 <a href="https://github.com/railsconfig/rails_config">rails_config</a> 这个 gem 包提供给我们的。虽然 Settings 看起来是一个常量(<em>因为以大写字母开头</em>)，但实际上它是 RailsConfig::Options 类的一个实例对象，包含了当前项目中所有 settings 文件中配置的 key-value 对。</p>
+
+<p>它有两种使用方式：</p>
+
+<ul>
+<li>Settings.key(.sub_key)</li>
+<li>Settings[:key][:sub_key] 或 Settings[&#8216;key&#8217;][&#8216;sub_key&#8217;]</li>
+</ul>
+
+
+<h3>Settings使用姿势说明</h3>
+
+<p>rails_config 默认的 settings 文件有 6 个，分别为:</p>
+
+<ul>
+<li>config/settings.yml</li>
+<li>config/settings.local.yml</li>
+<li>config/settings/#{Rails.env}.yml</li>
+<li>config/settings/#{Rails.env}.local.yml</li>
+<li>config/environments/#{Rails.env}.yml</li>
+<li>config/environments/#{Rails.env}.local.yml</li>
+</ul>
+
+
+<p>因此，在使用 Settings 过程中会存在两个问题：</p>
+
+<ol>
+<li>同一个 setting 文件的内容是如何被解析的？</li>
+<li>不同 settings 文件的内容是如何被解析和合并的？</li>
+</ol>
+
+
+<p>我们先来看结果：</p>
+
+<p>1、同一个 setting 文件中的相同 key 之间是 <strong>覆盖关系</strong>。(后者会直接整个覆盖掉前者，不会对子节点 key 进行合并)</p>
+
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">1</span>
+</span><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">solr</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">host</span><span class="p">:</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+</span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">8983</span>
+</span><span class='line'><span class="n">solr</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">host</span><span class="p">:</span> <span class="mi">192</span><span class="o">.</span><span class="mi">168</span><span class="o">.</span><span class="mi">100</span><span class="o">.</span><span class="mi">46</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Settings.change_pwd_switch #=&gt; 2</span>
+</span><span class='line'><span class="c1"># Settings.solr.host #=&gt; 192.168.100.46</span>
+</span><span class='line'><span class="c1"># Settings.solr.port #=&gt; nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2、同一个 setting 文件与其 .local 文件中相同 key 之间是 <strong>合并关系</strong>。（.local 文件优先级更高）</p>
+
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">solr</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">host</span><span class="p">:</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+</span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">8983</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/settings.local.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">solr</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">username</span><span class="p">:</span> <span class="s1">&#39;Hayden&#39;</span>
+</span><span class='line'>  <span class="n">port</span><span class="p">:</span> <span class="mi">12121</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Settings.solr.host #=&gt; &quot;http://127.0.0.1&quot;</span>
+</span><span class='line'><span class="c1"># Settings.solr.port #=&gt; 12121</span>
+</span><span class='line'><span class="c1"># Settings.solr.username #=&gt; &quot;Hayden&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3、不同 settings 文件的 key 之间的关系是 <strong>合并关系</strong>。且优先级关系从高到低依次为:</p>
+
+<figure class='code'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>config/environments/#{Rails.env}.local.yml >
+</span><span class='line'>config/settings/#{Rails.env}.local.yml >
+</span><span class='line'>config/settings.local.yml >
+</span><span class='line'>config/environments/#{Rails.env}.yml >
+</span><span class='line'>config/settings/#{Rails.env}.yml >
+</span><span class='line'>config/settings.yml</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4、不同 settings 文件的相同 key 在合并过程中的原则是：</p>
+
+<ul>
+<li>如果 key 对应的 value 是不同类型或不可合并的类型时，对 value 进行覆盖；</li>
+<li>如果 key 对应的 value 是可以合并的类型(比如数组)时，则对 value 进行合并。</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/settings.loca.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">45</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Settings.change_pwd_switch #=&gt; [11, 88, 23, 45]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>5、在第 4 点中，如果中途被打断，则还是会对 value 进行覆盖操作，而不是合并。</p>
+
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">88</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/settings/development.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="mi">2</span>   <span class="c1"># 这里中途被不同类型的value打断</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/settings.local.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">change_pwd_switch</span><span class="p">:</span> <span class="o">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">45</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Settings.change_pwd_switch #=&gt; [23, 45]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6、在 development 模式下，每一次页面请求都会调用 <code>Settings.reload!</code> 来重新加载和解析所有的 settings 文件，因此理论上修改了 settings 文件后不需要重启 Rails。
+7、在 settings 文件中是允许内嵌 ruby 代码的，这在某些情况下很有用。例如：</p>
+
+<figure class='code'><figcaption><span>config/settings.yml</span></figcaption><div class='highlight'><table><td class='code'><pre><code class='ruby'><span class='line'><span class="n">size</span><span class="p">:</span> <span class="mi">2</span>
+</span><span class='line'><span class="n">computed</span><span class="p">:</span> <span class="o">&lt;</span><span class="sx">%= 1 + 2 + 3 %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx"># Settings.computed #=</span><span class="o">&gt;</span> <span class="mi">6</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>追根溯源</h3>
+
+<p>我们先来了解下 rails_config 在 Rails 启动过程中做了什么：</p>
+
+<p>1、加载 config/initializers/rails_config.rb 文件，该文件是 rails_config 的自定义文件。例如，如果你不想使用默认的 Settings 来引用配置文件，就可以在该文件中进行修改其常量名称：</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">RailsConfig</span><span class="o">.</span><span class="n">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">const_name</span> <span class="o">=</span> <span class="s2">&quot;MySettings&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2、加载所有默认的 settings 配置文件，将其解析为一个 RailsConfig::Options (继承自<a href="http://ruby-doc.org/stdlib-2.1.1/libdoc/ostruct/rdoc/OpenStruct.html">OpenStruct</a>，是一个类似于 Hash 的数据结构)对象，并将该对象赋值给 Settings 常量，以便我们通过 <code>Settings.xxx</code> 的方式来调用。</p>
+
+<hr />
+
+<p><strong>Q1: 上面所说的 6 个 settings 文件是有优先级的，为什么必须是这样的顺序呢？</strong></p>
+
+<p><strong>A1:</strong> 没有其他原因，仅仅是因为 rails_config 的代码中是这样定义死的，源码如下：</p>
+
+<figure class='code'><figcaption><span>lib/rails_config/integration/rails.rb</span></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">RailsConfig</span><span class="o">.</span><span class="n">load_and_set_settings</span><span class="p">(</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;settings.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;settings&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="si">}</span><span class="s2">.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;environments&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="si">}</span><span class="s2">.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;settings.local.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;settings&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="si">}</span><span class="s2">.local.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;environments&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="si">}</span><span class="s2">.local.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不难看出，方法传入的是一个数组参数，在用 <code>each</code> 遍历时，后者必然会覆盖前者，因而自然就产生了如上所说的优先级顺序。</p>
+
+<p><strong>Q2: 我不想使用默认的优先级顺序，我想在运行时改变它们之间的顺序；我还想加入自己的 yml 配置文件&#8230;可以吗？</strong></p>
+
+<p><strong>A2:</strong> 完全没有问题。</p>
+
+<p>1、如果想在默认的6个 settings 配置文件基础上加入自己的 yml 配置文件，你可以在程序中任何需要的地方加入如下代码片段：</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Settings</span><span class="o">.</span><span class="n">add_source!</span><span class="p">(</span><span class="s2">&quot;/path/to/my_settings.yml&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="no">Settings</span><span class="o">.</span><span class="n">reload!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>此时你的 my_settings.yml 文件中的配置就可以直接用 <code>Settings.xxx</code> 来调用了，而且你的 my_settings.yml 文件拥有最高的优先级。</p>
+
+<p>2、如果你想完全自定义需要加载的 settings 文件及其顺序，可以在程序中任何需要的地方加入如下代码片段：</p>
+
+<figure class='code'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Settings</span><span class="o">.</span><span class="n">reload_from_files</span><span class="p">(</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;settings.local.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;my_settings.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样 Settings 中就只包含了 settings.local.yml 和 my_settings.yml 中的配置。</p>
+
+<p><strong>Q3: 我很好奇它的解析和合并算法，它是怎么实现的呢？</strong></p>
+
+<p><strong>A3:</strong> 这是 rails_config 中最核心和最重要的部分了，其实现封装在 <code>DeepMerge</code> 这个 module 中。如有兴趣可以直接阅读源码来了解它的实现，<a href="https://github.com/railsconfig/rails_config/blob/master/lib/rails_config/vendor/deep_merge.rb">源码传送门在这里</a>。即使不想阅读源码，但了解它的存在也是有必要的。因为如果以后你自己的项目中遇到要解析和合并多个yml文件的内容时，可以直接拿来使用，或者参考它的实现，毕竟我们还是要把时间用在更有意义的地方，避免重复造轮子。</p>
+
+<p><em>（注：本文内容基于 rails_config 0.3.1版本，目前 rails_config 的最新稳定版为0.4.2。虽然版本有所升级，但核心设计应该不会有变化。如有疑问，欢迎指出并留言讨论。）</em></p>
+</div>
+
+
+
+  <footer>
+    <p class="meta">
+      
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+
+</div>
+
+    
+    <p class="meta">
+      
+        <p>
+          <strong>Newer:</strong>
+          <a href="/posts/2015/12/how-to-write-a-ruby-gem">每个Rubyist都应该构建并发布自己的Gem</a>
+        </p>
+      
+      
+        <p>
+          <strong>Older:</strong>
+          <a href="/posts/2015/03/activerecord-relation-methods-lookup-chain">理解ActiveRecord::Relation.where等方法的查找链</a>
+        </p>
+      
+    </p>
+  </footer>
+</article>
+
+<section>
+  
+
+  
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <header class="site-header">
+  <div class="the-pug">
+    <a href="/posts">
+      <img src="/posts/images/custom/pug_1x.png" srcset="/posts/images/custom/pug_2x.png 2x, /posts/images/custom/pug_3x.png 3x" alt="">
+    </a>
+  </div>
+  <h1 class="site-title"><a href="/posts">The Stick Talk</a></h1>
+  <p class="site-intro">
+    A blog by <a href="http://haydenwei.com/">Hayden Wei</a>.
+    <a href="/posts/atom.xml">Subscribe by RSS.</a>
+  </p>
+
+  <p class="site-intro">
+    Follow <a href="https://twitter.com/gnodiahwei">@gnodiahwei</a> on Twitter.
+  </p>
+
+  
+</header>
+
+
+
+
+
+
+
+
+
+  
+</aside>
+
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2026742"></script>
+<!-- UY END -->
+
+    </div>
+  </div>
+  <footer class="blog-footer" role="contentinfo"><p>
+  Unless otherwise noted, code is <a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a> and graphics (excluding the blog art) is <a href="http://creativecommons.org/licenses/by/3.0/">CC BY License</a>.
+</p>
+
+<p>
+  &copy; 2015 Hayden Wei.
+  Pug art by <a href="http://johannaost.com">Johanna Öst</a>.
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, with a custom theme.</span>
+</p>
+
+</footer>
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

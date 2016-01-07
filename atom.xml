@@ -3,7 +3,7 @@
   <title><![CDATA[The Stick Talk]]></title>
   <link href="http://haydenwei.com/atom.xml" rel="self"/>
   <link href="http://haydenwei.com/"/>
-  <updated>2015-12-25T17:48:55+08:00</updated>
+  <updated>2016-01-07T13:20:23+08:00</updated>
   <id>http://haydenwei.com/</id>
   <author>
     <name><![CDATA[Hayden Wei]]></name>
@@ -18,7 +18,7 @@
 
 
 
-<title type="html"><![CDATA[每个Rubyist都应该构建并发布自己的Gem]]></title>
+<title type="html"><![CDATA[呐，书写自己的Gem真的很简单！]]></title>
 <link href="http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem"/>
 <updated>2015-12-23T00:00:00+08:00</updated>
 <id>http://haydenwei.com/posts/2015/12/how-to-write-a-ruby-gem</id>

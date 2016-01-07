@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "每个Rubyist都应该构建并发布自己的Gem"
+title: "呐，书写自己的Gem真的很简单！"
 date: 2015-12-23
 author: Hayden Wei
 comments: true
